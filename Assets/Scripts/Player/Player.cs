@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         if (_rigidbody.position.DistanceTo(_movement) <= 0.05f)
             _rigidbody.velocity = Vector2.zero;
         else
-            _rigidbody.velocity = _rigidbody.position.DirectionTo(_movement);
+            _rigidbody.velocity = _rigidbody.position.DirectionTo(_movement) * _speed;
     }
 
 
