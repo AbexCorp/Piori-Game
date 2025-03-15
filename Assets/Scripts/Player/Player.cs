@@ -13,8 +13,6 @@ public class Player : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField]
-    private bool _pointMovement;
-    [SerializeField]
     private float _speed = 1;
 
     void Awake()
@@ -39,43 +37,13 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (_pointMovement)
-        {
-            PointMove();
-            return;
-        }
-
         _rigidbody.velocity = _movement * _speed;
-    }
-
-    private void PointMove()
-    {
-        if (_rigidbody.position.DistanceTo2D(_movement) <= 0.05f)
-            _rigidbody.velocity = Vector2.zero;
-        else
-            _rigidbody.velocity = _rigidbody.position.DirectionTo2D(_movement) * _speed;
     }
 
 
     public void OnDirectMovement(InputAction.CallbackContext context)
     {
-        if (_pointMovement)
-            return;
-
         _movement = context.ReadValue<Vector3>();
-    }
-
-    public void OnPointMovement(InputAction.CallbackContext context)
-    {
-        if(!_pointMovement)
-            return;
-
-        if(context.performed)
-        {
-            _movement.x = _mousePosition.x;
-            _movement.y = 0;
-            _movement.z = _mousePosition.y;
-        }
     }
 
     public void OnMousePosition(InputAction.CallbackContext context)
@@ -87,7 +55,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        _mousePosition = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
+        _mousePosition = context.ReadValue<Vector2>();
     }
 
     #endregion
