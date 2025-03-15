@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody))]
 public abstract class Building : MonoBehaviour
 {
     [Header("Internal")]
     [SerializeField]
-    protected Rigidbody2D _rigidbody;
+    protected Rigidbody _rigidbody;
 
     private void Awake()
     {
         if(_rigidbody == null)
         {
-            _rigidbody = GetComponent<Rigidbody2D>();
-            Debug.LogWarning($"{nameof(Rigidbody2D)} is not assigned on {nameof(Building)} of {gameObject.name}");
+            _rigidbody = GetComponent<Rigidbody>();
+            Debug.LogWarning($"{nameof(Rigidbody)} is not assigned on {nameof(Building)} of {gameObject.name}");
         }
         _rigidbody.isKinematic = true;
     }

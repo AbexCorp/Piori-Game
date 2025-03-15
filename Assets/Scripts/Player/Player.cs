@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
     [Header("Internal")]
     [SerializeField]
-    private Rigidbody2D _rigidbody;
+    private Rigidbody _rigidbody;
 
 
     [Header("Movement")]
-    [SerializeField]
-    private bool _pointMovement;
     [SerializeField]
     private float _speed = 1;
 
     void Awake()
     {
         if (_rigidbody == null)
-            _rigidbody.GetComponent<Rigidbody2D>();
+            _rigidbody.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -31,7 +29,7 @@ public class Player : MonoBehaviour
 
     #region >>> Movement <<<
 
-    private Vector2 _movement;
+    private Vector3 _movement;
     private Vector2 _mousePosition;
 
     public Vector2 MousePosition => _mousePosition;
@@ -39,41 +37,13 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (_pointMovement)
-        {
-            PointMove();
-            return;
-        }
-
         _rigidbody.velocity = _movement * _speed;
-    }
-
-    private void PointMove()
-    {
-        if (_rigidbody.position.DistanceTo(_movement) <= 0.05f)
-            _rigidbody.velocity = Vector2.zero;
-        else
-            _rigidbody.velocity = _rigidbody.position.DirectionTo(_movement) * _speed;
     }
 
 
     public void OnDirectMovement(InputAction.CallbackContext context)
     {
-        if (_pointMovement)
-            return;
-
-        _movement = context.ReadValue<Vector2>();
-    }
-
-    public void OnPointMovement(InputAction.CallbackContext context)
-    {
-        if(!_pointMovement)
-            return;
-
-        if(context.performed)
-        {
-            _movement = _mousePosition;
-        }
+        _movement = context.ReadValue<Vector3>();
     }
 
     public void OnMousePosition(InputAction.CallbackContext context)
@@ -85,7 +55,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        _mousePosition = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
+        _mousePosition = context.ReadValue<Vector2>();
     }
 
     #endregion
