@@ -22,7 +22,7 @@ public class Grid
             {
                 GridTile tile = GameObject.Instantiate(GetTilePrefab(x, y), container.transform);
                 tile.Initialize(x, y, this);
-                tile.gameObject.transform.localPosition = new Vector2(x, y);
+                tile.gameObject.transform.localPosition = new Vector3(x, 0, y);
                 _tiles[CoordinateToIndex(x, y)] = tile;
             }
         }

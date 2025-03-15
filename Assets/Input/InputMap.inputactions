@@ -9,7 +9,7 @@
                     "name": "DirectMovement",
                     "type": "Value",
                     "id": "ec5d16f1-75ef-4e9b-a4ad-e58c58e7b4dc",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Vector3",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -35,9 +35,9 @@
             ],
             "bindings": [
                 {
-                    "name": "2D Vector",
+                    "name": "3D Vector",
                     "id": "bd238cf5-2e30-4857-bc17-800cfcf762c6",
-                    "path": "2DVector",
+                    "path": "3DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -46,9 +46,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
+                    "name": "Up",
                     "id": "a3f3c8bb-c6af-4365-bce8-a4616bf464b7",
-                    "path": "<Keyboard>/w",
+                    "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -57,9 +57,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
+                    "name": "Down",
                     "id": "fb903522-10de-4d4e-a219-1238b3376816",
-                    "path": "<Keyboard>/s",
+                    "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -68,7 +68,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "left",
+                    "name": "Left",
                     "id": "2c777cde-b5ed-4d5a-b517-34f2c7e57746",
                     "path": "<Keyboard>/a",
                     "interactions": "",
@@ -79,9 +79,31 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "right",
+                    "name": "Right",
                     "id": "d7cce3e9-00a0-42bf-a779-ff1a951f800d",
                     "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DirectMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Forward",
+                    "id": "de8cd622-ee41-4bb2-929b-482bd14e67a7",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DirectMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Backward",
+                    "id": "a31cd627-aa89-452f-9a07-04beaf7b9010",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

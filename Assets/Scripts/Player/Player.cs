@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
     [Header("Internal")]
     [SerializeField]
-    private Rigidbody2D _rigidbody;
+    private Rigidbody _rigidbody;
 
 
     [Header("Movement")]
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         if (_rigidbody == null)
-            _rigidbody.GetComponent<Rigidbody2D>();
+            _rigidbody.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
 
     #region >>> Movement <<<
 
-    private Vector2 _movement;
+    private Vector3 _movement;
     private Vector2 _mousePosition;
 
     public Vector2 MousePosition => _mousePosition;
@@ -50,10 +50,10 @@ public class Player : MonoBehaviour
 
     private void PointMove()
     {
-        if (_rigidbody.position.DistanceTo(_movement) <= 0.05f)
+        if (_rigidbody.position.DistanceTo2D(_movement) <= 0.05f)
             _rigidbody.velocity = Vector2.zero;
         else
-            _rigidbody.velocity = _rigidbody.position.DirectionTo(_movement) * _speed;
+            _rigidbody.velocity = _rigidbody.position.DirectionTo2D(_movement) * _speed;
     }
 
 
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         if (_pointMovement)
             return;
 
-        _movement = context.ReadValue<Vector2>();
+        _movement = context.ReadValue<Vector3>();
     }
 
     public void OnPointMovement(InputAction.CallbackContext context)
@@ -72,7 +72,9 @@ public class Player : MonoBehaviour
 
         if(context.performed)
         {
-            _movement = _mousePosition;
+            _movement.x = _mousePosition.x;
+            _movement.y = 0;
+            _movement.z = _mousePosition.y;
         }
     }
 
