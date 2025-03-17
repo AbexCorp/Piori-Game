@@ -26,26 +26,45 @@ public class Grid
                 _tiles[CoordinateToIndex(x, y)] = tile;
             }
         }
+
+        foreach(var t in _tiles)
+        {
+            t.NavigationNode.ConnectNeighboringTiles();
+        }
     }
 
 
     #region >>> Tile Retrieval <<<
 
     public GridTile GetTile(int x, int y)
-    { 
+    {
+        if (x < 0 || y < 0 || x >= Width || y >= Height)
+            return null;
         return _tiles[CoordinateToIndex(x, y)];
     }
     public GridTile GetTile(Vector2Int v)
-    { 
+    {
+        if (v.x < 0 || v.y < 0 || v.x >= Width || v.y >= Height)
+            return null;
         return _tiles[CoordinateToIndex(v.x, v.y)];
     }
     public GridTile this[int x, int y]
-    { 
-        get {  return _tiles[CoordinateToIndex(x, y)]; } 
+    {
+        get
+        {
+            if (x < 0 || y < 0 || x >= Width || y >= Height)
+                return null;
+            return _tiles[CoordinateToIndex(x, y)];
+        } 
     }
     public GridTile this[Vector2Int v]
-    { 
-        get { return _tiles[CoordinateToIndex(v.x, v.y)]; }
+    {
+        get
+        {
+            if (v.x < 0 || v.y < 0 || v.x >= Width || v.y >= Height)
+                return null;
+            return _tiles[CoordinateToIndex(v.x, v.y)];
+        }
     }
 
     private int CoordinateToIndex(int x, int y)
