@@ -12,6 +12,10 @@ public class GridTile : MonoBehaviour
     public Grid Grid => _grid;
     public int X => _x;
     public int Y => _y;
+    public Vector2Int GridPosition => new Vector2Int(X, Y);
+    public Vector3 WorldPosition3D => transform.position;
+    public Vector2 WorldPosition2D => new Vector2(transform.position.x, transform.position.z);
+
 
     public bool IsOccupied => IsOccupiedByBuilding; //Add checks for characters on tile;
 
@@ -21,6 +25,8 @@ public class GridTile : MonoBehaviour
         _x = x;
         _y = y;
         gameObject.name = $"Tile ({x},{y})";
+
+        _navigationNode = new(this);
     }
 
     #region >>> Building <<<
@@ -53,6 +59,14 @@ public class GridTile : MonoBehaviour
     {
         _building = null;
     }
+
+    #endregion
+
+
+    #region >>> Navigation <<<
+
+    private NavigationNode _navigationNode;
+    public NavigationNode NavigationNode => _navigationNode;
 
     #endregion
 
