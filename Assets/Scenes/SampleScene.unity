@@ -491,6 +491,8 @@ MonoBehaviour:
   _tilePrefab: {fileID: 4530225787037905151, guid: 3b1cb4ef64622f64d8be078fb455960f, type: 3}
   BuildingPrefab: {fileID: 3493011222239374388, guid: 36ecab37b43273c4f974451e0dcdf905, type: 3}
   IsBuilding: 0
+  EnemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
+  SpawnEnemy: 0
 --- !u!4 &1046914069
 Transform:
   m_ObjectHideFlags: 0

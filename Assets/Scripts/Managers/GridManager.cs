@@ -17,6 +17,11 @@ public class GridManager : Singleton<GridManager>
     {
         InitializeGrid();
     }
+    private void Update()
+    {
+        if(SpawnEnemy) //debug
+            CreateEnemy(); //debug
+    }
     private void InitializeGrid()
     {
         if (_gridContainer == null)
@@ -49,11 +54,11 @@ public class GridManager : Singleton<GridManager>
 
     public void ClearAllGridEffects()
     {
-        for(int x = 0; x < _grid.Width; x++)
+        for(int x = 0; x < Grid.Width; x++)
         {
-            for(int y = 0; y < _grid.Height; y++)
+            for(int y = 0; y < Grid.Height; y++)
             {
-                _grid[x, y].DisableEffect();
+                Grid[x, y].DisableEffect();
             }
         }
     }
@@ -68,6 +73,17 @@ public class GridManager : Singleton<GridManager>
 
     public Building BuildingPrefab;
     public bool IsBuilding = false;
+
+    public Enemy EnemyPrefab;
+    public bool SpawnEnemy = false;
+    private void CreateEnemy()
+    {
+        if (SpawnEnemy == false)
+            return;
+        GridTile t = Grid[Grid.Width-1, Grid.Height-1];
+        Instantiate(EnemyPrefab, t.transform.position, Quaternion.identity);
+        SpawnEnemy = false;
+    }
 
     #endregion
 }

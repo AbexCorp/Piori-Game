@@ -26,13 +26,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
-
-        GridManager.Instance.ClearAllGridEffects();
-        var path = Pathfinding.FindPath(GridManager.Instance.PlayerPosition.NavigationNode, GridManager.Instance.Grid[7,7].NavigationNode);
-        foreach ( var p in path)
-        {
-            p.Tile.GetComponent<GridTile>().EnableEffect();
-        }
     }
 
 
