@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GridManager : Singleton<GridManager>
 {
@@ -10,6 +11,7 @@ public class GridManager : Singleton<GridManager>
 
     private Grid _grid;
     public Grid Grid => _grid;
+
 
     protected override void OnAwake()
     {
@@ -24,6 +26,23 @@ public class GridManager : Singleton<GridManager>
         _grid.SetTilePrefab(_tilePrefab); //debug
         _grid.InitializeGrid(_gridContainer);
     }
+
+
+    #region >>> Player <<<
+
+    private GridTile _playerPosition = null;
+    public GridTile PlayerPosition => _playerPosition;
+    public UnityEvent OnPlayerPositionChanged;
+
+    public void ChangePlayerPosition(GridTile tile)
+    {
+        if (tile == _playerPosition)
+            return;
+        _playerPosition = tile;
+        OnPlayerPositionChanged?.Invoke();
+    }
+
+    #endregion
 
 
     #region >>> Debug <<<

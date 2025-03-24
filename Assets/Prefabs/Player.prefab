@@ -285,7 +285,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0630c7bafa76ae41986d993f9546cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 0}
 --- !u!1 &6590608590108185033
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +410,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 2321856555584936692}
   _speed: 1
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &2917171131487977440
 MonoBehaviour:
   m_ObjectHideFlags: 0
