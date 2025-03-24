@@ -45,6 +45,22 @@ public class GridManager : Singleton<GridManager>
     #endregion
 
 
+    #region >>> Effects <<<
+
+    public void ClearAllGridEffects()
+    {
+        for(int x = 0; x < _grid.Width; x++)
+        {
+            for(int y = 0; y < _grid.Height; y++)
+            {
+                _grid[x, y].DisableEffect();
+            }
+        }
+    }
+
+    #endregion
+
+
     #region >>> Debug <<<
 
     [SerializeField]
