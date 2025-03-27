@@ -331,8 +331,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.46181038, y: -1.6245958e-17, z: 8.458549e-18, w: 0.8869787}
-  m_LocalPosition: {x: 0, y: 5, z: -3.5}
+  m_LocalRotation: {x: 0.3092442, y: 0.00000005668299, z: -0.000000018432392, w: 0.9509827}
+  m_LocalPosition: {x: 0, y: 4, z: -5.5}
   m_LocalScale: {x: 1, y: 0, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -485,9 +485,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistBetweenScenes: 0
   _gridContainer: {fileID: 77321987}
-  _tilePrefab: {fileID: 2021307848428413657, guid: 5c3033f222b131d469c490ca9f1a4028, type: 3}
+  OnPlayerPositionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  _tilePrefab: {fileID: 4530225787037905151, guid: 3b1cb4ef64622f64d8be078fb455960f, type: 3}
   BuildingPrefab: {fileID: 3493011222239374388, guid: 36ecab37b43273c4f974451e0dcdf905, type: 3}
   IsBuilding: 0
+  EnemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
+  SpawnEnemy: 0
 --- !u!4 &1046914069
 Transform:
   m_ObjectHideFlags: 0
@@ -529,19 +534,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.88697875
+      value: 0.9509827
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.46181035
+      value: 0.30924416
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -2.1160466e-17
+      value: 0.000000056682993
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.7897629e-17
+      value: -0.00000001843239
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

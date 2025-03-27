@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GridManager : Singleton<GridManager>
 {
@@ -11,9 +12,15 @@ public class GridManager : Singleton<GridManager>
     private Grid _grid;
     public Grid Grid => _grid;
 
+
     protected override void OnAwake()
     {
         InitializeGrid();
+    }
+    private void Update()
+    {
+        if(SpawnEnemy) //debug
+            CreateEnemy(); //debug
     }
     private void InitializeGrid()
     {
@@ -26,6 +33,39 @@ public class GridManager : Singleton<GridManager>
     }
 
 
+    #region >>> Player <<<
+
+    private GridTile _playerPosition = null;
+    public GridTile PlayerPosition => _playerPosition;
+    public UnityEvent OnPlayerPositionChanged;
+
+    public void ChangePlayerPosition(GridTile tile)
+    {
+        if (tile == _playerPosition)
+            return;
+        _playerPosition = tile;
+        OnPlayerPositionChanged?.Invoke();
+    }
+
+    #endregion
+
+
+    #region >>> Effects <<<
+
+    public void ClearAllGridEffects()
+    {
+        for(int x = 0; x < Grid.Width; x++)
+        {
+            for(int y = 0; y < Grid.Height; y++)
+            {
+                Grid[x, y].DisableEffect();
+            }
+        }
+    }
+
+    #endregion
+
+
     #region >>> Debug <<<
 
     [SerializeField]
@@ -33,6 +73,17 @@ public class GridManager : Singleton<GridManager>
 
     public Building BuildingPrefab;
     public bool IsBuilding = false;
+
+    public Enemy EnemyPrefab;
+    public bool SpawnEnemy = false;
+    private void CreateEnemy()
+    {
+        if (SpawnEnemy == false)
+            return;
+        GridTile t = Grid[Grid.Width-1, Grid.Height-1];
+        Instantiate(EnemyPrefab, t.transform.position, Quaternion.identity);
+        SpawnEnemy = false;
+    }
 
     #endregion
 }

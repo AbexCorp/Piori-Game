@@ -72,6 +72,28 @@ public class GridTile : MonoBehaviour
     #endregion
 
 
+    #region >>> Effect <<<
+
+    [SerializeField]
+    private Renderer _renderer;
+    
+    public void SetEffectCoor(Color color)
+    {
+        _renderer.material.SetColor("_EffectColor", color);
+        EnableEffect();
+    }
+    public void EnableEffect()
+    {
+        _renderer.material.SetInt("_ShowEffect", 1);
+    }
+    public void DisableEffect()
+    {
+        _renderer.material.SetInt("_ShowEffect", 0);
+    }
+
+    #endregion
+
+
     #region >>> Debugs <<<
 
     protected void OnMouseDown()

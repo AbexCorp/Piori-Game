@@ -7,6 +7,9 @@ public static class Pathfinding
 {
     public static List<NavigationNode> FindPath(NavigationNode start, NavigationNode end)
     {
+        if (start == null || end == null)
+            return new List<NavigationNode>();
+
         List<NavigationNode> toSearch = new();
         List<NavigationNode> processed = new();
         toSearch.Add(start);

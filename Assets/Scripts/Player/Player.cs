@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [Header("Movement")]
     [SerializeField]
     private float _speed = 1;
+    [SerializeField]
+    private LayerMask _groundMask;
 
     void Awake()
     {
@@ -38,6 +40,18 @@ public class Player : MonoBehaviour
     private void Move()
     {
         _rigidbody.velocity = _movement * _speed;
+        UpdateGridPosition();
+    }
+    private void UpdateGridPosition()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(origin:transform.position + Vector3.up * 0.1f, direction:Vector3.down, hitInfo:out hit, maxDistance:1f, layerMask: _groundMask.value))
+        {
+            hit.collider.gameObject.TryGetComponent<GridTile>(out GridTile tile);
+            GridManager.Instance.ChangePlayerPosition(tile);
+        }
+        else
+            GridManager.Instance.ChangePlayerPosition(null);
     }
 
 
