@@ -62,7 +62,7 @@ public class SimpleEnemy : Enemy
     [Range(0.1f, 3f)]
     protected float _meleeRange = 0.5f;
 
-    private void MeleeAttack()
+    protected virtual void MeleeAttack()
     {
         GameManager.Instance.Player.GetDamaged(_meleeDamage);
         StartCoroutine(AttackCooldown(_meleeAttackCooldown));
@@ -84,12 +84,13 @@ public class SimpleEnemy : Enemy
     [SerializeField]
     [Range(1, 300)]
     protected int _rangedDamage = 10;
+    public int RangedDamage => _rangedDamage;
 
     [SerializeField]
     [Range(1f, 10f)]
     protected float _rangedRange = 3f;
 
-    private void RangedAttack()
+    protected virtual void RangedAttack()
     {
         GameManager.Instance.Player.GetDamaged(_rangedDamage);
         StartCoroutine(AttackCooldown(_rangedAttackCooldown));
