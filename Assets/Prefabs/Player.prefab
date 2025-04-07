@@ -413,6 +413,7 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 1024
+  _health: 100
 --- !u!114 &2917171131487977440
 MonoBehaviour:
   m_ObjectHideFlags: 0

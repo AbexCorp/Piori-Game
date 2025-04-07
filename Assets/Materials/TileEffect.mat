@@ -58,6 +58,7 @@ Material:
     - _QueueOffset: 0
     - _ShowEffect: 0
     m_Colors:
+    - _BorderColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     - _Color: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
     - _EffectColor: {r: 0.9433962, g: 0.5087406, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

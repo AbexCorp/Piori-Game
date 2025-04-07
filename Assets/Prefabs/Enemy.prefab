@@ -100,6 +100,15 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 1024
+  _stopsMovementAfterAttack: 0
+  _usesMelee: 1
+  _meleeAttackCooldown: 1
+  _meleeDamage: 10
+  _meleeRange: 0.5
+  _usesRanged: 0
+  _rangedAttackCooldown: 2
+  _rangedDamage: 10
+  _rangedRange: 3
 --- !u!1 &5874977248247903695
 GameObject:
   m_ObjectHideFlags: 0
