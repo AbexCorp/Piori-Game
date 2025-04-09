@@ -17,6 +17,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private LayerMask _groundMask;
 
+    [Header("Combat")]
+    [SerializeField]
+    private int _health = 100;
+
     void Awake()
     {
         if (_rigidbody == null)
@@ -70,6 +74,21 @@ public class Player : MonoBehaviour
         }
 
         _mousePosition = context.ReadValue<Vector2>();
+    }
+
+    #endregion
+
+
+    #region >>> Combat <<<
+
+    public void GetDamaged(int damage)
+    {
+        if (damage <= 0)
+            return;
+        _health -= damage;
+        Debug.Log(_health);
+        if (_health <= 0)
+            Debug.Break();
     }
 
     #endregion
