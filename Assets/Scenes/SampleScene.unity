@@ -163,6 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 270057171}
   - component: {fileID: 270057170}
+  - component: {fileID: 270057172}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -185,6 +186,7 @@ MonoBehaviour:
   _persistBetweenScenes: 0
   _player: {fileID: 1917154258}
   _gridManager: {fileID: 1046914068}
+  _projectileManager: {fileID: 270057172}
 --- !u!4 &270057171
 Transform:
   m_ObjectHideFlags: 0
@@ -200,6 +202,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &270057172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270057169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 269a271dc19ba334ab0bd145b61c1e33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +424,7 @@ MonoBehaviour:
   BuildingPrefab: {fileID: 3493011222239374388, guid: 36ecab37b43273c4f974451e0dcdf905, type: 3}
   IsBuilding: 0
   EnemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
-  SpawnEnemy: 0
+  SpawnEnemy: 1
 --- !u!4 &1046914069
 Transform:
   m_ObjectHideFlags: 0

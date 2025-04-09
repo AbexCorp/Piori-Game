@@ -13,6 +13,13 @@ public abstract class Projectile : MonoBehaviour
     protected Vector3 _target;
     protected int _damage = 0;
 
+    [Header("Prefab")]
+    [SerializeField]
+    protected GameObject _prefab;
+    [SerializeField]
+    protected string _uniqueID;
+    public string UniqueID => _uniqueID;
+
     [Header("Internal")]
     [SerializeField]
     protected SphereCollider _collider;
@@ -39,17 +46,18 @@ public abstract class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        _collider.includeLayers = _collisionMask + _hitMask;
         _collider.isTrigger = true;
+        _rigidBody.includeLayers = _collisionMask;
     }
 
-    public void InitializeProjectile(Vector3 target, Enemy enemy = null, Player player = null)
+    public void InitializeProjectile(Vector3 target, Vector3 spawn, Enemy enemy = null, Player player = null)
     {
         IsUsed = true;
-        SetSpawn();
+        SetSpawn(spawn);
         SetTarget(target);
         SetDamage(enemy, player);
-        _rigidBody.velocity = _spawnPosition.DirectionTo3D(_target) * _speed;
+        gameObject.SetActive(true);
+        _rigidBody.velocity = _spawnPosition.DirectionTo2D(_target) * _speed;
 
         if (_lifetimeInDistance)
             StartCoroutine(DistanceLifetime());
@@ -57,8 +65,9 @@ public abstract class Projectile : MonoBehaviour
             StartCoroutine(TimeLifetime());
 
     }
-    protected void SetSpawn()
+    protected void SetSpawn(Vector3 spawn)
     {
+        transform.position = spawn + (Vector3.up * 0.5f);
         _spawnPosition = transform.position;
     }
     protected void SetTarget(Vector3 target)
@@ -83,13 +92,20 @@ public abstract class Projectile : MonoBehaviour
 
     protected void OnTriggerEnter(Collider other)
     {
-        if (_hitMask == (_hitMask | (1 << other.gameObject.layer)))
+        if (IsInLayerMask(other.gameObject.layer, _hitMask))
         {
             ProjectileHit(other);
+            BreakProjectile();
         }
-        BreakProjectile();
+        if(IsInLayerMask(other.gameObject.layer, _collisionMask))
+            BreakProjectile();
     }
     protected abstract void ProjectileHit(Collider other);
+
+    private bool IsInLayerMask(int layer, LayerMask mask)
+    {
+        return (mask.value & (1 << layer)) != 0;
+    }
 
     #endregion
 
@@ -99,9 +115,9 @@ public abstract class Projectile : MonoBehaviour
     protected virtual void BreakProjectile()
     {
         IsUsed = false;
-        gameObject.SetActive(false);
         _rigidBody.velocity = Vector3.zero;
         StopAllCoroutines();
+        gameObject.SetActive(false);
     }
     private IEnumerator TimeLifetime()
     {
@@ -110,7 +126,7 @@ public abstract class Projectile : MonoBehaviour
     }
     private IEnumerator DistanceLifetime()
     {
-        while (_spawnPosition.DistanceTo2D(_target) < _lifetimeDistance)
+        while (_spawnPosition.DistanceTo2D(transform.position) < _lifetimeDistance)
         {
             yield return new WaitForSeconds(0.2f);
         }

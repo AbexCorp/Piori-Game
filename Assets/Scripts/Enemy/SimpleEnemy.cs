@@ -74,6 +74,9 @@ public class SimpleEnemy : Enemy
 
     [Header("Ranged")]
     [SerializeField]
+    protected Projectile _projectilePrefab;
+
+    [SerializeField]
     protected bool _usesRanged = false;
     protected bool _canAttackRanged => _usesRanged && _distanceToPlayer <= _rangedAttackCooldown;
 
@@ -92,8 +95,13 @@ public class SimpleEnemy : Enemy
 
     protected virtual void RangedAttack()
     {
-        GameManager.Instance.Player.GetDamaged(_rangedDamage);
+        Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
+        projectile.InitializeProjectile(FindRangedTarget(), transform.position, this);
         StartCoroutine(AttackCooldown(_rangedAttackCooldown));
+    }
+    protected virtual Vector3 FindRangedTarget()
+    {
+        return GameManager.Instance.Player.transform.position;
     }
 
     #endregion

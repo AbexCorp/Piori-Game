@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5691701695782087796}
   - component: {fileID: -480571222186049986}
   - component: {fileID: -1107478167017632254}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: EnemyProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -147,6 +147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUsed: 0
+  _prefab: {fileID: 6354543380192946760}
+  _uniqueID: SimpleEnemyProjectile
   _collider: {fileID: 5691701695782087796}
   _collisionMask:
     serializedVersion: 2
