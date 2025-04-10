@@ -14,6 +14,7 @@ public abstract class Enemy : MonoBehaviour
     {
         UpdateGridPosition();
         GridManager.Instance.OnPlayerPositionChanged.AddListener(OnPlayerMoved);
+        DebugThis();
     }
     protected virtual void Update()
     {
@@ -92,4 +93,35 @@ public abstract class Enemy : MonoBehaviour
     }
 
     #endregion
+
+
+    #region >>> Life <<<
+
+    [SerializeField]
+    protected int _health = 50;
+    protected int _currentHealth;
+
+    public virtual void GetDamaged(int damage)
+    {
+        _currentHealth -= damage;
+        Debug.Log($"{gameObject.name} damaged for {damage}, hp = {_currentHealth}");
+        Die();
+    }
+    public virtual void Die()
+    {
+        if(_currentHealth <= 0)
+        {
+            Debug.Log($"{gameObject.name} died");
+            GameManager.Instance.EnemyManager.OnEnemyDeath(this);
+            Destroy(gameObject);
+        }
+    }
+
+    #endregion
+
+
+    private void DebugThis()
+    {
+        _currentHealth = _health;
+    }
 }

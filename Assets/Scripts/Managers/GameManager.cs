@@ -16,13 +16,19 @@ public class GameManager : Singleton<GameManager>
     private ProjectileManager _projectileManager;
     public ProjectileManager ProjectileManager => _projectileManager;
 
+    [SerializeField]
+    private EnemyManager _enemyManager;
+    public EnemyManager EnemyManager => _enemyManager;
+
     protected override void OnAwake()
     {
         if (_player == null)
             Debug.LogWarning("Player refference is not assigned");
         if (_gridManager == null)
             Debug.LogWarning("Grid Manager refference is not assigned");
-        if(ProjectileManager == null)
+        if(_projectileManager == null)
             Debug.LogWarning("Projectile Manager refference is not assigned");
+        if(_enemyManager == null)
+            Debug.LogWarning("Enemy Manager refference is not assigned");
     }
 }
