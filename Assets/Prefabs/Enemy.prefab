@@ -100,7 +100,10 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 1024
+  _health: 50
   _stopsMovementAfterAttack: 0
+  _attacksTowers: 0
+  _prioritizesPlayer: 1
   _usesMelee: 1
   _meleeAttackCooldown: 1
   _meleeDamage: 10

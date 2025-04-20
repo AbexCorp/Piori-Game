@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4143077296314724501}
   - component: {fileID: 6124431333605429321}
   m_Layer: 0
-  m_Name: ShootingTower
+  m_Name: MinigunTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 8af1ade268292784ab75940853fff08a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -121,12 +121,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 6124431333605429321}
   _shoots: 1
-  _attackType: 3
-  _projectilePrefab: {fileID: 3861428606922776722, guid: 48e88fefd7097474fa449ce9eaae75f5, type: 3}
+  _attackType: 2
+  _projectilePrefab: {fileID: 3861428606922776722, guid: 60890043a4f232246b06a90c8304d39c, type: 3}
   _range: 4
   _hasCooldown: 1
-  _attackCooldown: 0.3
-  _damage: 20
+  _attackCooldown: 0.1
+  _damage: 10
 --- !u!54 &6124431333605429321
 Rigidbody:
   m_ObjectHideFlags: 0

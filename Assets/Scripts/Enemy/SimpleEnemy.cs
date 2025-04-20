@@ -96,7 +96,7 @@ public class SimpleEnemy : Enemy
     protected virtual void RangedAttack()
     {
         Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
-        projectile.InitializeProjectile(FindRangedTarget(), transform.position, this);
+        projectile.InitializeProjectile(FindRangedTarget(), transform.position, _rangedDamage);
         StartCoroutine(AttackCooldown(_rangedAttackCooldown));
     }
     protected virtual Vector3 FindRangedTarget()

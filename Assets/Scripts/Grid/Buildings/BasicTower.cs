@@ -1,16 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class BasicTower : Building
 {
+    [Header("Attack")]
     [SerializeField]
     protected bool _shoots = true; //or chain dog
     [SerializeField]
-    protected bool _shootingHitscan = false; // or projectile // or fake projectile // change this to enum
+    protected TowerAttackType _attackType = TowerAttackType.Hitscan;
+    public enum TowerAttackType
+    {
+        None = 0,
+        Hitscan = 1,
+        Projectile = 2,
+        FakeProjectile = 3,
+        Misc = 4
+    }
     [SerializeField]
     protected Projectile _projectilePrefab;
 
+    [Space]
     [SerializeField]
     protected float _range = 4;
     [SerializeField]
@@ -28,6 +39,10 @@ public class BasicTower : Building
     {
         StartCoroutine(CheckForEnemies());
     }
+
+
+    #region >>> Find Enemy <<<
+
     private IEnumerator CheckForEnemies()
     {
         yield return null;
@@ -60,16 +75,36 @@ public class BasicTower : Building
         else
             _target = null;
     }
+
+    #endregion
+
+
+    #region >>> Attack <<<
+
     private void AttackEnemy()
     {
         ConfirmEnemy(_target);
         if (_target == null)
             return;
 
-        if (_shootingHitscan)
-            AttackHitscan();
-        else
-            AttackProjectile();
+        switch (_attackType)
+        {
+            case TowerAttackType.Hitscan:
+                AttackHitscan();
+                break;
+
+            case TowerAttackType.Projectile:
+                AttackProjectile();
+                break;
+
+            case TowerAttackType.FakeProjectile:
+                AttackFakeProjectile();
+                break;
+
+            case TowerAttackType.None:
+            default:
+                break;
+        }
 
         if(_hasCooldown)
             StartCoroutine(AttackCooldown());
@@ -78,12 +113,23 @@ public class BasicTower : Building
     {
         _target.GetDamaged(_damage);
     }
-    private void AttackProjectile() { }
-    private void AttackFakeProjectile() { }
+    private void AttackProjectile()
+    {
+        Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
+        p.InitializeProjectile(_target.transform.position, transform.position, _damage);
+    }
+    private void AttackFakeProjectile()
+    {
+        Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
+        p.InitializeProjectile(_target.transform.position, transform.position, 0);
+        _target.GetDamaged(_damage);
+    }
     private IEnumerator AttackCooldown()
     {
         _isOnCooldown = true;
         yield return new WaitForSeconds(_attackCooldown);
         _isOnCooldown = false;
     }
+
+    #endregion
 }

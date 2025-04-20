@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4143077296314724501}
   - component: {fileID: 6124431333605429321}
   m_Layer: 0
-  m_Name: ShootingTower
+  m_Name: GunTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: ecc84d123acfab24f935e18374cd65b0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   _projectilePrefab: {fileID: 3861428606922776722, guid: 48e88fefd7097474fa449ce9eaae75f5, type: 3}
   _range: 4
   _hasCooldown: 1
-  _attackCooldown: 0.3
+  _attackCooldown: 0.5
   _damage: 20
 --- !u!54 &6124431333605429321
 Rigidbody:
