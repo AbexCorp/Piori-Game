@@ -435,7 +435,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _tilePrefab: {fileID: 4530225787037905151, guid: 3b1cb4ef64622f64d8be078fb455960f, type: 3}
-  BuildingPrefab: {fileID: 4143077296314724501, guid: f81c685117a6e624381615eb4c0236e9, type: 3}
+  BuildingPrefab: {fileID: 4143077296314724501, guid: a2abb32a720081848bdc393488440c53, type: 3}
   IsBuilding: 0
   EnemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
   SpawnEnemy: 1

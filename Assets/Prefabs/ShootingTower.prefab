@@ -120,13 +120,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 6124431333605429321}
+  _healthMax: 200
   _shoots: 1
   _attackType: 3
   _projectilePrefab: {fileID: 3861428606922776722, guid: 48e88fefd7097474fa449ce9eaae75f5, type: 3}
   _range: 4
   _hasCooldown: 1
   _attackCooldown: 0.3
-  _damage: 20
+  _damage: 1
 --- !u!54 &6124431333605429321
 Rigidbody:
   m_ObjectHideFlags: 0

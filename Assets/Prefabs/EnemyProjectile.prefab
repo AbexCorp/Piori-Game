@@ -155,9 +155,9 @@ MonoBehaviour:
     m_Bits: 6144
   _hitMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 6144
   _rigidBody: {fileID: -480571222186049986}
-  _lifetimeInDistance: 1
+  _lifetimeType: 1
   _lifetimeDistance: 4
   _lifetimeTime: 2
   _speed: 2

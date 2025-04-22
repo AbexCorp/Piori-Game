@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IHealth
 {
     [SerializeField]
     protected Rigidbody _rigidbody;
@@ -14,7 +14,11 @@ public abstract class Enemy : MonoBehaviour
     {
         UpdateGridPosition();
         GridManager.Instance.OnPlayerPositionChanged.AddListener(OnPlayerMoved);
-        DebugThis();
+        InitializeEnemy();
+    }
+    protected virtual void InitializeEnemy()
+    {
+        _healthCurrent = HealthMax;
     }
     protected virtual void Update()
     {
@@ -36,7 +40,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected void Move()
     {
-        if(_movementTarget == null)
+        if (_movementTarget == null)
         {
             FindNextMovePoint();
             _rigidbody.velocity = Vector3.zero;
@@ -52,7 +56,7 @@ public abstract class Enemy : MonoBehaviour
     }
     protected virtual void FindNextMovePoint()
     {
-        if(_path == null || _path.Count == 0)
+        if (_path == null || _path.Count == 0)
         {
             _movementTarget = null;
             FindPath();
@@ -70,9 +74,9 @@ public abstract class Enemy : MonoBehaviour
     protected void UpdateGridPosition()
     {
         RaycastHit hit;
-        if(Physics.Raycast(origin:transform.position + Vector3.up * 0.1f, direction:Vector3.down, hitInfo:out hit, maxDistance:1f, layerMask: _groundMask.value))
+        if (Physics.Raycast(origin: transform.position + Vector3.up * 0.1f, direction: Vector3.down, hitInfo: out hit, maxDistance: 1f, layerMask: _groundMask.value))
         {
-            if(hit.collider.gameObject.TryGetComponent<GridTile>(out GridTile tile))
+            if (hit.collider.gameObject.TryGetComponent<GridTile>(out GridTile tile))
             {
                 _gridPosition = tile;
             }
@@ -95,33 +99,28 @@ public abstract class Enemy : MonoBehaviour
     #endregion
 
 
-    #region >>> Life <<<
+    #region >>> Health <<<
 
     [SerializeField]
-    protected int _health = 50;
-    protected int _currentHealth;
+    private int _healthMax = 50;
+    public int HealthMax => _healthMax;
+    private int _healthCurrent;
+    public int HealthCurrent => _healthCurrent;
+    public GameObject ParentGameObject => gameObject;
 
     public virtual void GetDamaged(int damage)
     {
-        _currentHealth -= damage;
-        Debug.Log($"{gameObject.name} damaged for {damage}, hp = {_currentHealth}");
+        _healthCurrent -= damage;
         Die();
     }
     public virtual void Die()
     {
-        if(_currentHealth <= 0)
+        if (_healthCurrent <= 0)
         {
-            Debug.Log($"{gameObject.name} died");
             GameManager.Instance.EnemyManager.OnEnemyDeath(this);
             Destroy(gameObject);
         }
     }
 
     #endregion
-
-
-    private void DebugThis()
-    {
-        _currentHealth = _health;
-    }
 }
