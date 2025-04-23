@@ -32,6 +32,8 @@ public abstract class Enemy : MonoBehaviour, IHealth
     protected float Speed = 1;
     [SerializeField]
     protected LayerMask _groundMask;
+    [SerializeField]
+    protected Pathfinding.PathfindingType _pathfindingType = Pathfinding.PathfindingType.Walkable;
 
     protected Vector3? _movementTarget = null;
     protected List<NavigationNode> _path = new();
@@ -93,7 +95,7 @@ public abstract class Enemy : MonoBehaviour, IHealth
     }
     protected void FindPathToPlayer()
     {
-        _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode);
+        _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode, _pathfindingType);
     }
 
     #endregion
@@ -113,7 +115,7 @@ public abstract class Enemy : MonoBehaviour, IHealth
         _healthCurrent -= damage;
         Die();
     }
-    public virtual void Die()
+    protected virtual void Die()
     {
         if (_healthCurrent <= 0)
         {

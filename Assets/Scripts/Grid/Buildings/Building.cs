@@ -64,7 +64,7 @@ public abstract class Building : MonoBehaviour, IHealth
     }
     protected void Die()
     {
-        if (_healthCurrent >= 0)
+        if (_healthCurrent > 0)
             return;
 
         if(_occupiedTile != null)

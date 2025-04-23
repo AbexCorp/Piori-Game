@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1453948289261450726}
   - component: {fileID: 4143077296314724501}
   - component: {fileID: 6124431333605429321}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: ShootingTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 6124431333605429321}
-  _healthMax: 200
+  _healthMax: 20
   _shoots: 1
   _attackType: 3
   _projectilePrefab: {fileID: 3861428606922776722, guid: 48e88fefd7097474fa449ce9eaae75f5, type: 3}

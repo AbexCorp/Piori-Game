@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class Pathfinding
 {
-    public static List<NavigationNode> FindPath(NavigationNode start, NavigationNode end)
+    public enum PathfindingType
+    {
+        Walkable = 0,
+        Direct = 1
+    }
+    public static List<NavigationNode> FindPath(NavigationNode start, NavigationNode end, PathfindingType pathfindingType = PathfindingType.Walkable)
     {
         if (start == null || end == null)
             return new List<NavigationNode>();
@@ -42,26 +49,75 @@ public static class Pathfinding
                 return path;
             }
 
-            foreach(NavigationNode neighbor in current.Neighbors.Where(n => n.Tile.IsWalkable && !processed.Contains(n)))
+            switch (pathfindingType)
             {
-                bool inSearch  = toSearch.Contains(neighbor);
-                int cost = current.StepsFromStart + NavigationNode.GetDistanceTo(current, neighbor);
+                default:
+                case PathfindingType.Walkable:
+                    WalkablePathinding(current, toSearch, processed, start, end);
+                    break;
 
-                if (!inSearch || cost < neighbor.StepsFromStart)
-                {
-                    neighbor.StepsFromStart = cost;
-                    neighbor.Connection = current;
-
-                    if (!inSearch)
-                    {
-                        neighbor.StepsToEnd = NavigationNode.GetDistanceTo(neighbor, end);
-                        toSearch.Add(neighbor);
-                    }
-                }
+                case PathfindingType.Direct:
+                    DirectPathinding(current, toSearch, processed, start, end);
+                    break;
             }
+            //foreach(NavigationNode neighbor in current.Neighbors.Where(n => n.Tile.IsWalkable && !processed.Contains(n)))
+            //{
+            //    bool inSearch  = toSearch.Contains(neighbor);
+            //    int cost = current.StepsFromStart + NavigationNode.GetDistanceTo(current, neighbor);
+
+            //    if (!inSearch || cost < neighbor.StepsFromStart)
+            //    {
+            //        neighbor.StepsFromStart = cost;
+            //        neighbor.Connection = current;
+
+            //        if (!inSearch)
+            //        {
+            //            neighbor.StepsToEnd = NavigationNode.GetDistanceTo(neighbor, end);
+            //            toSearch.Add(neighbor);
+            //        }
+            //    }
+            //}
         }
 
 
         return null;
+    }
+    private static void WalkablePathinding(NavigationNode current, List<NavigationNode> toSearch, List<NavigationNode> processed, NavigationNode start, NavigationNode end)
+    {
+        foreach(NavigationNode neighbor in current.Neighbors.Where(n => (n.Tile.IsWalkable && !n.Tile.IsOccupied) && !processed.Contains(n)))
+        {
+            bool inSearch  = toSearch.Contains(neighbor);
+            int cost = current.StepsFromStart + NavigationNode.GetDistanceTo(current, neighbor);
+
+            if (!inSearch || cost < neighbor.StepsFromStart)
+            {
+                neighbor.StepsFromStart = cost;
+                neighbor.Connection = current;
+            if (!inSearch)
+            {
+                    neighbor.StepsToEnd = NavigationNode.GetDistanceTo(neighbor, end);
+                    toSearch.Add(neighbor);
+                }
+            }
+        }
+    }
+    private static void DirectPathinding(NavigationNode current, List<NavigationNode> toSearch, List<NavigationNode> processed, NavigationNode start, NavigationNode end)
+    {
+        foreach(NavigationNode neighbor in current.Neighbors.Where(n => n.Tile.IsWalkable && !processed.Contains(n)))
+        {
+            bool inSearch  = toSearch.Contains(neighbor);
+            int cost = current.StepsFromStart + NavigationNode.GetDistanceTo(current, neighbor);
+
+            if (!inSearch || cost < neighbor.StepsFromStart)
+            {
+                neighbor.StepsFromStart = cost;
+                neighbor.Connection = current;
+            if (!inSearch)
+            {
+                    neighbor.StepsToEnd = NavigationNode.GetDistanceTo(neighbor, end);
+                    toSearch.Add(neighbor);
+                }
+            }
+        }
     }
 }

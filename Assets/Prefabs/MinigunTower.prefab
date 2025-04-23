@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1453948289261450726}
   - component: {fileID: 4143077296314724501}
   - component: {fileID: 6124431333605429321}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MinigunTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 6124431333605429321}
+  _healthMax: 50
   _shoots: 1
   _attackType: 2
   _projectilePrefab: {fileID: 3861428606922776722, guid: 60890043a4f232246b06a90c8304d39c, type: 3}

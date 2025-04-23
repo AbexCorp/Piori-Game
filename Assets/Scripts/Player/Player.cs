@@ -99,7 +99,11 @@ public class Player : MonoBehaviour, IHealth
         _healthCurrent -= damage;
         Debug.Log(_healthCurrent);
         if (_healthCurrent <= 0)
-            Debug.Break();
+            Die();
+    }
+    private void Die()
+    {
+        Debug.Break();
     }
 
     #endregion

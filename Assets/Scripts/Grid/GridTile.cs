@@ -18,7 +18,9 @@ public class GridTile : MonoBehaviour
 
 
     public bool IsOccupied => IsOccupiedByBuilding; //Add checks for characters on tile;
-    public bool IsWalkable => !IsOccupied;
+    [SerializeField]
+    private bool _isWalkable = true;
+    public bool IsWalkable => _isWalkable;
 
     public void Initialize(int x, int y, Grid grid)
     {

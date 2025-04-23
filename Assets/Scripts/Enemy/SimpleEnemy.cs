@@ -64,7 +64,7 @@ public class SimpleEnemy : Enemy
         List<IHealth> _targetsToRemove = new();
         foreach(var target in _targets.Keys.ToList())
         {
-            if (target == null)
+            if (target == null || target as UnityEngine.Object == null)
                 _targetsToRemove.Add(target);
             else
                 _targets[target] = GetTargetValue(target);
@@ -74,6 +74,8 @@ public class SimpleEnemy : Enemy
             _targets.Remove(t);
         }
         _target = _targets.OrderByDescending(t => t.Value).FirstOrDefault().Key;
+        if (_target == null)
+            return;
         if (_targets[_target] < 0)
             _target = null;
     }
