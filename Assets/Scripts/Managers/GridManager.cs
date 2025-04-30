@@ -81,7 +81,8 @@ public class GridManager : Singleton<GridManager>
         if (SpawnEnemy == false)
             return;
         GridTile t = Grid[Grid.Width-1, Grid.Height-1];
-        Instantiate(EnemyPrefab, t.transform.position, Quaternion.identity);
+        var enemy = Instantiate(EnemyPrefab, t.transform.position, Quaternion.identity);
+        GameManager.Instance.EnemyManager.OnEnemySpawn(enemy);
         SpawnEnemy = false;
     }
 

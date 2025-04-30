@@ -6,7 +6,9 @@ public class EnemyProjectile : Projectile
 {
     protected override void ProjectileHit(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            GameManager.Instance.Player.GetDamaged(_damage);
+        if(other.gameObject.TryGetComponent<IHealth>(out IHealth target))
+        {
+            target.GetDamaged(_damage);
+        }
     }
 }

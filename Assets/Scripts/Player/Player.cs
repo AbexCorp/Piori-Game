@@ -4,27 +4,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IHealth
 {
     [Header("Internal")]
     [SerializeField]
     private Rigidbody _rigidbody;
 
 
-    [Header("Movement")]
-    [SerializeField]
-    private float _speed = 1;
-    [SerializeField]
-    private LayerMask _groundMask;
-
-    [Header("Combat")]
-    [SerializeField]
-    private int _health = 100;
-
     void Awake()
     {
         if (_rigidbody == null)
             _rigidbody.GetComponent<Rigidbody>();
+        InitializePlayer();
+    }
+    private void InitializePlayer()
+    {
+        _healthCurrent = HealthMax;
     }
 
     void Update()
@@ -34,6 +29,13 @@ public class Player : MonoBehaviour
 
 
     #region >>> Movement <<<
+
+    [Header("Movement")]
+    [SerializeField]
+    private float _speed = 1;
+    [SerializeField]
+    private LayerMask _groundMask;
+
 
     private Vector3 _movement;
     private Vector2 _mousePosition;
@@ -79,16 +81,29 @@ public class Player : MonoBehaviour
     #endregion
 
 
-    #region >>> Combat <<<
+    #region >>> Health <<<
+
+    [Header("Combat")]
+    [SerializeField]
+    private int _healthMax = 100;
+    public int HealthMax => _healthMax;
+    private int _healthCurrent = 0;
+    public int HealthCurrent => _healthCurrent;
+    public GameObject ParentGameObject => gameObject;
+
 
     public void GetDamaged(int damage)
     {
         if (damage <= 0)
             return;
-        _health -= damage;
-        Debug.Log(_health);
-        if (_health <= 0)
-            Debug.Break();
+        _healthCurrent -= damage;
+        Debug.Log(_healthCurrent);
+        if (_healthCurrent <= 0)
+            Die();
+    }
+    private void Die()
+    {
+        Debug.Break();
     }
 
     #endregion

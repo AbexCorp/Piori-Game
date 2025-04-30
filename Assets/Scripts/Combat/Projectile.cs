@@ -33,7 +33,13 @@ public abstract class Projectile : MonoBehaviour
 
     [Header("Lifetime")]
     [SerializeField]
-    protected bool _lifetimeInDistance = true;
+    protected ProjectileLifetimeType _lifetimeType = ProjectileLifetimeType.Distance;
+    public enum ProjectileLifetimeType
+    {
+        Time = 0,
+        Distance = 1,
+        Target = 2,
+    }
 
     [SerializeField]
     protected float _lifetimeDistance = 4;
@@ -50,20 +56,29 @@ public abstract class Projectile : MonoBehaviour
         _rigidBody.includeLayers = _collisionMask;
     }
 
-    public void InitializeProjectile(Vector3 target, Vector3 spawn, Enemy enemy = null, Player player = null)
+    public void InitializeProjectile(Vector3 target, Vector3 spawn, int? damage = null)
     {
         IsUsed = true;
         SetSpawn(spawn);
         SetTarget(target);
-        SetDamage(enemy, player);
+        SetDamage(damage);
         gameObject.SetActive(true);
         _rigidBody.velocity = _spawnPosition.DirectionTo2D(_target) * _speed;
 
-        if (_lifetimeInDistance)
-            StartCoroutine(DistanceLifetime());
-        else
-            StartCoroutine(TimeLifetime());
+        switch (_lifetimeType)
+        {
+            case ProjectileLifetimeType.Time:
+                StartCoroutine(TimeLifetime());
+                break;
 
+            case ProjectileLifetimeType.Distance:
+                StartCoroutine(DistanceLifetime());
+                break;
+
+            case ProjectileLifetimeType.Target:
+                StartCoroutine(TargetLifetime());
+                break;
+        }
     }
     protected void SetSpawn(Vector3 spawn)
     {
@@ -74,16 +89,11 @@ public abstract class Projectile : MonoBehaviour
     {
         _target = target; 
     }
-    protected virtual void SetDamage(Enemy enemy, Player player)
+    protected virtual void SetDamage(int? damage)
     {
-        if(enemy != null)
+        if(damage is not null)
         {
-            if(enemy is SimpleEnemy)
-                _damage = (enemy as SimpleEnemy).RangedDamage;
-        }
-        if(player != null)
-        {
-            //Set damage from player here
+            _damage = (int)damage;
         }
     }
 
@@ -117,8 +127,10 @@ public abstract class Projectile : MonoBehaviour
         IsUsed = false;
         _rigidBody.velocity = Vector3.zero;
         StopAllCoroutines();
+        OnProjectileBreak();
         gameObject.SetActive(false);
     }
+    protected virtual void OnProjectileBreak() { }
     private IEnumerator TimeLifetime()
     {
         yield return new WaitForSeconds(_lifetimeTime);
@@ -127,6 +139,14 @@ public abstract class Projectile : MonoBehaviour
     private IEnumerator DistanceLifetime()
     {
         while (_spawnPosition.DistanceTo2D(transform.position) < _lifetimeDistance)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+        BreakProjectile();
+    }
+    private IEnumerator TargetLifetime()
+    {
+        while (_spawnPosition.DistanceTo2D(transform.position) < _spawnPosition.DistanceTo2D(_target))
         {
             yield return new WaitForSeconds(0.2f);
         }

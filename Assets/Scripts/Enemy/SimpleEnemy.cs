@@ -1,21 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SimpleEnemy : Enemy
 {
-    protected float _distanceToPlayer;
     protected override void Update()
     {
-        UpdateDistanceToPlayer();
-        if ( !(_stopsMovementAfterAttack || _attackIsOnCooldown) )
+        if ( !(_stopsMovementAfterAttack && _attackIsOnCooldown) )
             Move();
         Attack();
+        UpdateDetectors();
     }
-    protected void UpdateDistanceToPlayer()
-    {
-        _distanceToPlayer = transform.position.DistanceTo2D(GameManager.Instance.Player.gameObject.transform.position);
-    }
+    
 
 
     #region >>> Combat <<<
@@ -23,16 +20,30 @@ public class SimpleEnemy : Enemy
     [Header("Combat")]
     [SerializeField]
     protected bool _stopsMovementAfterAttack = true;
+    [Header("Building Attack")]
+    [SerializeField]
+    protected bool _attacksBuildings = false;
+    [SerializeField]
+    protected bool _prioritizesPlayer = true;
 
     protected bool _attackIsOnCooldown = false;
+    protected Dictionary<IHealth, int> _targets = new();
+    private IHealth _target;
+    protected float _distanceToTarget;
 
     protected void Attack()
     {
         if (_attackIsOnCooldown)
             return;
-        if (_canAttackMelee)
+
+        GetTarget();
+        if (_target == null)
+            return;
+
+        UpdateDistanceToTarget();
+        if (_distanceToTarget <= _meleeRange)
             MeleeAttack();
-        else if (_canAttackRanged)
+        else if (_distanceToTarget <= _rangedRange)
             RangedAttack();
     }
     protected IEnumerator AttackCooldown(float time)
@@ -42,13 +53,73 @@ public class SimpleEnemy : Enemy
         yield return new WaitForSeconds(time);
         _attackIsOnCooldown = false;
     }
+    protected void GetTarget()
+    {
+        if(_targets.Count == 0)
+        {
+            _target = null;
+            return;
+        }
+
+        List<IHealth> _targetsToRemove = new();
+        foreach(var target in _targets.Keys.ToList())
+        {
+            if (target == null || target as UnityEngine.Object == null)
+                _targetsToRemove.Add(target);
+            else
+                _targets[target] = GetTargetValue(target);
+        }
+        foreach(var t in _targetsToRemove)
+        {
+            _targets.Remove(t);
+        }
+        _target = _targets.OrderByDescending(t => t.Value).FirstOrDefault().Key;
+        if (_target == null)
+            return;
+        if (_targets[_target] < 0)
+            _target = null;
+    }
+    protected int GetTargetValue(IHealth target)
+    {
+        int value = -10000;
+        float distance = target.ParentGameObject.transform.position.DistanceTo2D(transform.position);
+
+        //Is in range
+        if ((_usesMelee && distance <= _meleeRange) || (_usesRanged && distance <= _rangedRange))
+            value = 0;
+
+        //Melee/Ranged
+        if ((_usesMelee && distance <= _meleeRange))
+            value += 200;
+        if (_usesRanged && distance <= _rangedRange)
+            value += 100;
+
+        //Is player
+        bool isPlayer = target is Player;
+        if (isPlayer && _prioritizesPlayer)
+            value += 1000;
+        else if(isPlayer && !_prioritizesPlayer)
+            value = 0;
+
+        //Is building
+        bool isBuilding = target is Building;
+        if (isBuilding && _attacksBuildings && !_prioritizesPlayer)
+            value += 500;
+        else if (isBuilding && !_attacksBuildings)
+            value = -10000;
+
+        return value;
+    }
+    protected void UpdateDistanceToTarget()
+    {
+        _distanceToTarget = _target != null ? _target.ParentGameObject.transform.position.DistanceTo2D(transform.position) : -1;
+    }
 
     #region >>> Melee <<<
 
     [Header("Melee")]
     [SerializeField]
     protected bool _usesMelee = false;
-    protected bool _canAttackMelee => _usesMelee && _distanceToPlayer <= _meleeRange;
 
     [SerializeField]
     [Range(0f, 10f)]
@@ -64,7 +135,9 @@ public class SimpleEnemy : Enemy
 
     protected virtual void MeleeAttack()
     {
-        GameManager.Instance.Player.GetDamaged(_meleeDamage);
+        if (_target == null)
+            return;
+        _target.GetDamaged(_meleeDamage);
         StartCoroutine(AttackCooldown(_meleeAttackCooldown));
     }
 
@@ -78,7 +151,6 @@ public class SimpleEnemy : Enemy
 
     [SerializeField]
     protected bool _usesRanged = false;
-    protected bool _canAttackRanged => _usesRanged && _distanceToPlayer <= _rangedAttackCooldown;
 
     [SerializeField]
     [Range(0f, 10f)]
@@ -95,13 +167,47 @@ public class SimpleEnemy : Enemy
 
     protected virtual void RangedAttack()
     {
+        if (_target == null)
+            return;
         Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
-        projectile.InitializeProjectile(FindRangedTarget(), transform.position, this);
+        projectile.InitializeProjectile(_target.ParentGameObject.transform.position, transform.position, _rangedDamage);
         StartCoroutine(AttackCooldown(_rangedAttackCooldown));
     }
-    protected virtual Vector3 FindRangedTarget()
+
+    #endregion
+
+    #region >>> Target Detection <<<
+
+    [Header("Target Detection")]
+    [SerializeField]
+    protected Detector _playerDetector;
+    [SerializeField]
+    protected Detector _buildingDetector;
+
+    public void OnTargetDetectEnter(Collider other)
     {
-        return GameManager.Instance.Player.transform.position;
+        if(other.gameObject.TryGetComponent<IHealth>(out IHealth target))
+        {
+            if (_targets.ContainsKey(target))
+                return;
+            _targets.Add(target, GetTargetValue(target));
+        }
+    }
+    public void OnTargetDetectLeave(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<IHealth>(out IHealth target))
+        {
+            if(_targets.ContainsKey(target))
+                _targets.Remove(target);
+        }
+    }
+    protected void UpdateDetectors()
+    {
+        if(_rigidbody.velocity == Vector3.zero || _playerDetector == null)
+            return;
+        _playerDetector.Rotate(_rigidbody.velocity.normalized);
+        if(_attacksBuildings && _buildingDetector != null)
+            _buildingDetector.Rotate(_rigidbody.velocity.normalized);
     }
 
     #endregion

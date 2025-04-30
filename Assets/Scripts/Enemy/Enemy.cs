@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IHealth
 {
     [SerializeField]
     protected Rigidbody _rigidbody;
@@ -14,6 +14,11 @@ public abstract class Enemy : MonoBehaviour
     {
         UpdateGridPosition();
         GridManager.Instance.OnPlayerPositionChanged.AddListener(OnPlayerMoved);
+        InitializeEnemy();
+    }
+    protected virtual void InitializeEnemy()
+    {
+        _healthCurrent = HealthMax;
     }
     protected virtual void Update()
     {
@@ -27,6 +32,8 @@ public abstract class Enemy : MonoBehaviour
     protected float Speed = 1;
     [SerializeField]
     protected LayerMask _groundMask;
+    [SerializeField]
+    protected Pathfinding.PathfindingType _pathfindingType = Pathfinding.PathfindingType.Walkable;
 
     protected Vector3? _movementTarget = null;
     protected List<NavigationNode> _path = new();
@@ -35,7 +42,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected void Move()
     {
-        if(_movementTarget == null)
+        if (_movementTarget == null)
         {
             FindNextMovePoint();
             _rigidbody.velocity = Vector3.zero;
@@ -51,7 +58,7 @@ public abstract class Enemy : MonoBehaviour
     }
     protected virtual void FindNextMovePoint()
     {
-        if(_path == null || _path.Count == 0)
+        if (_path == null || _path.Count == 0)
         {
             _movementTarget = null;
             FindPath();
@@ -69,9 +76,9 @@ public abstract class Enemy : MonoBehaviour
     protected void UpdateGridPosition()
     {
         RaycastHit hit;
-        if(Physics.Raycast(origin:transform.position + Vector3.up * 0.1f, direction:Vector3.down, hitInfo:out hit, maxDistance:1f, layerMask: _groundMask.value))
+        if (Physics.Raycast(origin: transform.position + Vector3.up * 0.1f, direction: Vector3.down, hitInfo: out hit, maxDistance: 1f, layerMask: _groundMask.value))
         {
-            if(hit.collider.gameObject.TryGetComponent<GridTile>(out GridTile tile))
+            if (hit.collider.gameObject.TryGetComponent<GridTile>(out GridTile tile))
             {
                 _gridPosition = tile;
             }
@@ -88,7 +95,33 @@ public abstract class Enemy : MonoBehaviour
     }
     protected void FindPathToPlayer()
     {
-        _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode);
+        _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode, _pathfindingType);
+    }
+
+    #endregion
+
+
+    #region >>> Health <<<
+
+    [SerializeField]
+    private int _healthMax = 50;
+    public int HealthMax => _healthMax;
+    private int _healthCurrent;
+    public int HealthCurrent => _healthCurrent;
+    public GameObject ParentGameObject => gameObject;
+
+    public virtual void GetDamaged(int damage)
+    {
+        _healthCurrent -= damage;
+        Die();
+    }
+    protected virtual void Die()
+    {
+        if (_healthCurrent <= 0)
+        {
+            GameManager.Instance.EnemyManager.OnEnemyDeath(this);
+            Destroy(gameObject);
+        }
     }
 
     #endregion
