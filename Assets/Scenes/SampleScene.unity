@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269a271dc19ba334ab0bd145b61c1e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: -4582620186571716012, guid: 60890043a4f232246b06a90c8304d39c, type: 3}
 --- !u!114 &270057173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,9 +436,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _tilePrefab: {fileID: 4530225787037905151, guid: 3b1cb4ef64622f64d8be078fb455960f, type: 3}
-  BuildingPrefab: {fileID: 4143077296314724501, guid: a2abb32a720081848bdc393488440c53, type: 3}
+  TowerPrefab: {fileID: 4143077296314724501, guid: a2abb32a720081848bdc393488440c53, type: 3}
+  TowerProfile: {fileID: 11400000, guid: b57ff6df148106740b6965ee5d05c2f8, type: 2}
   IsBuilding: 0
   EnemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
+  SimpleEnemyProfile: {fileID: 11400000, guid: 6dc22fd8dc2250b4883b503ae7789c52, type: 2}
   SpawnEnemy: 1
 --- !u!4 &1046914069
 Transform:
