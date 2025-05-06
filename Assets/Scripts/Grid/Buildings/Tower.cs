@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using UnityEngine;
 
-public class BasicTower : Building
+public class Tower : Building
 {
     [Header("Attack")]
     [SerializeField]
@@ -19,7 +19,7 @@ public class BasicTower : Building
         Misc = 4
     }
     [SerializeField]
-    protected Projectile _projectilePrefab;
+    protected ProjectileProfile _projectileProfile;
 
     [Space]
     [SerializeField]
@@ -35,9 +35,30 @@ public class BasicTower : Building
     private bool _isOnCooldown = false;
 
 
+
     private void Start()
     {
         StartCoroutine(CheckForEnemies());
+    }
+    public override void Load(ScriptableObject so)
+    {
+        if (so is not TowerProfile)
+            return;
+        TowerProfile tp = so as TowerProfile;
+
+        gameObject.name = tp.UniqueID == null || tp.UniqueID == "" ? "Tower (NoName)" : $"Tower ({tp.UniqueID})";
+
+        _healthMax = tp.HealthMax;
+        _shoots = tp.Shoots;
+        _attackType = tp.AttackType;
+        _projectileProfile = tp.ProjectileProfile;
+
+        _range = tp.Range;
+        _hasCooldown = tp.HasCooldown;
+        _attackCooldown = tp.AttackCooldown;
+        _damage = tp.Damage;
+
+        InitializeBuilding();
     }
 
 
@@ -115,12 +136,12 @@ public class BasicTower : Building
     }
     private void AttackProjectile()
     {
-        Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
+        Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
         p.InitializeProjectile(_target.transform.position, transform.position, _damage);
     }
     private void AttackFakeProjectile()
     {
-        Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
+        Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
         p.InitializeProjectile(_target.transform.position, transform.position, 0);
         _target.GetDamaged(_damage);
     }

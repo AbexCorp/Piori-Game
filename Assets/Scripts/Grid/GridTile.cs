@@ -103,7 +103,9 @@ public class GridTile : MonoBehaviour
         if (GameManager.Instance.GridManager.IsBuilding == false)
             return;
 
-        Build(Instantiate(GameManager.Instance.GridManager.BuildingPrefab));
+        Building b = GameManager.Instance.GridManager.TowerPrefab;
+        b.Load(GameManager.Instance.GridManager.TowerProfile);
+        Build(Instantiate(b));
     }
 
     #endregion

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class Building : MonoBehaviour, IHealth
+public abstract class Building : MonoBehaviour, IHealth, ILoadable
 {
     [Header("Internal")]
     [SerializeField]
@@ -17,12 +17,13 @@ public abstract class Building : MonoBehaviour, IHealth
             Debug.LogWarning($"{nameof(Rigidbody)} is not assigned on {nameof(Building)} of {gameObject.name}");
         }
         _rigidbody.isKinematic = true;
-        InitializeTower();
+        InitializeBuilding();
     }
-    protected virtual void InitializeTower()
+    protected virtual void InitializeBuilding()
     {
         _healthCurrent = HealthMax;
     }
+    public abstract void Load(ScriptableObject so);
 
 
     #region >>> Building <<<

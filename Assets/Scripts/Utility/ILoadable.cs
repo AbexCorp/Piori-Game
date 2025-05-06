@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestBuilding : Building
+public interface ILoadable
 {
-    //
+    public void Load(ScriptableObject so);
 }

@@ -71,10 +71,12 @@ public class GridManager : Singleton<GridManager>
     [SerializeField]
     private GridTile _tilePrefab;
 
-    public Building BuildingPrefab;
+    public Building TowerPrefab;
+    public TowerProfile TowerProfile;
     public bool IsBuilding = false;
 
     public Enemy EnemyPrefab;
+    public SimpleEnemyProfile SimpleEnemyProfile;
     public bool SpawnEnemy = false;
     private void CreateEnemy()
     {
@@ -82,6 +84,7 @@ public class GridManager : Singleton<GridManager>
             return;
         GridTile t = Grid[Grid.Width-1, Grid.Height-1];
         var enemy = Instantiate(EnemyPrefab, t.transform.position, Quaternion.identity);
+        enemy.Load(SimpleEnemyProfile);
         GameManager.Instance.EnemyManager.OnEnemySpawn(enemy);
         SpawnEnemy = false;
     }
