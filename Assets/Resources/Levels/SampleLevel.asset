@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c210f63f0bd6dae4999f161ebfd1ee6d, type: 3}
+  m_Name: SampleLevel
+  m_EditorClassIdentifier: 
+  _waves:
+  - Template: {fileID: 11400000, guid: a7a5474997da4a447bad86742b282179, type: 2}
+    Budget: 250
+    SpawnStyle: 0
+  - Template: {fileID: 11400000, guid: a7a5474997da4a447bad86742b282179, type: 2}
+    Budget: 500
+    SpawnStyle: 0
+  - Template: {fileID: 11400000, guid: a7a5474997da4a447bad86742b282179, type: 2}
+    Budget: 950
+    SpawnStyle: 0

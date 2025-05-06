@@ -189,6 +189,7 @@ MonoBehaviour:
   _gridManager: {fileID: 1046914068}
   _projectileManager: {fileID: 270057172}
   _enemyManager: {fileID: 270057173}
+  _level: {fileID: 11400000, guid: 18b6d6732fb5b934eb12d4364b614a9c, type: 2}
 --- !u!4 &270057171
 Transform:
   m_ObjectHideFlags: 0
@@ -229,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74100840ea37b9142bae11b2ba2f37ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,9 +441,7 @@ MonoBehaviour:
   TowerPrefab: {fileID: 4143077296314724501, guid: a2abb32a720081848bdc393488440c53, type: 3}
   TowerProfile: {fileID: 11400000, guid: b57ff6df148106740b6965ee5d05c2f8, type: 2}
   IsBuilding: 0
-  EnemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
-  SimpleEnemyProfile: {fileID: 11400000, guid: 6dc22fd8dc2250b4883b503ae7789c52, type: 2}
-  SpawnEnemy: 1
+  SpawnEnemy: 0
 --- !u!4 &1046914069
 Transform:
   m_ObjectHideFlags: 0

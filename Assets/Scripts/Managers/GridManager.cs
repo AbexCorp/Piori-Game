@@ -19,8 +19,11 @@ public class GridManager : Singleton<GridManager>
     }
     private void Update()
     {
-        if(SpawnEnemy) //debug
-            CreateEnemy(); //debug
+        if (SpawnEnemy) //debug
+        {
+            GameManager.Instance.EnemyManager.SpawnWave(GameManager.Instance.Level.Waves[0]); //debug
+            SpawnEnemy = false; //debug
+        }
     }
     private void InitializeGrid()
     {
@@ -75,19 +78,7 @@ public class GridManager : Singleton<GridManager>
     public TowerProfile TowerProfile;
     public bool IsBuilding = false;
 
-    public Enemy EnemyPrefab;
-    public SimpleEnemyProfile SimpleEnemyProfile;
     public bool SpawnEnemy = false;
-    private void CreateEnemy()
-    {
-        if (SpawnEnemy == false)
-            return;
-        GridTile t = Grid[Grid.Width-1, Grid.Height-1];
-        var enemy = Instantiate(EnemyPrefab, t.transform.position, Quaternion.identity);
-        enemy.Load(SimpleEnemyProfile);
-        GameManager.Instance.EnemyManager.OnEnemySpawn(enemy);
-        SpawnEnemy = false;
-    }
 
     #endregion
 }

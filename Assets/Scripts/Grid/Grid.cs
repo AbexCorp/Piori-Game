@@ -67,6 +67,25 @@ public class Grid
         }
     }
 
+    public GridTile GetRandomBorderTile()
+    {
+        int edge = UnityEngine.Random.Range(0, 4);
+        switch (edge)
+        {
+            default:
+            case 0:
+                return GetTile(UnityEngine.Random.Range(0, _width), 0);
+            case 1:
+                return GetTile(UnityEngine.Random.Range(0, _width), _height - 1);
+            case 2:
+                return GetTile(0, UnityEngine.Random.Range(0, _height));
+            case 3:
+                return GetTile(_width - 1, UnityEngine.Random.Range(0, _height));
+        }
+    }
+
+
+
     private int CoordinateToIndex(int x, int y)
     {
         return y * Width + x;
