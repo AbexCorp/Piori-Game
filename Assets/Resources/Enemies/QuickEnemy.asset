@@ -15,7 +15,7 @@ MonoBehaviour:
   UniqueID: QuickEnemy
   Tier: 1
   Cost: 10
-  Speed: 3
+  Speed: 2
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
