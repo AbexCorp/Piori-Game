@@ -3,22 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SimpleEnemyProfile", menuName = "SimpleEnemy Profile")]
-public class SimpleEnemyProfile : ScriptableObject
+public class SimpleEnemyProfile : EnemyProfile
 {
-    public string UniqueID;
-
-    [Header("Movement")]
-    [SerializeField]
-    public float Speed = 1;
-    [SerializeField]
-    public LayerMask GroundMask;
-    [SerializeField]
-    public Pathfinding.PathfindingType PathfindingType = Pathfinding.PathfindingType.Walkable;
-
-    [Header("Health")]
-    [SerializeField]
-    public int HealthMax = 50;
-
     [Header("Combat")]
     [SerializeField]
     public bool StopsMovementAfterAttack = true;

@@ -19,7 +19,12 @@ public class SimpleEnemy : Enemy
             return;
         SimpleEnemyProfile sp = so as SimpleEnemyProfile;
 
-        gameObject.name = sp.UniqueID == null || sp.UniqueID == "" ? "Enemy (NoName)" : $"Enemy ({sp.UniqueID})";
+        _cost = sp.Cost;
+        _tier = sp.Tier;
+
+        _uniqueID = sp.UniqueID;
+        gameObject.name = _uniqueID == null || _uniqueID == "" ? "Enemy (NoName)" : $"Enemy ({_uniqueID})";
+
 
         _speed = sp.Speed;
         _groundMask = sp.GroundMask;

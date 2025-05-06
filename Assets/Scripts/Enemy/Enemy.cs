@@ -6,6 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 {
+    protected string _uniqueID;
+    public string UniqueID => _uniqueID;
+
     [SerializeField]
     protected Rigidbody _rigidbody;
 
@@ -124,6 +127,16 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
             Destroy(gameObject);
         }
     }
+
+    #endregion
+
+
+    #region >>> Spawning <<<
+
+    public int _tier = 1;
+    public int Tier => _tier;
+    public int _cost = 50;
+    public int Cost => _cost;
 
     #endregion
 }
