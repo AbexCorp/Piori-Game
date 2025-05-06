@@ -20,6 +20,10 @@ public class GameManager : Singleton<GameManager>
     private EnemyManager _enemyManager;
     public EnemyManager EnemyManager => _enemyManager;
 
+    [SerializeField]
+    private Level _level;
+    public Level Level => _level;
+
     protected override void OnAwake()
     {
         if (_player == null)
