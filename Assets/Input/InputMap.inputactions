@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "PointMovement",
+                    "name": "Interaction",
                     "type": "Button",
                     "id": "407ec79c-e65d-427a-a07a-6113dc7cb70d",
                     "expectedControlType": "",
@@ -127,7 +127,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PointMovement",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -66,17 +67,6 @@ public class Player : MonoBehaviour, IHealth
         _movement = context.ReadValue<Vector3>();
     }
 
-    public void OnMousePosition(InputAction.CallbackContext context)
-    {
-        if(Camera.main == null)
-        {
-            Debug.LogError("No camera in the scene");
-            _mousePosition = Vector2.zero;
-            return;
-        }
-
-        _mousePosition = context.ReadValue<Vector2>();
-    }
 
     #endregion
 
@@ -104,6 +94,65 @@ public class Player : MonoBehaviour, IHealth
     private void Die()
     {
         Debug.Break();
+    }
+
+    #endregion
+
+
+    #region >>> Mouse <<<
+
+    [Header("Mouse Interaction")]
+    [SerializeField]
+    private LayerMask _mouseHitMask;
+
+    private IMouseInteractable _hover = null;
+
+    public void OnMousePosition(InputAction.CallbackContext context)
+    {
+        if(Camera.main == null)
+        {
+            Debug.LogError("No camera in the scene");
+            _mousePosition = Vector2.zero;
+            return;
+        }
+
+        _mousePosition = context.ReadValue<Vector2>();
+        MouseHover(context);
+    }
+    private void MouseHover(InputAction.CallbackContext context)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(MousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask: _mouseHitMask))
+        {
+            if (hit.collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
+            {
+                if (_hover != null)
+                    _hover.OnHoveExit(context);
+                _hover = interacted;
+                _hover.OnHoverEnter(context);
+            }
+            else
+            {
+                if (_hover != null)
+                    _hover.OnHoveExit(context);
+                _hover = null;
+            }
+        }
+    }
+
+    public void OnMouseClick(InputAction.CallbackContext context)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(MousePosition);
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask: _mouseHitMask).OrderBy(x => x.distance).ToArray();
+        for(int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
+            {
+                interacted.OnClick(context);
+            }
+        }
     }
 
     #endregion

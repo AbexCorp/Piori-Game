@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-//[RequireComponent(typeof(BoxCollider2D))]
-public class GridTile : MonoBehaviour
+public class GridTile : MonoBehaviour, IMouseInteractable
 {
     private Grid _grid;
     private int _x;
@@ -31,6 +31,7 @@ public class GridTile : MonoBehaviour
 
         _navigationNode = new(this);
     }
+
 
     #region >>> Building <<<
 
@@ -96,16 +97,33 @@ public class GridTile : MonoBehaviour
     #endregion
 
 
-    #region >>> Debugs <<<
+    #region >>> IMouseInteractable <<<
 
-    protected void OnMouseDown()
+    public void OnHoverEnter(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.GridManager.IsBuilding == false)
-            return;
+        if (context.performed)
+            EnableEffect();
+    }
 
-        Building b = GameManager.Instance.GridManager.TowerPrefab;
-        b.Load(GameManager.Instance.GridManager.TowerProfile);
-        Build(Instantiate(b));
+    public void OnHoveExit(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            DisableEffect();
+    }
+
+    public void OnClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (GameManager.Instance.GridManager.IsBuilding == false)
+                return;
+            if (_building != null)
+                return;
+
+            Building b = GameManager.Instance.GridManager.TowerPrefab;
+            b.Load(GameManager.Instance.GridManager.TowerProfile);
+            Build(Instantiate(b));
+        }
     }
 
     #endregion

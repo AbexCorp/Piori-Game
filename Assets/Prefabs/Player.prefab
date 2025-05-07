@@ -413,7 +413,10 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 1024
-  _health: 100
+  _healthMax: 100
+  _mouseHitMask:
+    serializedVersion: 2
+    m_Bits: 1056
 --- !u!114 &2917171131487977440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,7 +476,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7879182317600551522}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: OnPointMovement
+        m_MethodName: OnMouseClick
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
