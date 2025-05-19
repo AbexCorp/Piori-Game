@@ -41,7 +41,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
 
     public bool Build(Building building)
     {
-        if(IsOccupied) 
+        if(IsOccupied)
             return false;
 
         _building = building;
@@ -120,6 +120,8 @@ public class GridTile : MonoBehaviour, IMouseInteractable
             if (_building != null)
                 return;
 
+            if (!GameManager.Instance.GridManager.TowerProfile.CheckIfCanBuild(this))
+                return;
             Building b = GameManager.Instance.GridManager.TowerPrefab;
             b.Load(GameManager.Instance.GridManager.TowerProfile);
             Build(Instantiate(b));

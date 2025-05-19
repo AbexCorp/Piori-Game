@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 2348423384822067311}
   - component: {fileID: 7006450587673138032}
   - component: {fileID: 1453948289261450726}
-  - component: {fileID: 4143077296314724501}
   - component: {fileID: 6124431333605429321}
+  - component: {fileID: 2770902273088463388}
   m_Layer: 12
-  m_Name: Tower
+  m_Name: ResourceBuilding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90b80cceafdf29b4cb643f9e37a44937, type: 2}
+  - {fileID: 2100000, guid: e2356da7edd7f2a4c8470aa66a038db2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,28 +107,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4143077296314724501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2536280384049880384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67fdeb96d69fa964cad8363bbb96f5cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 6124431333605429321}
-  _cost: 50
-  _healthMax: 50
-  _shoots: 1
-  _attackType: 3
-  _projectileProfile: {fileID: 11400000, guid: 49b9a9fd4082bad469b2809a25fb7295, type: 2}
-  _range: 5
-  _hasCooldown: 1
-  _attackCooldown: 0.5
-  _damage: 20
 --- !u!54 &6124431333605429321
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -156,3 +134,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &2770902273088463388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2536280384049880384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fcf32ccc55b14e4aaa334eaa42a4744, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 6124431333605429321}
+  _cost: 20
+  _healthMax: 50
+  _productionType: 0
+  _productionAmount: 1
+  _productionCooldown: 2.5

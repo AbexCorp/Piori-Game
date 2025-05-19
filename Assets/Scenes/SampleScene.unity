@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 270057170}
   - component: {fileID: 270057172}
   - component: {fileID: 270057173}
+  - component: {fileID: 270057174}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -189,6 +190,7 @@ MonoBehaviour:
   _gridManager: {fileID: 1046914068}
   _projectileManager: {fileID: 270057172}
   _enemyManager: {fileID: 270057173}
+  _resourceManager: {fileID: 270057174}
   _level: {fileID: 11400000, guid: 18b6d6732fb5b934eb12d4364b614a9c, type: 2}
 --- !u!4 &270057171
 Transform:
@@ -231,6 +233,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 2002877494203864132, guid: 13c9d2ac017afe148ad38195f1a72e8f, type: 3}
+--- !u!114 &270057174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270057169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d97a85c9890815944ae74c950a14c937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingResources: 100
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,8 +453,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _tilePrefab: {fileID: 4530225787037905151, guid: 3b1cb4ef64622f64d8be078fb455960f, type: 3}
-  TowerPrefab: {fileID: 4143077296314724501, guid: a2abb32a720081848bdc393488440c53, type: 3}
-  TowerProfile: {fileID: 11400000, guid: b57ff6df148106740b6965ee5d05c2f8, type: 2}
+  TowerPrefab: {fileID: 2770902273088463388, guid: bdaba986b2893c041b67eb7711ae9e0e, type: 3}
+  TowerProfile: {fileID: 11400000, guid: 7699a4512f3b463489c8b602688f923d, type: 2}
   IsBuilding: 0
   SpawnEnemy: 0
 --- !u!4 &1046914069

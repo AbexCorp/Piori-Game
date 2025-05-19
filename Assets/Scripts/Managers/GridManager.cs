@@ -75,7 +75,7 @@ public class GridManager : Singleton<GridManager>
     private GridTile _tilePrefab;
 
     public Building TowerPrefab;
-    public TowerProfile TowerProfile;
+    public BuildingProfile TowerProfile;
     public bool IsBuilding = false;
 
     public bool SpawnEnemy = false;
