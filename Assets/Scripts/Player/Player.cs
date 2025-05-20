@@ -146,13 +146,21 @@ public class Player : MonoBehaviour, IHealth
         Ray ray = Camera.main.ScreenPointToRay(MousePosition);
         RaycastHit[] hits;
         hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask: _mouseHitMask).OrderBy(x => x.distance).ToArray();
-        for(int i = 0; i < hits.Length; i++)
-        {
-            if (hits[i].collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
-            {
-                interacted.OnClick(context);
-            }
-        }
+
+        //Single clicks
+        if (hits.Length <= 0)
+            return;
+        if(hits[0].collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
+            interacted.OnClick(context);
+
+        //Multiple clicks
+        //for(int i = 0; i < hits.Length; i++)
+        //{
+        //    if (hits[i].collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
+        //    {
+        //        interacted.OnClick(context);
+        //    }
+        //}
     }
 
     #endregion

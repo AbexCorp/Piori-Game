@@ -124,7 +124,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
                 return;
             Building b = GameManager.Instance.GridManager.TowerPrefab;
             b.Load(GameManager.Instance.GridManager.TowerProfile);
-            Build(Instantiate(b));
+            Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
         }
     }
 
