@@ -9,6 +9,11 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
     [SerializeField]
     protected Rigidbody _rigidbody;
 
+    [Header("Resources")]
+    [SerializeField]
+    protected int _cost = 50;
+    public int Cost => _cost;
+
     private void Awake()
     {
         if(_rigidbody == null)
@@ -34,6 +39,7 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
     {
         _occupiedTile = tile;
         _rigidbody.position = tile.gameObject.transform.position;
+        GameManager.Instance.ResourceManager.UseResources(_cost);
     }
 
     public virtual void GetDestroyed()

@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TowerProfile", menuName = "Tower Profile")]
-public class TowerProfile : ScriptableObject
+[CreateAssetMenu(fileName = "TowerProfile", menuName = "Buildings/Tower Profile")]
+public class TowerProfile : BuildingProfile
 {
-    public string UniqueID;
-
-    [Header("Health")]
-    public int HealthMax = 50;
-
     [Header("Combat")]
     public bool Shoots = true;
     public Tower.TowerAttackType AttackType = Tower.TowerAttackType.Hitscan;
@@ -19,4 +14,11 @@ public class TowerProfile : ScriptableObject
     public bool HasCooldown = true;
     public float AttackCooldown = 0.3f;
     public int Damage = 20;
+
+    public override bool CheckIfCanBuild(GridTile tile)
+    {
+        if(Cost > GameManager.Instance.ResourceManager.Resource || tile.IsOccupied)
+            return false;
+        return true;
+    }
 }

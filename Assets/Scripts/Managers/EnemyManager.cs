@@ -37,7 +37,7 @@ public class EnemyManager : MonoBehaviour
         List<EnemyProfile> enemies = BuyEnemies(wave);
         foreach(var enemyToSpawn in enemies)
         {
-            GridTile tile = GameManager.Instance.GridManager.Grid.GetRandomBorderTile();
+            GridTile tile = GameManager.Instance.GridManager.Grid.GetRandomBorderTileWalkable();
             Enemy enemy = Instantiate(_enemyPrefab, tile.gameObject.transform.position, Quaternion.identity);
             enemy.Load(enemyToSpawn);
             OnEnemySpawn(enemy);

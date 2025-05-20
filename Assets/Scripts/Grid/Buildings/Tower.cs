@@ -47,6 +47,7 @@ public class Tower : Building
         TowerProfile tp = so as TowerProfile;
 
         gameObject.name = tp.UniqueID == null || tp.UniqueID == "" ? "Tower (NoName)" : $"Tower ({tp.UniqueID})";
+        _cost = tp.Cost;
 
         _healthMax = tp.HealthMax;
         _shoots = tp.Shoots;
