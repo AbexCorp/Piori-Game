@@ -12,8 +12,45 @@ public class SimpleEnemy : Enemy
         Attack();
         UpdateDetectors();
     }
-    
 
+    public override void Load(ScriptableObject so)
+    {
+        if (so is not SimpleEnemyProfile)
+            return;
+        SimpleEnemyProfile sp = so as SimpleEnemyProfile;
+
+        _cost = sp.Cost;
+        _tier = sp.Tier;
+
+        _uniqueID = sp.UniqueID;
+        gameObject.name = _uniqueID == null || _uniqueID == "" ? "Enemy (NoName)" : $"Enemy ({_uniqueID})";
+
+
+        _speed = sp.Speed;
+        _groundMask = sp.GroundMask;
+        _pathfindingType = sp.PathfindingType;
+
+        _healthMax = sp.HealthMax;
+
+        _stopsMovementAfterAttack = sp.StopsMovementAfterAttack;
+        _attacksBuildings = sp.AttacksBuildings;
+        _prioritizesPlayer = sp.PrioritizesPlayer;
+
+        _usesMelee = sp.UsesMelee;
+        _meleeAttackCooldown = sp.MeleeAttackCooldown;
+        _meleeDamage = sp.MeleeDamage;
+        _meleeRange = sp.MeleeRange;
+
+        _projectileProfile = sp.ProjectileProfile;
+        _usesRanged = sp.UsesRanged;
+        _rangedAttackCooldown = sp.RangedAttackCooldown;
+        _rangedDamage = sp.RangedDamage;
+        _rangedRange = sp.RangedRange;
+
+
+        InitializeEnemy();
+    }
+    
 
     #region >>> Combat <<<
 
@@ -147,7 +184,7 @@ public class SimpleEnemy : Enemy
 
     [Header("Ranged")]
     [SerializeField]
-    protected Projectile _projectilePrefab;
+    protected ProjectileProfile _projectileProfile;
 
     [SerializeField]
     protected bool _usesRanged = false;
@@ -167,9 +204,9 @@ public class SimpleEnemy : Enemy
 
     protected virtual void RangedAttack()
     {
-        if (_target == null)
+        if (_target == null || _projectileProfile == null)
             return;
-        Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_projectilePrefab);
+        Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
         projectile.InitializeProjectile(_target.ParentGameObject.transform.position, transform.position, _rangedDamage);
         StartCoroutine(AttackCooldown(_rangedAttackCooldown));
     }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c497c57859fd4f41a9505134c1107e1, type: 3}
+  m_Name: LazerTower
+  m_EditorClassIdentifier: 
+  UniqueID: 
+  HealthMax: 50
+  Cost: 50
+  Shoots: 1
+  AttackType: 1
+  ProjectileProfile: {fileID: 11400000, guid: 9440b9983ddaf2e41b127a888d8fa958, type: 2}
+  Range: 6
+  HasCooldown: 1
+  AttackCooldown: 1.5
+  Damage: 50

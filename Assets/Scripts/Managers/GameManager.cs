@@ -20,6 +20,14 @@ public class GameManager : Singleton<GameManager>
     private EnemyManager _enemyManager;
     public EnemyManager EnemyManager => _enemyManager;
 
+    [SerializeField]
+    private ResourceManager _resourceManager;
+    public ResourceManager ResourceManager => _resourceManager;
+
+    [SerializeField]
+    private Level _level;
+    public Level Level => _level;
+
     protected override void OnAwake()
     {
         if (_player == null)
@@ -30,5 +38,7 @@ public class GameManager : Singleton<GameManager>
             Debug.LogWarning("Projectile Manager refference is not assigned");
         if(_enemyManager == null)
             Debug.LogWarning("Enemy Manager refference is not assigned");
+        if(_resourceManager == null)
+            Debug.LogWarning("Resource Manager refference is not assigned");
     }
 }

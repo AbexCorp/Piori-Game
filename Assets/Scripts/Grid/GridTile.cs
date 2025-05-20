@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-//[RequireComponent(typeof(BoxCollider2D))]
-public class GridTile : MonoBehaviour
+public class GridTile : MonoBehaviour, IMouseInteractable
 {
     private Grid _grid;
     private int _x;
@@ -32,6 +32,7 @@ public class GridTile : MonoBehaviour
         _navigationNode = new(this);
     }
 
+
     #region >>> Building <<<
 
     private Building _building;
@@ -40,7 +41,7 @@ public class GridTile : MonoBehaviour
 
     public bool Build(Building building)
     {
-        if(IsOccupied) 
+        if(IsOccupied)
             return false;
 
         _building = building;
@@ -96,14 +97,35 @@ public class GridTile : MonoBehaviour
     #endregion
 
 
-    #region >>> Debugs <<<
+    #region >>> IMouseInteractable <<<
 
-    protected void OnMouseDown()
+    public void OnHoverEnter(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.GridManager.IsBuilding == false)
-            return;
+        if (context.performed)
+            EnableEffect();
+    }
 
-        Build(Instantiate(GameManager.Instance.GridManager.BuildingPrefab));
+    public void OnHoveExit(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            DisableEffect();
+    }
+
+    public void OnClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (GameManager.Instance.GridManager.IsBuilding == false)
+                return;
+            if (_building != null)
+                return;
+
+            if (!GameManager.Instance.GridManager.TowerProfile.CheckIfCanBuild(this))
+                return;
+            Building b = GameManager.Instance.GridManager.TowerPrefab;
+            b.Load(GameManager.Instance.GridManager.TowerProfile);
+            Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
+        }
     }
 
     #endregion

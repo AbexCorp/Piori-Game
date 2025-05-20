@@ -4,8 +4,11 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class Enemy : MonoBehaviour, IHealth
+public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 {
+    protected string _uniqueID;
+    public string UniqueID => _uniqueID;
+
     [SerializeField]
     protected Rigidbody _rigidbody;
 
@@ -24,12 +27,13 @@ public abstract class Enemy : MonoBehaviour, IHealth
     {
         Move();
     }
+    public abstract void Load(ScriptableObject so);
 
 
     #region >>> Movement <<<
 
     [SerializeField]
-    protected float Speed = 1;
+    protected float _speed = 1;
     [SerializeField]
     protected LayerMask _groundMask;
     [SerializeField]
@@ -54,7 +58,7 @@ public abstract class Enemy : MonoBehaviour, IHealth
             _movementTarget = null;
             return;
         }
-        _rigidbody.velocity = gameObject.transform.position.DirectionTo2D(_movementTarget.Value) * Speed;
+        _rigidbody.velocity = gameObject.transform.position.DirectionTo2D(_movementTarget.Value) * _speed;
     }
     protected virtual void FindNextMovePoint()
     {
@@ -104,7 +108,7 @@ public abstract class Enemy : MonoBehaviour, IHealth
     #region >>> Health <<<
 
     [SerializeField]
-    private int _healthMax = 50;
+    protected int _healthMax = 50;
     public int HealthMax => _healthMax;
     private int _healthCurrent;
     public int HealthCurrent => _healthCurrent;
@@ -123,6 +127,16 @@ public abstract class Enemy : MonoBehaviour, IHealth
             Destroy(gameObject);
         }
     }
+
+    #endregion
+
+
+    #region >>> Spawning <<<
+
+    public int _tier = 1;
+    public int Tier => _tier;
+    public int _cost = 50;
+    public int Cost => _cost;
 
     #endregion
 }

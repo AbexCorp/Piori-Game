@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 [RequireComponent(typeof(Rigidbody))]
-public abstract class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, ILoadable
 {
     [HideInInspector]
     public bool IsUsed = false;
@@ -15,8 +15,6 @@ public abstract class Projectile : MonoBehaviour
 
     [Header("Prefab")]
     [SerializeField]
-    protected GameObject _prefab;
-    [SerializeField]
     protected string _uniqueID;
     public string UniqueID => _uniqueID;
 
@@ -24,36 +22,34 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField]
     protected SphereCollider _collider;
     [SerializeField]
-    protected LayerMask _collisionMask;
-    [SerializeField]
-    protected LayerMask _hitMask;
-    [SerializeField]
     protected Rigidbody _rigidBody;
-
-
-    [Header("Lifetime")]
-    [SerializeField]
-    protected ProjectileLifetimeType _lifetimeType = ProjectileLifetimeType.Distance;
-    public enum ProjectileLifetimeType
-    {
-        Time = 0,
-        Distance = 1,
-        Target = 2,
-    }
-
-    [SerializeField]
-    protected float _lifetimeDistance = 4;
-    [SerializeField]
-    protected float _lifetimeTime = 2;
 
     [Header("Projectile")]
     [SerializeField]
     protected float _speed = 2f;
 
+
     private void Awake()
     {
         _collider.isTrigger = true;
+    }
+    public void Load(ScriptableObject so)
+    {
+        if (so is not ProjectileProfile)
+            return;
+        ProjectileProfile pp = so as ProjectileProfile;
+
+        _uniqueID = pp.UniqueID;
+        gameObject.name = _uniqueID == null || _uniqueID == "" ? "Projectile (NoName)" : $"Projectile ({_uniqueID})";
+        _speed = pp.Speed;
+
+        _collisionMask = pp.CollisionMask;
         _rigidBody.includeLayers = _collisionMask;
+        _hitMask = pp.HitMask;
+
+        _lifetimeType = pp.LifetimeType;
+        _lifetimeDistance = pp.LifetimeDistance;
+        _lifetimeTime = pp.LifetimeTime;
     }
 
     public void InitializeProjectile(Vector3 target, Vector3 spawn, int? damage = null)
@@ -100,6 +96,13 @@ public abstract class Projectile : MonoBehaviour
 
     #region >>> Collision <<<
 
+    [Header("Collision")]
+    [SerializeField]
+    protected LayerMask _collisionMask;
+    [SerializeField]
+    protected LayerMask _hitMask;
+
+
     protected void OnTriggerEnter(Collider other)
     {
         if (IsInLayerMask(other.gameObject.layer, _hitMask))
@@ -107,10 +110,16 @@ public abstract class Projectile : MonoBehaviour
             ProjectileHit(other);
             BreakProjectile();
         }
-        if(IsInLayerMask(other.gameObject.layer, _collisionMask))
+        if (IsInLayerMask(other.gameObject.layer, _collisionMask))
             BreakProjectile();
     }
-    protected abstract void ProjectileHit(Collider other);
+    protected virtual void ProjectileHit(Collider other)
+    {
+        if (other.gameObject.TryGetComponent<IHealth>(out IHealth target))
+        {
+            target.GetDamaged(_damage);
+        }
+    }
 
     private bool IsInLayerMask(int layer, LayerMask mask)
     {
@@ -121,6 +130,22 @@ public abstract class Projectile : MonoBehaviour
 
 
     #region >>> Lifetime <<<
+
+    [Header("Lifetime")]
+    [SerializeField]
+    protected ProjectileLifetimeType _lifetimeType = ProjectileLifetimeType.Distance;
+    public enum ProjectileLifetimeType
+    {
+        Time = 0,
+        Distance = 1,
+        Target = 2,
+    }
+
+    [SerializeField]
+    protected float _lifetimeDistance = 4;
+    [SerializeField]
+    protected float _lifetimeTime = 2;
+
 
     protected virtual void BreakProjectile()
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Grid
@@ -11,6 +12,7 @@ public class Grid
     public int Height => _height;
 
     private GridTile[] _tiles;
+    private List<GridTile> _borderTiles = new();
 
     public void InitializeGrid(GameObject container)
     {
@@ -20,7 +22,9 @@ public class Grid
         {
             for(int x = 0; x < Width; x++)
             {
-                GridTile tile = GameObject.Instantiate(GetTilePrefab(x, y), container.transform);
+                //GridTile tile = GameObject.Instantiate(GridManager.Instance.TilePrefab, container.transform);
+                //tile.Load(GetTileProfile(int x, int y));
+                GridTile tile = GameObject.Instantiate(GridManager.Instance.TilePrefab, container.transform);
                 tile.Initialize(x, y, this);
                 tile.gameObject.transform.localPosition = new Vector3(x, 0, y);
                 _tiles[CoordinateToIndex(x, y)] = tile;
@@ -31,6 +35,20 @@ public class Grid
         {
             t.NavigationNode.ConnectNeighboringTiles();
         }
+
+        FindBorderTiles();
+    }
+    private void FindBorderTiles()
+    {
+        foreach(var t in _tiles)
+        {
+            if(t.X == 0 || t.X == Width - 1 || t.Y == 0 || t.Y == Height - 1)
+                _borderTiles.Add(t);
+        }
+    }
+    private GridTile GetTileProfile(int x, int y)
+    {
+        return GridManager.Instance.TilePrefab;
     }
 
 
@@ -67,25 +85,20 @@ public class Grid
         }
     }
 
+    public GridTile GetRandomBorderTile()
+    {
+        return _borderTiles[UnityEngine.Random.Range((int)0, (int)_borderTiles.Count)];
+    }
+    public GridTile GetRandomBorderTileWalkable()
+    {
+        return _borderTiles.Where(x => x.IsWalkable).OrderBy( x => UnityEngine.Random.value).FirstOrDefault();
+    }
+
+
+
     private int CoordinateToIndex(int x, int y)
     {
         return y * Width + x;
-    }
-
-    #endregion
-
-
-    #region >>> Debug <<<
-
-    [SerializeField]
-    private GridTile _tilePrefab;
-    private GridTile GetTilePrefab(int x, int y)
-    {
-        return _tilePrefab;
-    }
-    public void SetTilePrefab(GridTile prefab)
-    {
-        _tilePrefab = prefab;
     }
 
     #endregion

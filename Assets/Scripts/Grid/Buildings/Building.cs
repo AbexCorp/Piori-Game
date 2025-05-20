@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class Building : MonoBehaviour, IHealth
+public abstract class Building : MonoBehaviour, IHealth, ILoadable
 {
     [Header("Internal")]
     [SerializeField]
     protected Rigidbody _rigidbody;
+
+    [Header("Resources")]
+    [SerializeField]
+    protected int _cost = 50;
+    public int Cost => _cost;
 
     private void Awake()
     {
@@ -17,12 +22,13 @@ public abstract class Building : MonoBehaviour, IHealth
             Debug.LogWarning($"{nameof(Rigidbody)} is not assigned on {nameof(Building)} of {gameObject.name}");
         }
         _rigidbody.isKinematic = true;
-        InitializeTower();
+        InitializeBuilding();
     }
-    protected virtual void InitializeTower()
+    protected virtual void InitializeBuilding()
     {
         _healthCurrent = HealthMax;
     }
+    public abstract void Load(ScriptableObject so);
 
 
     #region >>> Building <<<
@@ -33,6 +39,7 @@ public abstract class Building : MonoBehaviour, IHealth
     {
         _occupiedTile = tile;
         _rigidbody.position = tile.gameObject.transform.position;
+        GameManager.Instance.ResourceManager.UseResources(_cost);
     }
 
     public virtual void GetDestroyed()
