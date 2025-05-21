@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99e47bfe0ec0124db3c3b7f7ae04eda, type: 3}
   m_Name: ResourceBuildingProfile
   m_EditorClassIdentifier: 
-  UniqueID: 
+  UniqueID: ResourceBuilding
   HealthMax: 50
   Cost: 20
   ProductionType: 0

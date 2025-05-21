@@ -13,6 +13,7 @@ public class ResourceManager : MonoBehaviour
     private void Start()
     {
         _resource = _startingResources;
+        GameManager.Instance.InterfaceManager.UpdateResource(Resource);
     }
 
     public bool UseResources(int amount)
@@ -20,6 +21,7 @@ public class ResourceManager : MonoBehaviour
         if(_resource - amount < 0 || amount <= 0)
             return false;
         _resource -= amount;
+        GameManager.Instance.InterfaceManager.UpdateResource(Resource);
         return true;
     }
     public void AddResource(int amount)
@@ -27,5 +29,6 @@ public class ResourceManager : MonoBehaviour
         if (amount <= 0)
             return;
         _resource += amount;
+        GameManager.Instance.InterfaceManager.UpdateResource(Resource);
     }
 }

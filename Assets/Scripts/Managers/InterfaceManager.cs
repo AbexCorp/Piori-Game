@@ -1,0 +1,78 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using TMPro;
+using UnityEngine;
+
+public class InterfaceManager : MonoBehaviour
+{
+    private void Start()
+    {
+        GenerateBuildingButtons();
+    }
+
+
+
+    [Header("Building")]
+    [SerializeField]
+    private GameObject _buildingButtonsFrame;
+    [SerializeField]
+    private BuildingButton _buildingButtonPrefab;
+    private void GenerateBuildingButtons()
+    {
+        float position = 0;
+        float buttonWidth = _buildingButtonPrefab.RectTransform.rect.width;
+        float margin = 20;
+
+
+        TowerProfile[] towers = Resources.LoadAll<TowerProfile>("Buildings/Towers");
+        for(int i = 0; i < towers.Length; i++)
+        {
+            BuildingButton b = Instantiate(_buildingButtonPrefab, _buildingButtonsFrame.transform);
+            b.SetProfile(towers[i]);
+            b.RectTransform.anchoredPosition = new Vector2(position, 0);
+            position += (buttonWidth + margin);
+        }
+
+        ResourceBuildingProfile[] resourceBuildings = Resources.LoadAll<ResourceBuildingProfile>("Buildings/ResourceBuildings");
+        for(int i = 0; i < resourceBuildings.Length; i++)
+        {
+            BuildingButton b = Instantiate(_buildingButtonPrefab, _buildingButtonsFrame.transform);
+            b.SetProfile(resourceBuildings[i]);
+            b.RectTransform.anchoredPosition = new Vector2(position, 0);
+            position += (buttonWidth + margin);
+        }
+    }
+
+
+    #region Debug
+
+    [Header("Debug")]
+    [SerializeField]
+    private TMP_Text _debugUI;
+
+
+    private StringBuilder sb = new();
+    private int _health = -1;
+    private int _healthMax = -1;
+    private int _resource = -1;
+
+    private void Update()
+    {
+        sb.Clear();
+        sb.AppendLine($"Health: {_health}/{_healthMax}");
+        sb.AppendLine($"Resource: {_resource}");
+        _debugUI.text = sb.ToString();
+    }
+    public void UpdateHealth(int amount, int max)
+    {
+        _health = amount;
+        _healthMax = max;
+    }
+    public void UpdateResource(int amount)
+    {
+        _resource = amount;
+    }
+
+    #endregion
+}

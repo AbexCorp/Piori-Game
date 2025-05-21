@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour, IHealth
     private void InitializePlayer()
     {
         _healthCurrent = HealthMax;
+        GameManager.Instance.InterfaceManager.UpdateHealth(_healthCurrent, HealthMax);
     }
 
     void Update()
@@ -87,7 +89,7 @@ public class Player : MonoBehaviour, IHealth
         if (damage <= 0)
             return;
         _healthCurrent -= damage;
-        Debug.Log(_healthCurrent);
+        GameManager.Instance.InterfaceManager.UpdateHealth(_healthCurrent, HealthMax);
         if (_healthCurrent <= 0)
             Die();
     }
@@ -121,6 +123,36 @@ public class Player : MonoBehaviour, IHealth
     }
     private void MouseHover(InputAction.CallbackContext context)
     {
+        ////
+        //Ui Raycast
+        ////
+        PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        if(results.Count > 0)
+        {
+            if(results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
+            {
+                if (_hover != null)
+                    _hover.OnHoveExit(context);
+                _hover = interracted;
+                _hover.OnHoverEnter(context);
+                return;
+            }
+            else
+            {
+                if (_hover != null)
+                    _hover.OnHoveExit(context);
+                _hover = null;
+            }
+        }
+
+
+
+
+        ////
+        //Gameobject Raycast
+        ////
         Ray ray = Camera.main.ScreenPointToRay(MousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask: _mouseHitMask))
@@ -143,6 +175,27 @@ public class Player : MonoBehaviour, IHealth
 
     public void OnMouseClick(InputAction.CallbackContext context)
     {
+        ////
+        //Ui Raycast
+        ////
+        PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        if(results.Count > 0)
+        {
+            if(results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
+            {
+                interracted.OnClick(context);
+                return;
+            }
+        }
+
+
+
+
+        ////
+        //Gameobject Raycast
+        ////
         Ray ray = Camera.main.ScreenPointToRay(MousePosition);
         RaycastHit[] hits;
         hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask: _mouseHitMask).OrderBy(x => x.distance).ToArray();

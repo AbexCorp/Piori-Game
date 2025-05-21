@@ -25,6 +25,16 @@ public class GameManager : Singleton<GameManager>
     public ResourceManager ResourceManager => _resourceManager;
 
     [SerializeField]
+    private InterfaceManager _interfaceManager;
+    public InterfaceManager InterfaceManager => _interfaceManager;
+
+    [SerializeField]
+    private BuildingManager _buildingManager;
+    public BuildingManager BuildingManager => _buildingManager;
+
+
+
+    [SerializeField]
     private Level _level;
     public Level Level => _level;
 

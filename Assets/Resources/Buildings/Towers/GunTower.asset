@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c497c57859fd4f41a9505134c1107e1, type: 3}
   m_Name: GunTower
   m_EditorClassIdentifier: 
+  UniqueID: GunTower
   HealthMax: 50
+  Cost: 50
   Shoots: 1
   AttackType: 3
   ProjectileProfile: {fileID: 11400000, guid: 49b9a9fd4082bad469b2809a25fb7295, type: 2}
