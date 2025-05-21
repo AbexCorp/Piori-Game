@@ -101,10 +101,6 @@ public class GridManager : Singleton<GridManager>
 
     #region >>> Debug <<<
 
-    public Building TowerPrefab;
-    public BuildingProfile TowerProfile;
-    public bool IsBuilding = false;
-
     public bool SpawnEnemy = false;
 
     #endregion

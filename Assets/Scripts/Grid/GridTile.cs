@@ -115,15 +115,15 @@ public class GridTile : MonoBehaviour, IMouseInteractable
     {
         if (context.performed)
         {
-            if (GameManager.Instance.GridManager.IsBuilding == false)
+            if (GameManager.Instance.BuildingManager.IsBuilding == false)
                 return;
             if (_building != null)
                 return;
 
-            if (!GameManager.Instance.GridManager.TowerProfile.CheckIfCanBuild(this))
+            if (!GameManager.Instance.BuildingManager.SelectedProfile.CheckIfCanBuild(this))
                 return;
-            Building b = GameManager.Instance.GridManager.TowerPrefab;
-            b.Load(GameManager.Instance.GridManager.TowerProfile);
+            Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
+            b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
             Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
         }
     }

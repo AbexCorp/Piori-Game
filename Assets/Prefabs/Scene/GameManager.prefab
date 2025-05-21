@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4740278514540504993}
   - component: {fileID: 6738910130076640686}
   - component: {fileID: 1973048612551550688}
+  - component: {fileID: 1871526928638478126}
+  - component: {fileID: 2535248261682941944}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -29,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 6074415825698552207}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.47538, y: 0.57515454, z: -0.062432073}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -53,6 +55,8 @@ MonoBehaviour:
   _projectileManager: {fileID: 4740278514540504993}
   _enemyManager: {fileID: 6738910130076640686}
   _resourceManager: {fileID: 1973048612551550688}
+  _interfaceManager: {fileID: 1871526928638478126}
+  _buildingManager: {fileID: 2535248261682941944}
   _level: {fileID: 11400000, guid: 18b6d6732fb5b934eb12d4364b614a9c, type: 2}
 --- !u!114 &4740278514540504993
 MonoBehaviour:
@@ -93,3 +97,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingResources: 130
+--- !u!114 &1871526928638478126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6074415825698552207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac66142f539bb6449cdc0935b9bcf05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buildingButtonsFrame: {fileID: 0}
+  _buildingButtonPrefab: {fileID: 4589796101708143858, guid: 9fc1988af25fc01438019bfaf320d58d, type: 3}
+  _debugUI: {fileID: 0}
+--- !u!114 &2535248261682941944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6074415825698552207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcdb2b4f62e0f541a30419d6e2858c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _towerPrefab: {fileID: 4143077296314724501, guid: a2abb32a720081848bdc393488440c53, type: 3}
+  _resourceBuildingPrefab: {fileID: 2770902273088463388, guid: bdaba986b2893c041b67eb7711ae9e0e, type: 3}
