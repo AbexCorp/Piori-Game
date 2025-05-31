@@ -47,7 +47,7 @@ public class GridManager : Singleton<GridManager>
             _gridContainer = gameObject;
 
         _grid = new();
-        _grid.InitializeGrid(_gridContainer);
+        _grid.InitializeGrid(_gridContainer, GridWidth, GridHeight);
     }
     private void CreateGridBorder()
     {
@@ -101,7 +101,40 @@ public class GridManager : Singleton<GridManager>
 
     #region >>> Debug <<<
 
+    [Header("Debug")]
+
+    public int GridWidth = 10;
+    public int GridHeight = 10;
+
     public bool SpawnEnemy = false;
+    public string[] MapBlocades;
+    public bool GetTileBlocade(int x, int y)
+    {
+        int mapHeight = MapBlocades?.Length ?? 0;
+
+        if (y < 0 || y >= mapHeight)
+            return true;
+
+        int rowIndex = mapHeight - 1 - y;
+
+        if (rowIndex < 0 || rowIndex >= MapBlocades.Length)
+            return true;
+
+        string row = MapBlocades[rowIndex];
+
+        if (string.IsNullOrEmpty(row) || x < 0 || x >= row.Length)
+            return true;
+
+        char tile = row[x];
+
+        if (tile == '0')
+            return false;
+
+        if (tile == '1')
+            return true;
+
+        return true;
+    }
 
     #endregion
 }

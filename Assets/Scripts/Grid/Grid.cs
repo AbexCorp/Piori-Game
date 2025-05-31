@@ -14,8 +14,10 @@ public class Grid
     private GridTile[] _tiles;
     private List<GridTile> _borderTiles = new();
 
-    public void InitializeGrid(GameObject container)
+    public void InitializeGrid(GameObject container, int width, int height)
     {
+        _width = width;
+        _height = height;
         _tiles = new GridTile[Width * Height];
 
         for(int y = 0; y < Height; y++)
