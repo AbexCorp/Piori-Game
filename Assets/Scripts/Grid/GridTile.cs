@@ -55,6 +55,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
 
         _building = building;
         _building.GetBuilt(this);
+        GameManager.Instance.BuildingManager.StopBuilding();
         return true;
     }
 
