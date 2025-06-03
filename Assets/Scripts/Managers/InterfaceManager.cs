@@ -62,6 +62,9 @@ public class InterfaceManager : MonoBehaviour
         sb.Clear();
         sb.AppendLine($"Health: {_health}/{_healthMax}");
         sb.AppendLine($"Resource: {_resource}");
+        sb.AppendLine($"Game State: {GameManager.Instance.CurrentGameState}");
+        sb.AppendLine($"Wave: {GameManager.Instance.EnemyManager.CurrentWave}");
+        sb.AppendLine($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
         _debugUI.text = sb.ToString();
     }
     public void UpdateHealth(int amount, int max)

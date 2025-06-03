@@ -33,14 +33,7 @@ public class GridManager : Singleton<GridManager>
         InitializeGrid();
         CreateGridBorder();
     }
-    private void Update()
-    {
-        if (SpawnEnemy) //debug
-        {
-            GameManager.Instance.EnemyManager.SpawnWave(GameManager.Instance.Level.Waves[0]); //debug
-            SpawnEnemy = false; //debug
-        }
-    }
+
     private void InitializeGrid()
     {
         if (_gridContainer == null)
@@ -106,7 +99,6 @@ public class GridManager : Singleton<GridManager>
     public int GridWidth = 10;
     public int GridHeight = 10;
 
-    public bool SpawnEnemy = false;
     public string[] MapBlocades;
     public bool GetTileBlocade(int x, int y)
     {
