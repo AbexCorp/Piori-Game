@@ -107,6 +107,7 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 
     #region >>> Health <<<
 
+    [Header("Health")]
     [SerializeField]
     protected int _healthMax = 50;
     public int HealthMax => _healthMax;
@@ -114,9 +115,20 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     public int HealthCurrent => _healthCurrent;
     public GameObject ParentGameObject => gameObject;
 
+    [SerializeField]
+    private GameObject _healthBarInterface;
+    [SerializeField]
+    private UnityEngine.UI.Image _healthBar;
+
     public virtual void GetDamaged(int damage)
     {
         _healthCurrent -= damage;
+        if(_healthBarInterface != null && _healthBar != null)
+        {
+            if(!_healthBarInterface.activeInHierarchy)
+                _healthBarInterface.SetActive(true);
+            _healthBar.fillAmount = Mathf.Clamp((_healthCurrent / (float)_healthMax), 0, 1);
+        }
         Die();
     }
     protected virtual void Die()
@@ -133,6 +145,7 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 
     #region >>> Spawning <<<
 
+    [Header("Spawning")]
     public int _tier = 1;
     public int Tier => _tier;
     public int _cost = 50;
