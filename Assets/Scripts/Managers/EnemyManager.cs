@@ -8,6 +8,16 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private Enemy _enemyPrefab;
 
+    private void Awake()
+    {
+        GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+
     public enum SpawnStyle
     {
         Everywhere = 0,
@@ -28,9 +38,22 @@ public class EnemyManager : MonoBehaviour
     public void OnEnemyDeath(Enemy deadEnemy)
     {
         _spawnedEnemies.Remove(deadEnemy);
+        if (_spawnedEnemies.Count <= 0)
+        {
+            if(GameManager.Instance.Level.Waves.Count == _currentWave)
+            {
+                GameManager.Instance.ChangeGameState(GameState.Win);
+                return;
+            }
+            GameManager.Instance.ChangeGameState(GameState.WaveBreak);
+        }
     }
 
 
+    #region >>> Waves <<<
+
+    private int _currentWave = 0;
+    public int CurrentWave => _currentWave;
 
     public void SpawnWave(Level.Wave wave)
     {
@@ -73,5 +96,23 @@ public class EnemyManager : MonoBehaviour
         }
 
         return spawnList.OrderByDescending(x => x.Key).FirstOrDefault().Value;
+    }
+
+    #endregion
+
+
+    private void OnGameStateChanged(GameState state)
+    {
+        if (state != GameState.Wave)
+            return;
+
+        _currentWave++;
+        if(GameManager.Instance.Level.Waves.Count < CurrentWave)
+        {
+            GameManager.Instance.ChangeGameState(GameState.Win);
+            return;
+        }
+
+        SpawnWave(GameManager.Instance.Level.Waves[_currentWave - 1]);
     }
 }

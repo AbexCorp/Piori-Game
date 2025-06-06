@@ -95,7 +95,8 @@ public class Player : MonoBehaviour, IHealth
     }
     private void Die()
     {
-        Debug.Break();
+        _healthCurrent = 0;
+        GameManager.Instance.ChangeGameState(GameState.Lose);
     }
 
     #endregion

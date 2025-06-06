@@ -11,6 +11,9 @@ public class BuildingManager : MonoBehaviour
     private Building _resourceBuildingPrefab;
 
 
+    private bool _buildingIsAllowed = false;
+    public bool BuildingIsAllowed => _buildingIsAllowed;
+
     private bool _isBuilding;
     public bool IsBuilding => _isBuilding;
 
@@ -40,8 +43,20 @@ public class BuildingManager : MonoBehaviour
     
 
 
+    public void AllowBuilding()
+    {
+        _buildingIsAllowed = true;
+    }
+    public void DisallowBuilding()
+    {
+        StopBuilding();
+        SelectProfile(null);
+        _buildingIsAllowed = false;
+    }
     public void Build()
     {
+        if (BuildingIsAllowed == false)
+            return;
         if (_selectedProfile == null)
         {
             ChoosePrefab();

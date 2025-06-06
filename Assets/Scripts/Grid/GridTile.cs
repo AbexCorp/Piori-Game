@@ -17,7 +17,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
     public Vector2 WorldPosition2D => new Vector2(transform.position.x, transform.position.z);
 
 
-    public bool IsOccupied => IsOccupiedByBuilding; //Add checks for characters on tile;
+    public bool IsOccupied => IsOccupiedByBuilding || !IsWalkable; //Add checks for characters on tile;
     [SerializeField]
     private bool _isWalkable = true;
     public bool IsWalkable => _isWalkable;
@@ -28,6 +28,15 @@ public class GridTile : MonoBehaviour, IMouseInteractable
         _x = x;
         _y = y;
         gameObject.name = $"Tile ({x},{y})";
+
+        //////////////DEBUG
+            _isWalkable = !GameManager.Instance.GridManager.GetTileBlocade(x, y);
+            if (!IsWalkable)
+            {
+                EnableOccupy();
+                TurnOnCollider();
+            }
+        //////////////DEBUG
 
         _navigationNode = new(this);
     }
@@ -46,6 +55,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
 
         _building = building;
         _building.GetBuilt(this);
+        GameManager.Instance.BuildingManager.StopBuilding();
         return true;
     }
 
@@ -83,7 +93,6 @@ public class GridTile : MonoBehaviour, IMouseInteractable
     public void SetEffectCoor(Color color)
     {
         _renderer.material.SetColor("_EffectColor", color);
-        EnableEffect();
     }
     public void EnableEffect()
     {
@@ -92,6 +101,15 @@ public class GridTile : MonoBehaviour, IMouseInteractable
     public void DisableEffect()
     {
         _renderer.material.SetInt("_ShowEffect", 0);
+    }
+
+    public void EnableOccupy()
+    {
+        _renderer.material.SetInt("_IsOccupied", 1);
+    }
+    public void DisableOccupy()
+    {
+        _renderer.material.SetInt("_IsOccupied", 0);
     }
 
     #endregion
@@ -126,6 +144,22 @@ public class GridTile : MonoBehaviour, IMouseInteractable
             b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
             Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
         }
+    }
+
+    #endregion
+
+
+    #region Debug
+
+    [SerializeField]
+    private GameObject _colliderObject;
+    private void TurnOnCollider()
+    {
+        _colliderObject.SetActive(true);
+    }
+    private void TurnOffCollider()
+    {
+        _colliderObject.SetActive(false);
     }
 
     #endregion
