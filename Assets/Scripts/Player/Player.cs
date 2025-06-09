@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -216,6 +217,74 @@ public class Player : MonoBehaviour, IHealth
         //    }
         //}
     }
+
+    #endregion
+
+
+    #region >>> Attack <<<
+
+    [Header("Attack")]
+    [SerializeField]
+    private ProjectileProfile _playerProjectile;
+    [SerializeField]
+    private int _damage = 20;
+    [SerializeField]
+    private float _attackCooldown = 1.5f;
+    public float AttackCooldown => _attackCooldown;
+    [SerializeField]
+    private bool _attackIsOnCooldown = false;
+    public bool AttackIsOnCooldown => _attackIsOnCooldown;
+    [SerializeField]
+    private float _remainingAttackCooldown = 0f;
+    public float RemainingAttackCooldown => _remainingAttackCooldown;
+
+    [SerializeField]
+    private GameObject _attackCooldownUI;
+    [SerializeField]
+    private UnityEngine.UI.Image _attackCooldownUIFill;
+
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (AttackIsOnCooldown)
+            return;
+
+        if (context.performed)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(_mousePosition);
+            if (Mathf.Abs(ray.direction.y) < 0.0001f) //paraller to world plane
+                return;
+            
+            float t = -ray.origin.y / ray.direction.y;
+            Vector3 hitpoint = ray.origin + t * ray.direction;
+
+            Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_playerProjectile);
+            projectile.InitializeProjectile(hitpoint, transform.position, _damage);
+            StartCoroutine(AttackCooldownTimer());
+        }
+    }
+    private IEnumerator AttackCooldownTimer()
+    {
+        int numberOfUpdates = 10;
+        YieldInstruction yield = new WaitForSeconds(AttackCooldown / numberOfUpdates);
+
+        _attackIsOnCooldown = true;
+        _remainingAttackCooldown = AttackCooldown;
+        _attackCooldownUI.SetActive(true);
+        _attackCooldownUIFill.fillAmount = 1;
+        for (int i = 0; i < numberOfUpdates; i++)
+        {
+            yield return yield;
+            _remainingAttackCooldown -= AttackCooldown / numberOfUpdates;
+            _remainingAttackCooldown = MathF.Round(_remainingAttackCooldown, 2);
+            _attackCooldownUIFill.fillAmount = _remainingAttackCooldown / AttackCooldown;
+        }
+        _attackIsOnCooldown = false;
+        _remainingAttackCooldown = 0f;
+        _attackCooldownUI.SetActive(false);
+        _attackCooldownUIFill.fillAmount = 0;
+    }
+
 
     #endregion
 }
