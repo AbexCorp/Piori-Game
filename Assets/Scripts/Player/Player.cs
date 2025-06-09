@@ -285,6 +285,80 @@ public class Player : MonoBehaviour, IHealth
         _attackCooldownUIFill.fillAmount = 0;
     }
 
+    #endregion
+
+
+    #region >>> Repairing <<<
+
+    [Header("Repairing")]
+    [SerializeField]
+    [Range(0,1)]
+    private float _repairCost = 0.25f;
+    public float RepairCost => _repairCost;
+    [SerializeField]
+    [Range(0,1)]
+    private float _repairAmount = 0.70f;
+    public float RepairAmount => _repairAmount;
+    [Range(0.3f, 5)]
+    private float _repairTime = 3f;
+    public float RepairTime => _repairTime;
+
+
+    private List<Building> _buildingsInRange = new();
+
+    public void OnTargetDetectEnter(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<Building>(out Building building))
+        {
+            if (_buildingsInRange.Contains(building))
+                return;
+            _buildingsInRange.Add(building);
+        }
+    }
+    public void OnTargetDetectLeave(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<Building>(out Building building))
+        {
+            if(_buildingsInRange.Contains(building))
+                _buildingsInRange.Remove(building);
+        }
+    }
+
+    public void OnRepair(InputAction.CallbackContext context)
+    {
+        if (_buildingsInRange.Count == 0)
+            return;
+        if (context.performed)
+        {
+            List<Building> _buildingsToRemove = new();
+            foreach(var target in _buildingsInRange.ToList())
+            {
+                if (target == null || target as UnityEngine.Object == null)
+                    _buildingsToRemove.Add(target);
+            }
+            foreach(var t in _buildingsToRemove)
+            {
+                _buildingsInRange.Remove(t);
+            }
+            if (_buildingsInRange.Count == 0)
+                return;
+
+            _buildingsInRange = _buildingsInRange.OrderBy(x => x.gameObject.transform.position.DistanceTo2D(gameObject.transform.position)).ToList();
+            Building buildingToRepair = _buildingsInRange.FirstOrDefault();
+
+            if(
+                GameManager.Instance.ResourceManager.Resource < (int)System.MathF.Ceiling(buildingToRepair.Cost * RepairCost) ||
+                buildingToRepair.IsBeeingRepaired ||
+                buildingToRepair.HealthCurrent >= buildingToRepair.HealthMax)
+            {
+                //Can't repair
+                return;
+            }
+
+            buildingToRepair.Repair((int)System.MathF.Floor(buildingToRepair.HealthMax * RepairAmount), RepairTime);
+            GameManager.Instance.ResourceManager.UseResources((int)System.MathF.Ceiling(buildingToRepair.Cost * RepairCost));
+        }
+    }
 
     #endregion
 }
