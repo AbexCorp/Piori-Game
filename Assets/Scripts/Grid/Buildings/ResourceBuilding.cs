@@ -48,7 +48,8 @@ public class ResourceBuilding : Building
     {
         while (true)
         {
-            GameManager.Instance.ResourceManager.AddResource(_productionAmount);
+            if(GameManager.Instance.CurrentGameState != GameState.BeforeFirstWave)
+                GameManager.Instance.ResourceManager.AddResource(_productionAmount);
             yield return new WaitForSeconds(_productionCooldown);
         }
     }

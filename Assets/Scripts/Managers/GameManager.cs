@@ -77,10 +77,13 @@ public class GameManager : Singleton<GameManager>
 
             case GameState.BeforeFirstWave:
                 BuildingManager.AllowBuilding();
-                StartCoroutine(WaveBreakTimer(FirstWaveDelay));
+                StartCoroutine(BeforeFirstWaveTimer(FirstWaveDelay));
                 break;
 
+            case GameState.NewWave:
+                break;
             case GameState.Wave:
+                StartCoroutine(WaveTimer(WaveTime));
                 break;
             case GameState.WaveBreak:
                 StartCoroutine(WaveBreakTimer(WaveBreakTime));
@@ -104,17 +107,73 @@ public class GameManager : Singleton<GameManager>
     private Level _level;
     public Level Level => _level;
 
-    [SerializeField]
-    private float _firstWaveDelay = 15f;
-    public float FirstWaveDelay => _firstWaveDelay;
-    [SerializeField]
-    private float _waveBreakTime = 10f;
-    public float WaveBreakTime => _waveBreakTime;
 
-    protected IEnumerator WaveBreakTimer(float time)
+    [SerializeField]
+    private int _firstWaveDelay = 15;
+    public int FirstWaveDelay => _firstWaveDelay;
+
+    [SerializeField]
+    private int _waveTime = 10;
+    public int WaveTime => _waveTime;
+
+    [SerializeField]
+    private int _waveBreakTime = 10;
+    public int WaveBreakTime => _waveBreakTime;
+
+    private bool GameIsOver => CurrentGameState == GameState.Win || CurrentGameState == GameState.Lose;
+
+    private IEnumerator BeforeFirstWaveTimer(int time)
     {
-        yield return new WaitForSeconds(time);
-        ChangeGameState(GameState.Wave);
+        YieldInstruction yield = new WaitForSeconds(1);
+        UpdateTimerColor(new Color(117/255f, 175/255f, 183/255f));
+
+        for(int i = 0; i < time; i++)
+        {
+            if(GameIsOver)
+                break;
+            UpdateTimerValue(i, FirstWaveDelay);
+            yield return yield;
+        }
+        if(!GameIsOver)
+            ChangeGameState(GameState.NewWave);
+    }
+    private IEnumerator WaveTimer(int time)
+    {
+        YieldInstruction yield = new WaitForSeconds(1);
+        UpdateTimerColor(new Color(231 / 255f, 69 / 255f, 69 / 255f));
+
+        for (int i = 0; i < time; i++)
+        {
+            if(GameIsOver)
+                break;
+            UpdateTimerValue(i, WaveTime);
+            yield return yield;
+        }
+        if(!GameIsOver)
+            ChangeGameState(GameState.WaveBreak);
+    }
+    private IEnumerator WaveBreakTimer(int time)
+    {
+        YieldInstruction yield = new WaitForSeconds(1);
+        UpdateTimerColor(new Color(60/255f, 160/255f, 60/255f));
+
+        for(int i = 0; i < time; i++)
+        {
+            if(GameIsOver)
+                break;
+            UpdateTimerValue(i, WaveBreakTime);
+            yield return yield;
+        }
+        if(!GameIsOver)
+            ChangeGameState(GameState.NewWave);
+    }
+    private void UpdateTimerColor(Color color)
+    {
+        InterfaceManager.ChangeGameTimerColor(color);
+    }
+    private void UpdateTimerValue(int time, int maxTime)
+    {
+        InterfaceManager.ChangeGameTimerValue($"{maxTime - time}", (maxTime - time)/(float)maxTime);
     }
 
     #endregion
@@ -125,8 +184,9 @@ public enum GameState
     None = 0,
     GamePreparePhase = 1,
     BeforeFirstWave = 2,
-    Wave = 3,
-    WaveBreak = 4,
-    Win = 5,
-    Lose = 6
+    NewWave = 3,
+    Wave = 4,
+    WaveBreak = 5,
+    Win = 6,
+    Lose = 7
 }
