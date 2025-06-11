@@ -361,4 +361,14 @@ public class Player : MonoBehaviour, IHealth
     }
 
     #endregion
+
+
+    #region >>> Building <<<
+
+    [Header("Building")]
+    [SerializeField]
+    private float _maxBuildDistance = 2.5f;
+    public float MaxBuildDistance => _maxBuildDistance;
+
+    #endregion
 }

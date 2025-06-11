@@ -11,10 +11,18 @@ public class BuildingProfile : ScriptableObject
     [Header("Resources")]
     public int Cost = 50;
 
-    public virtual bool CheckIfCanBuild(GridTile tile)
+    public virtual bool CheckIfCanBuild(GridTile tile, out string reason)
     {
-        if(Cost > GameManager.Instance.ResourceManager.Resource || tile.IsOccupied) //Enpty from buildings
+        if(tile.IsOccupied) //Enpty from buildings
+        {
+            reason = "Already occupied by another building";
             return false;
+        }
+        if(Cost > GameManager.Instance.ResourceManager.Resource) //Have resource to build
+        {
+            reason = "Not enough resources";
+            return false;
+        }
         
         //Empty from player and enemy
         if(Physics.BoxCast(
@@ -25,10 +33,19 @@ public class BuildingProfile : ScriptableObject
             layerMask: LayerMask.GetMask("Player", "Enemy"),
             maxDistance: 4f))
         {
+            reason = "This area is occupied right now";
+            return false;
+        }
+
+        //To far from player
+        if(tile.WorldPosition3D.DistanceTo2D(GameManager.Instance.Player.transform.position) > GameManager.Instance.Player.MaxBuildDistance)
+        {
+            reason = "To far from you";
             return false;
         }
 
         //Here add other conditions ex: tile is of type X, or tile is next to tile with Y
+        reason = "";
         return true;
     }
 }

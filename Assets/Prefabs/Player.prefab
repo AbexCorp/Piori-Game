@@ -524,6 +524,7 @@ MonoBehaviour:
   _attackCooldownUIFill: {fileID: 2582221337034474952}
   _repairCost: 0.25
   _repairAmount: 0.7
+  _maxBuildDistance: 2.2
 --- !u!114 &2917171131487977440
 MonoBehaviour:
   m_ObjectHideFlags: 0
