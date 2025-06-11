@@ -93,5 +93,42 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
         Destroy(gameObject);
     }
 
+    #region Repair
+
+    private bool _isBeeingRepaired = false;
+    public bool IsBeeingRepaired => _isBeeingRepaired;
+
+    public void Repair(int amount, float time)
+    {
+        if (IsBeeingRepaired)
+            return;
+        StartCoroutine(Repairs(amount, time));
+    }
+    private IEnumerator Repairs(int amount, float time)
+    {
+        int updatesAmount = 20;
+        YieldInstruction yield = new WaitForSeconds(time / updatesAmount);
+
+        _isBeeingRepaired = true;
+        _healthBarInterface.SetActive(true);
+
+        for(int i = 0; i < updatesAmount; i++)
+        {
+            yield return yield;
+            _healthCurrent = HealthCurrent + (int)System.MathF.Ceiling(amount / (float)updatesAmount);
+            _healthBar.fillAmount = Mathf.Clamp(HealthCurrent / (float)HealthMax, 0, 1);
+
+            if(_healthCurrent >= HealthMax)
+            {
+                _healthCurrent = HealthMax;
+                _healthBarInterface.SetActive(false);
+                break;
+            }
+        }
+        _isBeeingRepaired = false;
+    }
+
+    #endregion
+
     #endregion
 }

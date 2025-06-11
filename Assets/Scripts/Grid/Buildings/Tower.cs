@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.Linq;
 using UnityEngine;
 
 public class Tower : Building
@@ -35,11 +37,11 @@ public class Tower : Building
     private bool _isOnCooldown = false;
 
 
-
-    private void Start()
+    void Update()
     {
-        StartCoroutine(CheckForEnemies());
+        AttackEnemy();
     }
+
     public override void Load(ScriptableObject so)
     {
         if (so is not TowerProfile)
@@ -60,52 +62,18 @@ public class Tower : Building
         _damage = tp.Damage;
 
         InitializeBuilding();
+        AdjustDetectionRange(_range);
     }
-
-
-    #region >>> Find Enemy <<<
-
-    private IEnumerator CheckForEnemies()
-    {
-        yield return null;
-        while (true)
-        {
-            yield return new WaitForSeconds(0.25f);
-            if(_isOnCooldown)
-                continue;
-            if(_target == null)
-                FindEnemy();
-            if(_target != null)
-                AttackEnemy();
-        }
-    }
-    private void FindEnemy()
-    {
-        foreach(var enemy in GameManager.Instance.EnemyManager.SpawnedEnemies)
-        {
-            if(enemy == null)
-                continue;
-            ConfirmEnemy(enemy);
-            if(enemy != null)
-                break;
-        }
-    }
-    private void ConfirmEnemy(Enemy enemy)
-    {
-        if(enemy.transform.position.DistanceTo2D(transform.position) <= _range)
-            _target = enemy;
-        else
-            _target = null;
-    }
-
-    #endregion
 
 
     #region >>> Attack <<<
 
     private void AttackEnemy()
     {
-        ConfirmEnemy(_target);
+        if (_isOnCooldown)
+            return;
+
+        GetTarget();
         if (_target == null)
             return;
 
@@ -151,6 +119,84 @@ public class Tower : Building
         _isOnCooldown = true;
         yield return new WaitForSeconds(_attackCooldown);
         _isOnCooldown = false;
+    }
+
+    #endregion
+
+
+    #region >>> Find Target <<<
+
+    protected int GetTargetValue(IHealth target)
+    {
+        return 1;
+    }
+    protected void GetTarget()
+    {
+        if(_targets.Count == 0)
+        {
+            _target = null;
+            return;
+        }
+
+        List<IHealth> _targetsToRemove = new();
+        foreach(var target in _targets.Keys.ToList())
+        {
+            if (target == null || target as UnityEngine.Object == null)
+                _targetsToRemove.Add(target);
+            else
+                _targets[target] = GetTargetValue(target);
+        }
+        foreach(var t in _targetsToRemove)
+        {
+            _targets.Remove(t);
+        }
+
+        var tempIHealth = _targets.OrderByDescending(t => t.Value).FirstOrDefault().Key;
+        if (tempIHealth == null)
+            return;
+
+        if(_targets.OrderByDescending(t => t.Value).FirstOrDefault().Key.ParentGameObject.TryGetComponent<Enemy>(out Enemy tempEnemy))
+        {
+            _target = tempEnemy;
+            if (_targets[_target] < 0)
+                _target = null;
+        }
+    }
+
+    #endregion
+
+
+    #region >>> TargetDetection <<<
+
+    [Header("Target Detection")]
+    [SerializeField]
+    protected Detector _enemyDetector;
+    [SerializeField]
+    protected SphereCollider _detectorCollider;
+
+    protected Dictionary<IHealth, int> _targets = new();
+
+    protected void AdjustDetectionRange(float amount)
+    {
+        _detectorCollider.radius = amount;
+    }
+
+    public void OnTargetDetectEnter(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<IHealth>(out IHealth target))
+        {
+            if (_targets.ContainsKey(target))
+                return;
+            _targets.Add(target, GetTargetValue(target));
+        }
+    }
+    public void OnTargetDetectLeave(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<IHealth>(out IHealth target))
+        {
+            if(_targets.ContainsKey(target))
+                _targets.Remove(target);
+        }
     }
 
     #endregion

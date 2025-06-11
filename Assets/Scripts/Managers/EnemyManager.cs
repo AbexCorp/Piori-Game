@@ -45,7 +45,6 @@ public class EnemyManager : MonoBehaviour
                 GameManager.Instance.ChangeGameState(GameState.Win);
                 return;
             }
-            GameManager.Instance.ChangeGameState(GameState.WaveBreak);
         }
     }
 
@@ -103,7 +102,7 @@ public class EnemyManager : MonoBehaviour
 
     private void OnGameStateChanged(GameState state)
     {
-        if (state != GameState.Wave)
+        if (state != GameState.NewWave)
             return;
 
         _currentWave++;
@@ -113,6 +112,7 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        SpawnWave(GameManager.Instance.Level.Waves[_currentWave - 1]);
+        SpawnWave(GameManager.Instance.Level.Waves[_currentWave - 1]); //Change this to spawn enemies not all at the same time
+        GameManager.Instance.ChangeGameState(GameState.Wave);
     }
 }

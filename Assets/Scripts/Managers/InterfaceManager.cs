@@ -44,6 +44,23 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
+    [Header("Timer")]
+    [SerializeField]
+    private UnityEngine.UI.Image _gameTimer;
+    [SerializeField]
+    private TMP_Text _gameTimerText;
+
+    public void ChangeGameTimerColor(Color color)
+    {
+        _gameTimer.color = color;
+    }
+    public void ChangeGameTimerValue(string text, float fill)
+    {
+        _gameTimerText.text = text;
+        _gameTimer.fillAmount = Mathf.Clamp(fill, 0, 1);
+    }
+
+
 
     #region Debug
 
