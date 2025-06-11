@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7511148333423287379}
   - component: {fileID: 2883955220613693799}
   - component: {fileID: 9122368953385790490}
-  m_Layer: 11
+  m_Layer: 15
   m_Name: RepairDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}

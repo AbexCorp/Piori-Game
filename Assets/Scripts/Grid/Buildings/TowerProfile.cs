@@ -17,7 +17,7 @@ public class TowerProfile : BuildingProfile
 
     public override bool CheckIfCanBuild(GridTile tile)
     {
-        if(Cost > GameManager.Instance.ResourceManager.Resource || tile.IsOccupied)
+        if(base.CheckIfCanBuild(tile) == false)
             return false;
         return true;
     }
