@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -12,19 +13,25 @@ public class InterfaceManager : MonoBehaviour
     }
 
 
+    #region >>> Building <<<
 
     [Header("Building")]
     [SerializeField]
     private GameObject _buildingButtonsFrame;
     [SerializeField]
     private BuildingButton _buildingButtonPrefab;
+    [SerializeField]
+    private CustomButton _sellButton;
+    [SerializeField]
+    private CustomButton _cancelBuildingButton;
+
     private void GenerateBuildingButtons()
     {
         float position = 0;
         float buttonWidth = _buildingButtonPrefab.RectTransform.rect.width;
         float margin = 20;
 
-
+        //Regular build buttons
         TowerProfile[] towers = Resources.LoadAll<TowerProfile>("Buildings/Towers");
         for(int i = 0; i < towers.Length; i++)
         {
@@ -42,7 +49,36 @@ public class InterfaceManager : MonoBehaviour
             b.RectTransform.anchoredPosition = new Vector2(position, 0);
             position += (buttonWidth + margin);
         }
+
+        //Sell button
+        position += margin;
+        _sellButton.RectTransform.anchoredPosition = new Vector2 (position, 0);
+        position += _sellButton.RectTransform.rect.width + margin;
+
+        //Cancel button
+        _cancelBuildingButton.RectTransform.anchoredPosition = new Vector2 (position, 0);
+        position += _cancelBuildingButton.RectTransform.rect.width + margin;
+        BuildingCancelButtonSetActive(false);
     }
+
+    public void OnSellButton()
+    {
+        GameManager.Instance.BuildingManager.Sell();
+    }
+    public void OnCancelButton()
+    {
+        GameManager.Instance.BuildingManager.StopBuilding();
+        GameManager.Instance.BuildingManager.StopSelling();
+    }
+    public void BuildingCancelButtonSetActive(bool value)
+    {
+        _cancelBuildingButton.gameObject.SetActive(value);
+    }
+
+    #endregion
+
+
+    #region >>> GameTimer <<<
 
     [Header("Timer")]
     [SerializeField]
@@ -60,6 +96,7 @@ public class InterfaceManager : MonoBehaviour
         _gameTimer.fillAmount = Mathf.Clamp(fill, 0, 1);
     }
 
+    #endregion
 
 
     #region Debug
@@ -81,7 +118,11 @@ public class InterfaceManager : MonoBehaviour
         sb.AppendLine($"Resource: {_resource}");
         sb.AppendLine($"Game State: {GameManager.Instance.CurrentGameState}");
         sb.AppendLine($"Wave: {GameManager.Instance.EnemyManager.CurrentWave}");
-        sb.AppendLine($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
+        if (GameManager.Instance.BuildingManager.IsSelling)
+            sb.AppendLine($"Building: Selling");
+        else
+            sb.AppendLine($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
+        
         _debugUI.text = sb.ToString();
     }
     public void UpdateHealth(int amount, int max)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class BuildingButton : Button
+public class BuildingButton : CustomButton
 {
     private BuildingProfile _assignedProfile;
     public void SetProfile(BuildingProfile p)

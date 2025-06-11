@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Button : MonoBehaviour, IMouseInteractable
+public class CustomButton : MonoBehaviour, IMouseInteractable
 {
     public UnityEvent OnClickEvent;
 

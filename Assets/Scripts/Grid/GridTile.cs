@@ -74,6 +74,18 @@ public class GridTile : MonoBehaviour, IMouseInteractable
         _building = null;
     }
 
+    public bool SellBuilding()
+    {
+        if (!IsOccupied)
+            return false;
+
+        GameManager.Instance.ResourceManager.AddResource(Mathf.Clamp((int)System.MathF.Round(_building.Cost * GameManager.Instance.Player.BuildingSellingReturn), 0, int.MaxValue));
+        _building.GetDestroyed();
+        _building = null;
+        GameManager.Instance.BuildingManager.StopSelling();
+        return true;
+    }
+
     #endregion
 
 
@@ -133,19 +145,35 @@ public class GridTile : MonoBehaviour, IMouseInteractable
     {
         if (context.performed)
         {
-            if (GameManager.Instance.BuildingManager.IsBuilding == false)
-                return;
-            if (_building != null)
-                return;
-
-            if (!GameManager.Instance.BuildingManager.SelectedProfile.CheckIfCanBuild(this, out string reason))
+            if (GameManager.Instance.BuildingManager.IsBuilding == true)
             {
-                Debug.Log(reason);
-                return;
+                if (_building != null)
+                    return;
+
+                if (!GameManager.Instance.BuildingManager.SelectedProfile.CheckIfCanBuild(this, out string reason))
+                {
+                    Debug.Log(reason); //Do the interface popup here
+                    return;
+                }
+                Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
+                b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
+                Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
             }
-            Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
-            b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
-            Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
+            else if (GameManager.Instance.BuildingManager.IsSelling == true)
+            {
+                if (_building == null)
+                {
+                    Debug.Log("Nothing to sell"); //Do the interface popup here
+                    return;
+                }
+                if(WorldPosition3D.DistanceTo2D(GameManager.Instance.Player.transform.position) > GameManager.Instance.Player.MaxBuildDistance)
+                {
+                    Debug.Log("To far from you"); //Do the interface popup here
+                    return;
+                }
+
+                SellBuilding();
+            }
         }
     }
 

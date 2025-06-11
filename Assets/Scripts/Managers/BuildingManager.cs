@@ -17,6 +17,9 @@ public class BuildingManager : MonoBehaviour
     private bool _isBuilding;
     public bool IsBuilding => _isBuilding;
 
+    private bool _isSelling;
+    public bool IsSelling => _isSelling;
+
 
     private BuildingProfile _selectedProfile = null;
     public BuildingProfile SelectedProfile => _selectedProfile;
@@ -55,6 +58,7 @@ public class BuildingManager : MonoBehaviour
     }
     public void Build()
     {
+        StopSelling();
         if (BuildingIsAllowed == false)
             return;
         if (_selectedProfile == null)
@@ -64,10 +68,25 @@ public class BuildingManager : MonoBehaviour
         }
         ChoosePrefab();
         _isBuilding = true;
+        GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(true);
     }
     public void StopBuilding()
     {
         _isBuilding = false;
         SelectProfile(null);
+        GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(false);
+    }
+    public void Sell()
+    {
+        StopBuilding();
+        if (BuildingIsAllowed == false)
+            return;
+        _isSelling = true;
+        GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(true);
+    }
+    public void StopSelling()
+    {
+        _isSelling = false;
+        GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(false);
     }
 }
