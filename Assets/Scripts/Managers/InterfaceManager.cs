@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -94,6 +95,47 @@ public class InterfaceManager : MonoBehaviour
     {
         _gameTimerText.text = text;
         _gameTimer.fillAmount = Mathf.Clamp(fill, 0, 1);
+    }
+
+    #endregion
+
+
+
+    #region >>> Text Boxes <<<
+
+    [Header("Text Boxes")]
+    [SerializeField]
+    private UnityEngine.UI.Image _textBox;
+    [SerializeField]
+    private TMP_Text _textBoxText;
+    [SerializeField]
+    [Range(0.1f, 6f)]
+    private float _textShowingAmount = 2.5f;
+    private List<string> _list = new List<string>();
+    private bool _showingText = false;
+
+    public void DisplayTextMessage(string text)
+    {
+        _list.Add(text);
+        if(_showingText == false)
+            StartCoroutine(TextBoxDisplay());
+    }
+    private IEnumerator TextBoxDisplay()
+    {
+        YieldInstruction yield = new WaitForSeconds(_textShowingAmount);
+        if(_list.Count == 0)
+            yield return null;
+
+        _showingText = true;
+        _textBox.gameObject.SetActive(true);
+        while (_list.Count > 0)
+        {
+            _textBoxText.text = _list.FirstOrDefault();
+            yield return yield;
+            _list.RemoveAt(0);
+        }
+        _textBox.gameObject.SetActive(false);
+        _showingText = false;
     }
 
     #endregion

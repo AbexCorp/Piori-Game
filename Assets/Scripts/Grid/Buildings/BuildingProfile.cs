@@ -13,12 +13,17 @@ public class BuildingProfile : ScriptableObject
 
     public virtual bool CheckIfCanBuild(GridTile tile, out string reason)
     {
-        if(tile.IsOccupied) //Enpty from buildings
+        if(tile.IsOccupiedByBuilding) //Enpty from buildings
         {
             reason = "Already occupied by another building";
             return false;
         }
-        if(Cost > GameManager.Instance.ResourceManager.Resource) //Have resource to build
+        if (tile.IsWalkable == false) //Enpty from environment
+        {
+            reason = "You can't build in this spot";
+            return false;
+        }
+        if (Cost > GameManager.Instance.ResourceManager.Resource) //Have resource to build
         {
             reason = "Not enough resources";
             return false;

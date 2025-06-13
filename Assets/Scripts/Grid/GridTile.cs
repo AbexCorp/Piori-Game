@@ -147,12 +147,9 @@ public class GridTile : MonoBehaviour, IMouseInteractable
         {
             if (GameManager.Instance.BuildingManager.IsBuilding == true)
             {
-                if (_building != null)
-                    return;
-
                 if (!GameManager.Instance.BuildingManager.SelectedProfile.CheckIfCanBuild(this, out string reason))
                 {
-                    Debug.Log(reason); //Do the interface popup here
+                    GameManager.Instance.InterfaceManager.DisplayTextMessage(reason);
                     return;
                 }
                 Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
@@ -163,12 +160,12 @@ public class GridTile : MonoBehaviour, IMouseInteractable
             {
                 if (_building == null)
                 {
-                    Debug.Log("Nothing to sell"); //Do the interface popup here
+                    GameManager.Instance.InterfaceManager.DisplayTextMessage("Nothing to sell");
                     return;
                 }
                 if(WorldPosition3D.DistanceTo2D(GameManager.Instance.Player.transform.position) > GameManager.Instance.Player.MaxBuildDistance)
                 {
-                    Debug.Log("To far from you"); //Do the interface popup here
+                    GameManager.Instance.InterfaceManager.DisplayTextMessage("To far from you");
                     return;
                 }
 
