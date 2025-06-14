@@ -131,22 +131,40 @@ public class Player : MonoBehaviour, IHealth
         PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
-        if(results.Count > 0)
+        if (results.Count > 0)
         {
-            if(results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
+            if (results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
-                _hover = interracted;
-                _hover.OnHoverEnter(context);
-                return;
+                {
+                    if (interracted != _hover)
+                    {
+                        _hover.OnHoverExit(context);
+                        _hover = interracted;
+                        _hover.OnHoverEnter(context);
+                        return;
+                    }
+                    return;
+                }
+                else
+                {
+                    _hover = interracted;
+                    _hover.OnHoverEnter(context);
+                    return;
+                }
             }
             else
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
+                    _hover.OnHoverExit(context);
                 _hover = null;
             }
+        }
+        else
+        {
+            if (_hover != null)
+                _hover.OnHoverExit(context);
+            _hover = null;
         }
 
 
@@ -162,16 +180,32 @@ public class Player : MonoBehaviour, IHealth
             if (hit.collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
-                _hover = interacted;
-                _hover.OnHoverEnter(context);
+                {
+                    if (interacted != _hover)
+                    {
+                        _hover.OnHoverExit(context);
+                        _hover = interacted;
+                        _hover.OnHoverEnter(context);
+                    }
+                }
+                else
+                {
+                    _hover = interacted;
+                    _hover.OnHoverEnter(context);
+                }
             }
             else
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
+                    _hover.OnHoverExit(context);
                 _hover = null;
             }
+        }
+        else
+        {
+            if (_hover != null)
+                _hover.OnHoverExit(context);
+            _hover = null;
         }
     }
 

@@ -21,6 +21,11 @@ public class CustomButton : MonoBehaviour, IMouseInteractable
     [SerializeField]
     protected Color _colorHover;
 
+    [SerializeField]
+    protected bool _showTooltip = false;
+    [SerializeField]
+    protected string _tooltipText = "";
+
 
     void Start()
     {
@@ -35,11 +40,18 @@ public class CustomButton : MonoBehaviour, IMouseInteractable
     public void OnHoverEnter(InputAction.CallbackContext context)
     {
         _image.color = _colorHover;
+        if (_showTooltip)
+        {
+            GameManager.Instance.InterfaceManager.ChangeTooltipText(_tooltipText);
+            GameManager.Instance.InterfaceManager.TooltipSetActive(true);
+        }
     }
 
-    public void OnHoveExit(InputAction.CallbackContext context)
+    public void OnHoverExit(InputAction.CallbackContext context)
     {
         _image.color = _colorDefault;
+        if (_showTooltip)
+            GameManager.Instance.InterfaceManager.TooltipSetActive(false);
     }
 
     public virtual void OnClick(InputAction.CallbackContext context)

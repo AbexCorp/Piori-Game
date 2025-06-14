@@ -12,6 +12,11 @@ public class InterfaceManager : MonoBehaviour
     {
         GenerateBuildingButtons();
     }
+    private void Update()
+    {
+        DebugUI();
+        MoveTooltip();
+    }
 
 
     #region >>> Building <<<
@@ -133,9 +138,9 @@ public class InterfaceManager : MonoBehaviour
     #endregion
 
 
-    #region >>> Text Boxes <<<
+    #region >>> Text Box <<<
 
-    [Header("Text Boxes")]
+    [Header("Text Box")]
     [SerializeField]
     private UnityEngine.UI.Image _textBox;
     [SerializeField]
@@ -168,6 +173,45 @@ public class InterfaceManager : MonoBehaviour
         }
         _textBox.gameObject.SetActive(false);
         _showingText = false;
+    }
+
+    #endregion
+
+
+    #region >>> Tooltip <<<
+
+    [Header("Floating Tooltip")]
+    [SerializeField]
+    private RectTransform _floatingTooltip;
+    [SerializeField]
+    private TMP_Text _floatingTooltipText;
+
+    private bool _floatingTooltipIsEnabled = false;
+    public bool FloatingTooltipIsEnabled => _floatingTooltipIsEnabled;
+    private int distance = 10;
+
+    public void TooltipSetActive(bool value)
+    {
+        _floatingTooltip.gameObject.SetActive(value);
+        _floatingTooltipIsEnabled = value;
+    }
+    public void ChangeTooltipText(string text)
+    {
+        _floatingTooltipText.text = text;
+    }
+    private void MoveTooltip()
+    {
+        if (_floatingTooltipIsEnabled == false)
+            return;
+
+        float xOffset = 0;
+        float yOffset = 0;
+        if(GameManager.Instance.Player.MousePosition.x + _floatingTooltip.sizeDelta.x + distance > Screen.width)
+            xOffset -= (distance + distance + _floatingTooltip.sizeDelta.x);
+        if (GameManager.Instance.Player.MousePosition.y - _floatingTooltip.sizeDelta.y - distance < 0)
+            yOffset += (distance + distance + _floatingTooltip.sizeDelta.y);
+
+        _floatingTooltip.anchoredPosition = new Vector2(GameManager.Instance.Player.MousePosition.x + distance + xOffset, GameManager.Instance.Player.MousePosition.y - _floatingTooltip.sizeDelta.y - distance + yOffset);
     }
 
     #endregion
@@ -213,7 +257,7 @@ public class InterfaceManager : MonoBehaviour
     private int _healthMax = -1;
     private int _resource = -1;
 
-    private void Update()
+    private void DebugUI()
     {
         sb.Clear();
         sb.AppendLine($"Health: {_health}/{_healthMax}");
@@ -224,7 +268,7 @@ public class InterfaceManager : MonoBehaviour
             sb.AppendLine($"Building: Selling");
         else
             sb.AppendLine($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
-        
+
         _debugUI.text = sb.ToString();
     }
     public void UpdateHealth(int amount, int max)

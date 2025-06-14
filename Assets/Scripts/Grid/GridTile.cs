@@ -135,7 +135,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
             EnableEffect();
     }
 
-    public void OnHoveExit(InputAction.CallbackContext context)
+    public void OnHoverExit(InputAction.CallbackContext context)
     {
         if (context.performed)
             DisableEffect();

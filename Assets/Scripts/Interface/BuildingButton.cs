@@ -10,6 +10,8 @@ public class BuildingButton : CustomButton
     {
         _assignedProfile = p;
         SetText(_assignedProfile.UniqueID);
+        _showTooltip = true;
+        _tooltipText = $"{_assignedProfile.UniqueID}\n Cost: {_assignedProfile.Cost}\n Health: {_assignedProfile.HealthMax}";
     }
 
     public override void Activate()
