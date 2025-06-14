@@ -12,13 +12,10 @@ public class BuildingButton : CustomButton
         SetText(_assignedProfile.UniqueID);
     }
 
-    public override void OnClick(InputAction.CallbackContext context)
+    public override void Activate()
     {
-        if (context.performed)
-        {
-            OnClickEvent?.Invoke();
-            GameManager.Instance.BuildingManager.SelectProfile(_assignedProfile);
-            GameManager.Instance.BuildingManager.Build();
-        }
+        OnClickEvent?.Invoke();
+        GameManager.Instance.BuildingManager.SelectProfile(_assignedProfile);
+        GameManager.Instance.BuildingManager.Build();
     }
 }

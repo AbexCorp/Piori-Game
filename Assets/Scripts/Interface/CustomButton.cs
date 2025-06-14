@@ -44,6 +44,13 @@ public class CustomButton : MonoBehaviour, IMouseInteractable
 
     public virtual void OnClick(InputAction.CallbackContext context)
     {
+        if (context.performed)
+        {
+            Activate();
+        }
+    }
+    public virtual void Activate()
+    {
         OnClickEvent?.Invoke();
     }
 }

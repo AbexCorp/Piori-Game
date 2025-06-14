@@ -525,6 +525,7 @@ MonoBehaviour:
   _repairCost: 0.25
   _repairAmount: 0.7
   _maxBuildDistance: 2.2
+  _buildingSellingReturn: 0.65
 --- !u!114 &2917171131487977440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,6 +661,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: a5ba0608-404f-4cf4-a57f-fad33b98ffed
     m_ActionName: InputMap/Repair[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7879182317600551522}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnQuickBuild
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1c559b21-8404-4ae1-ba3a-17141da688b8
+    m_ActionName: InputMap/QuickBuild[/Keyboard/1,/Keyboard/2,/Keyboard/3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: InputMap

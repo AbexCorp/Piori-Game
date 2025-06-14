@@ -26,6 +26,8 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField]
     private CustomButton _cancelBuildingButton;
 
+    private Dictionary<int, BuildingButton> _buildingButtons = new();
+
     private void GenerateBuildingButtons()
     {
         float position = 0;
@@ -40,6 +42,8 @@ public class InterfaceManager : MonoBehaviour
             b.SetProfile(towers[i]);
             b.RectTransform.anchoredPosition = new Vector2(position, 0);
             position += (buttonWidth + margin);
+            if(_buildingButtons.Count < 9)
+                _buildingButtons.Add(_buildingButtons.Count + 1, b);
         }
 
         ResourceBuildingProfile[] resourceBuildings = Resources.LoadAll<ResourceBuildingProfile>("Buildings/ResourceBuildings");
@@ -49,6 +53,8 @@ public class InterfaceManager : MonoBehaviour
             b.SetProfile(resourceBuildings[i]);
             b.RectTransform.anchoredPosition = new Vector2(position, 0);
             position += (buttonWidth + margin);
+            if (_buildingButtons.Count < 9)
+                _buildingButtons.Add(_buildingButtons.Count + 1, b);
         }
 
         //Sell button
@@ -76,6 +82,33 @@ public class InterfaceManager : MonoBehaviour
         _cancelBuildingButton.gameObject.SetActive(value);
     }
 
+    public void QuickBuild(int value)
+    {
+        if (value < 0 || value > _buildingButtons.Count)
+            return;
+
+        if(value != 0)
+        {
+            if (_buildingButtons.ContainsKey(value))
+            {
+                _buildingButtons[value].Activate();
+                return;
+            }
+            return;
+        }
+
+        if(GameManager.Instance.BuildingManager.IsBuilding || GameManager.Instance.BuildingManager.IsSelling)
+        {
+            _cancelBuildingButton.Activate();
+            return;
+        }
+        else if(GameManager.Instance.BuildingManager.IsBuilding == false && GameManager.Instance.BuildingManager.IsSelling == false)
+        {
+            _sellButton.Activate();
+            return;
+        }
+    }
+
     #endregion
 
 
@@ -98,7 +131,6 @@ public class InterfaceManager : MonoBehaviour
     }
 
     #endregion
-
 
 
     #region >>> Text Boxes <<<

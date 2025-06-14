@@ -375,4 +375,33 @@ public class Player : MonoBehaviour, IHealth
     public float BuildingSellingReturn => _buildingSellingReturn;
 
     #endregion
+
+
+    public void OnQuickBuild(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            int value = (int)context.ReadValue<float>();
+
+            switch (value)
+            {
+                default:
+                case 0:
+                    GameManager.Instance.InterfaceManager.QuickBuild(0);
+                    break;
+
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    GameManager.Instance.InterfaceManager.QuickBuild(value);
+                    break;
+            }
+        }
+    }
 }
