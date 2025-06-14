@@ -677,6 +677,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1c559b21-8404-4ae1-ba3a-17141da688b8
     m_ActionName: InputMap/QuickBuild[/Keyboard/1,/Keyboard/2,/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7879182317600551522}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: PauseGame
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 78103255-def9-4df3-8488-a6888a0cd28d
+    m_ActionName: InputMap/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: InputMap

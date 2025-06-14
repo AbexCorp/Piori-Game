@@ -373,10 +373,6 @@ public class Player : MonoBehaviour, IHealth
     [SerializeField]
     private float _buildingSellingReturn = 0.65f;
     public float BuildingSellingReturn => _buildingSellingReturn;
-
-    #endregion
-
-
     public void OnQuickBuild(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -404,4 +400,15 @@ public class Player : MonoBehaviour, IHealth
             }
         }
     }
+
+    #endregion
+
+
+    public void PauseGame(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameManager.Instance.InterfaceManager.PauseMenu();
+        }
+    } 
 }

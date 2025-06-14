@@ -173,6 +173,34 @@ public class InterfaceManager : MonoBehaviour
     #endregion
 
 
+    #region >>> PauseMenu <<<
+
+    [Header("Pause Menu")]
+    [SerializeField]
+    private GameObject _pauseMenu;
+
+    private bool _pauseMenuEnabled = false;
+    public bool PauseMenuEnabled => _pauseMenuEnabled;
+
+    public void PauseMenu()
+    {
+        if (_pauseMenuEnabled == false)
+        {
+            _pauseMenuEnabled = true;
+            Time.timeScale = 0f;
+            _pauseMenu.SetActive(true);
+        }
+        else
+        {
+            _pauseMenuEnabled = false;
+            Time.timeScale = 1f;
+            _pauseMenu.SetActive(false);
+        }
+    }
+
+    #endregion
+
+
     #region Debug
 
     [Header("Debug")]
