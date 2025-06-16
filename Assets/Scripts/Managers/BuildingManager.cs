@@ -69,12 +69,15 @@ public class BuildingManager : MonoBehaviour
         ChoosePrefab();
         _isBuilding = true;
         GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(true);
+        GameManager.Instance.InterfaceManager.BuildStatusTooltipUpdateText();
+        GameManager.Instance.InterfaceManager.BuildStatusTooltipSetActive(true);
     }
     public void StopBuilding()
     {
         _isBuilding = false;
         SelectProfile(null);
         GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(false);
+        GameManager.Instance.InterfaceManager.BuildStatusTooltipSetActive(false);
     }
     public void Sell()
     {
@@ -83,10 +86,13 @@ public class BuildingManager : MonoBehaviour
             return;
         _isSelling = true;
         GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(true);
+        GameManager.Instance.InterfaceManager.BuildStatusTooltipUpdateText();
+        GameManager.Instance.InterfaceManager.BuildStatusTooltipSetActive(true);
     }
     public void StopSelling()
     {
         _isSelling = false;
         GameManager.Instance.InterfaceManager.BuildingCancelButtonSetActive(false);
+        GameManager.Instance.InterfaceManager.BuildStatusTooltipSetActive(false);
     }
 }

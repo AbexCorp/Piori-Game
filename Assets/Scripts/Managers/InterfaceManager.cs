@@ -16,6 +16,7 @@ public class InterfaceManager : MonoBehaviour
     {
         DebugUI();
         MoveTooltip();
+        MoveBuildStatusTooltip();
     }
 
 
@@ -214,6 +215,36 @@ public class InterfaceManager : MonoBehaviour
         _floatingTooltip.anchoredPosition = new Vector2(GameManager.Instance.Player.MousePosition.x + distance + xOffset, GameManager.Instance.Player.MousePosition.y - _floatingTooltip.sizeDelta.y - distance + yOffset);
     }
 
+    #region Building Status Tooltip
+
+    [Space]
+    [SerializeField]
+    private RectTransform _buildingStatusTooltip;
+    [SerializeField]
+    private TMP_Text _buildingStatusText;
+
+    private bool _buildtStatusTooltipIsActive = false;
+
+    public void BuildStatusTooltipSetActive(bool value)
+    {
+        _buildtStatusTooltipIsActive = value;
+        _buildingStatusTooltip.gameObject.SetActive(value);
+    }
+    public void MoveBuildStatusTooltip()
+    {
+        if(_buildtStatusTooltipIsActive)
+            _buildingStatusTooltip.anchoredPosition = new Vector2(GameManager.Instance.Player.MousePosition.x + 10, GameManager.Instance.Player.MousePosition.y);
+    }
+    public void BuildStatusTooltipUpdateText()
+    {
+        if (GameManager.Instance.BuildingManager.IsSelling)
+            _buildingStatusText.text = $"Building: Selling";
+        else
+            _buildingStatusText.text = ($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
+    }
+
+    #endregion
+
     #endregion
 
 
@@ -246,6 +277,19 @@ public class InterfaceManager : MonoBehaviour
     public void UpdateResourceCounter(int amount)
     {
         _resourceCounter.text = $"{amount}";
+    }
+
+    #endregion
+
+    #region Wave Counter
+
+    [SerializeField]
+    [Space]
+    private TMP_Text _waveCounter;
+
+    public void WaveCounterUpdate()
+    {
+        _waveCounter.text = $"Wave: {GameManager.Instance.EnemyManager.CurrentWave}";
     }
 
     #endregion
@@ -295,10 +339,6 @@ public class InterfaceManager : MonoBehaviour
         sb.Clear();
         sb.AppendLine($"Game State: {GameManager.Instance.CurrentGameState}");
         sb.AppendLine($"Wave: {GameManager.Instance.EnemyManager.CurrentWave}");
-        if (GameManager.Instance.BuildingManager.IsSelling)
-            sb.AppendLine($"Building: Selling");
-        else
-            sb.AppendLine($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
 
         _debugUI.text = sb.ToString();
     }
