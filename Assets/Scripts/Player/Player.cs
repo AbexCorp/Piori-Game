@@ -158,6 +158,7 @@ public class Player : MonoBehaviour, IHealth
                 if (_hover != null)
                     _hover.OnHoverExit(context);
                 _hover = null;
+                return;
             }
         }
         else
