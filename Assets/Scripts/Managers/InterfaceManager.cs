@@ -217,11 +217,13 @@ public class InterfaceManager : MonoBehaviour
     #endregion
 
 
-    #region >>> Counter <<<
+    #region >>> Counters <<<
+
+    [Header("Counters")]
 
     #region Player Health
 
-    [Header("Player Health")]
+    [Space]
     [SerializeField]
     private UnityEngine.UI.Image _playerHealthFill;
     [SerializeField]
@@ -231,6 +233,19 @@ public class InterfaceManager : MonoBehaviour
     {
         _playerHealthText.text = $"{GameManager.Instance.Player.HealthCurrent} / {GameManager.Instance.Player.HealthMax}";
         _playerHealthFill.fillAmount = GameManager.Instance.Player.HealthCurrent / (float)GameManager.Instance.Player.HealthMax;
+    }
+
+    #endregion
+
+    #region Resource Counter
+
+    [Space]
+    [SerializeField]
+    private TMP_Text _resourceCounter;
+
+    public void UpdateResourceCounter(int amount)
+    {
+        _resourceCounter.text = $"{amount}";
     }
 
     #endregion
@@ -274,15 +289,10 @@ public class InterfaceManager : MonoBehaviour
 
 
     private StringBuilder sb = new();
-    private int _health = -1;
-    private int _healthMax = -1;
-    private int _resource = -1;
 
     private void DebugUI()
     {
         sb.Clear();
-        sb.AppendLine($"Health: {_health}/{_healthMax}");
-        sb.AppendLine($"Resource: {_resource}");
         sb.AppendLine($"Game State: {GameManager.Instance.CurrentGameState}");
         sb.AppendLine($"Wave: {GameManager.Instance.EnemyManager.CurrentWave}");
         if (GameManager.Instance.BuildingManager.IsSelling)
@@ -291,15 +301,6 @@ public class InterfaceManager : MonoBehaviour
             sb.AppendLine($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
 
         _debugUI.text = sb.ToString();
-    }
-    public void UpdateHealth(int amount, int max)
-    {
-        _health = amount;
-        _healthMax = max;
-    }
-    public void UpdateResource(int amount)
-    {
-        _resource = amount;
     }
 
     #endregion
