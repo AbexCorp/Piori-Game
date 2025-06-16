@@ -23,7 +23,7 @@ public class Player : MonoBehaviour, IHealth
     private void InitializePlayer()
     {
         _healthCurrent = HealthMax;
-        GameManager.Instance.InterfaceManager.UpdateHealth(_healthCurrent, HealthMax);
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
     }
 
     void Update()
@@ -90,13 +90,14 @@ public class Player : MonoBehaviour, IHealth
         if (damage <= 0)
             return;
         _healthCurrent -= damage;
-        GameManager.Instance.InterfaceManager.UpdateHealth(_healthCurrent, HealthMax);
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
         if (_healthCurrent <= 0)
             Die();
     }
     private void Die()
     {
         _healthCurrent = 0;
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
         GameManager.Instance.ChangeGameState(GameState.Lose);
     }
 

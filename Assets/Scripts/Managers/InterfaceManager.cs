@@ -217,6 +217,27 @@ public class InterfaceManager : MonoBehaviour
     #endregion
 
 
+    #region >>> Counter <<<
+
+    #region Player Health
+
+    [Header("Player Health")]
+    [SerializeField]
+    private UnityEngine.UI.Image _playerHealthFill;
+    [SerializeField]
+    private TMP_Text _playerHealthText;
+
+    public void UpdatePlayerHealth()
+    {
+        _playerHealthText.text = $"{GameManager.Instance.Player.HealthCurrent} / {GameManager.Instance.Player.HealthMax}";
+        _playerHealthFill.fillAmount = GameManager.Instance.Player.HealthCurrent / (float)GameManager.Instance.Player.HealthMax;
+    }
+
+    #endregion
+
+    #endregion
+
+
     #region >>> PauseMenu <<<
 
     [Header("Pause Menu")]
