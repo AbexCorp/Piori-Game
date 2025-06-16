@@ -44,8 +44,11 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
 
     public virtual void GetDestroyed()
     {
-        _occupiedTile.ClearAssignedBuilding();
-        _occupiedTile = null;
+        if(_occupiedTile != null)
+        {
+            _occupiedTile.ClearAssignedBuilding();
+            _occupiedTile = null;
+        }
         Destroy(gameObject);
     }
 
@@ -72,25 +75,16 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
         if (damage < 0)
             return;
         _healthCurrent -= damage;
-        if(_healthBarInterface != null && _healthBar != null)
-        {
-            if(!_healthBarInterface.activeInHierarchy)
-                _healthBarInterface.SetActive(true);
-            _healthBar.fillAmount = Mathf.Clamp((_healthCurrent / (float)_healthMax), 0, 1);
-        }
+        if(!_healthBarInterface.activeInHierarchy)
+            _healthBarInterface.SetActive(true);
+        _healthBar.fillAmount = Mathf.Clamp((_healthCurrent / (float)_healthMax), 0, 1);
         Die();
     }
     protected void Die()
     {
         if (_healthCurrent > 0)
             return;
-
-        if(_occupiedTile != null)
-        {
-            _occupiedTile.ClearAssignedBuilding();
-            _occupiedTile = null;
-        }
-        Destroy(gameObject);
+        GetDestroyed();
     }
 
     #region Repair

@@ -74,6 +74,18 @@ public class GridTile : MonoBehaviour, IMouseInteractable
         _building = null;
     }
 
+    public bool SellBuilding()
+    {
+        if (!IsOccupied)
+            return false;
+
+        GameManager.Instance.ResourceManager.AddResource(Mathf.Clamp((int)System.MathF.Round(_building.Cost * GameManager.Instance.Player.BuildingSellingReturn), 0, int.MaxValue));
+        _building.GetDestroyed();
+        _building = null;
+        GameManager.Instance.BuildingManager.StopSelling();
+        return true;
+    }
+
     #endregion
 
 
@@ -123,7 +135,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
             EnableEffect();
     }
 
-    public void OnHoveExit(InputAction.CallbackContext context)
+    public void OnHoverExit(InputAction.CallbackContext context)
     {
         if (context.performed)
             DisableEffect();
@@ -133,16 +145,32 @@ public class GridTile : MonoBehaviour, IMouseInteractable
     {
         if (context.performed)
         {
-            if (GameManager.Instance.BuildingManager.IsBuilding == false)
-                return;
-            if (_building != null)
-                return;
+            if (GameManager.Instance.BuildingManager.IsBuilding == true)
+            {
+                if (!GameManager.Instance.BuildingManager.SelectedProfile.CheckIfCanBuild(this, out string reason))
+                {
+                    GameManager.Instance.InterfaceManager.DisplayTextMessage(reason);
+                    return;
+                }
+                Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
+                b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
+                Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
+            }
+            else if (GameManager.Instance.BuildingManager.IsSelling == true)
+            {
+                if (_building == null)
+                {
+                    GameManager.Instance.InterfaceManager.DisplayTextMessage("Nothing to sell");
+                    return;
+                }
+                if(WorldPosition3D.DistanceTo2D(GameManager.Instance.Player.transform.position) > GameManager.Instance.Player.MaxBuildDistance)
+                {
+                    GameManager.Instance.InterfaceManager.DisplayTextMessage("To far from you");
+                    return;
+                }
 
-            if (!GameManager.Instance.BuildingManager.SelectedProfile.CheckIfCanBuild(this))
-                return;
-            Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
-            b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
-            Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
+                SellBuilding();
+            }
         }
     }
 

@@ -10,10 +10,14 @@ public class ResourceBuildingProfile : BuildingProfile
     [Range(0.1f, 10f)]
     public float ProductionCooldown = 2.5f;
 
-    public override bool CheckIfCanBuild(GridTile tile)
+    public override bool CheckIfCanBuild(GridTile tile, out string reason)
     {
-        if(Cost > GameManager.Instance.ResourceManager.Resource || tile.IsOccupied)
+        if(base.CheckIfCanBuild(tile, out string r) == false)
+        {
+            reason = r;
             return false;
+        }
+        reason = "";
         return true;
     }
 }

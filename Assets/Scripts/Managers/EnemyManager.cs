@@ -111,6 +111,7 @@ public class EnemyManager : MonoBehaviour
             GameManager.Instance.ChangeGameState(GameState.Win);
             return;
         }
+        GameManager.Instance.InterfaceManager.WaveCounterUpdate();
 
         SpawnWave(GameManager.Instance.Level.Waves[_currentWave - 1]); //Change this to spawn enemies not all at the same time
         GameManager.Instance.ChangeGameState(GameState.Wave);

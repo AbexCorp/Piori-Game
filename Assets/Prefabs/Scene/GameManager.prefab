@@ -58,6 +58,9 @@ MonoBehaviour:
   _interfaceManager: {fileID: 1871526928638478126}
   _buildingManager: {fileID: 2535248261682941944}
   _level: {fileID: 11400000, guid: 18b6d6732fb5b934eb12d4364b614a9c, type: 2}
+  _firstWaveDelay: 15
+  _waveTime: 10
+  _waveBreakTime: 10
 --- !u!114 &4740278514540504993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +114,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingButtonsFrame: {fileID: 0}
   _buildingButtonPrefab: {fileID: 4589796101708143858, guid: 9fc1988af25fc01438019bfaf320d58d, type: 3}
+  _sellButton: {fileID: 0}
+  _cancelBuildingButton: {fileID: 0}
+  _gameTimer: {fileID: 0}
+  _gameTimerText: {fileID: 0}
+  _textBox: {fileID: 0}
+  _textBoxText: {fileID: 0}
+  _textShowingAmount: 1.7
   _debugUI: {fileID: 0}
 --- !u!114 &2535248261682941944
 MonoBehaviour:

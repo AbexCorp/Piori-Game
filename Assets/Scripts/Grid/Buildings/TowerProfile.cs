@@ -15,10 +15,14 @@ public class TowerProfile : BuildingProfile
     public float AttackCooldown = 0.3f;
     public int Damage = 20;
 
-    public override bool CheckIfCanBuild(GridTile tile)
+    public override bool CheckIfCanBuild(GridTile tile, out string reason)
     {
-        if(Cost > GameManager.Instance.ResourceManager.Resource || tile.IsOccupied)
+        if(base.CheckIfCanBuild(tile, out string r) == false)
+        {
+            reason = r;
             return false;
+        }
+        reason = "";
         return true;
     }
 }

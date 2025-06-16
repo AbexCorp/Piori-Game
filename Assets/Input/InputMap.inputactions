@@ -58,6 +58,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "QuickBuild",
+                    "type": "Button",
+                    "id": "1c559b21-8404-4ae1-ba3a-17141da688b8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "78103255-def9-4df3-8488-a6888a0cd28d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -212,6 +230,127 @@
                     "processors": "",
                     "groups": "",
                     "action": "Repair",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2bada9b7-0d92-4814-a8e1-3eea9d9c6d70",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Clamp(min=1,max=1)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a1ec6eb-056c-4124-9cca-fa8ef085cc63",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "Clamp(min=2,max=2)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41f0ce87-4787-4856-96aa-c0ed7ecde9a8",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "Clamp(min=3,max=3)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ec790a9-5efc-4e87-84f4-d106d80355eb",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "Clamp(min=4,max=4)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6130a00b-10ac-4cd4-bc0e-c8f635e14b83",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "Clamp(min=5,max=5)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f11cbf8-f683-4872-9f67-c308c5f9e46a",
+                    "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "Clamp(min=6,max=6)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2065af6f-6b85-4aa0-a41c-e09b9743379a",
+                    "path": "<Keyboard>/7",
+                    "interactions": "",
+                    "processors": "Clamp(min=7,max=7)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0210b1ff-1c14-4d34-8f1f-a14825d6ad3e",
+                    "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "Clamp(min=8,max=8)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ab2b042-dc71-4841-b770-30b9cbebb1e6",
+                    "path": "<Keyboard>/9",
+                    "interactions": "",
+                    "processors": "Clamp(min=9,max=9)",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0b96125-5676-4b24-b295-ec59287c0f6c",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "Clamp",
+                    "groups": "",
+                    "action": "QuickBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37d41801-5b5b-4a9e-9f70-fc1674d486ef",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

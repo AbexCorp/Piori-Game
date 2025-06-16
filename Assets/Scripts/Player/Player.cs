@@ -23,7 +23,7 @@ public class Player : MonoBehaviour, IHealth
     private void InitializePlayer()
     {
         _healthCurrent = HealthMax;
-        GameManager.Instance.InterfaceManager.UpdateHealth(_healthCurrent, HealthMax);
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
     }
 
     void Update()
@@ -90,13 +90,14 @@ public class Player : MonoBehaviour, IHealth
         if (damage <= 0)
             return;
         _healthCurrent -= damage;
-        GameManager.Instance.InterfaceManager.UpdateHealth(_healthCurrent, HealthMax);
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
         if (_healthCurrent <= 0)
             Die();
     }
     private void Die()
     {
         _healthCurrent = 0;
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
         GameManager.Instance.ChangeGameState(GameState.Lose);
     }
 
@@ -131,22 +132,41 @@ public class Player : MonoBehaviour, IHealth
         PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
-        if(results.Count > 0)
+        if (results.Count > 0)
         {
-            if(results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
+            if (results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
-                _hover = interracted;
-                _hover.OnHoverEnter(context);
-                return;
+                {
+                    if (interracted != _hover)
+                    {
+                        _hover.OnHoverExit(context);
+                        _hover = interracted;
+                        _hover.OnHoverEnter(context);
+                        return;
+                    }
+                    return;
+                }
+                else
+                {
+                    _hover = interracted;
+                    _hover.OnHoverEnter(context);
+                    return;
+                }
             }
             else
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
+                    _hover.OnHoverExit(context);
                 _hover = null;
+                return;
             }
+        }
+        else
+        {
+            if (_hover != null)
+                _hover.OnHoverExit(context);
+            _hover = null;
         }
 
 
@@ -162,16 +182,32 @@ public class Player : MonoBehaviour, IHealth
             if (hit.collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
-                _hover = interacted;
-                _hover.OnHoverEnter(context);
+                {
+                    if (interacted != _hover)
+                    {
+                        _hover.OnHoverExit(context);
+                        _hover = interacted;
+                        _hover.OnHoverEnter(context);
+                    }
+                }
+                else
+                {
+                    _hover = interacted;
+                    _hover.OnHoverEnter(context);
+                }
             }
             else
             {
                 if (_hover != null)
-                    _hover.OnHoveExit(context);
+                    _hover.OnHoverExit(context);
                 _hover = null;
             }
+        }
+        else
+        {
+            if (_hover != null)
+                _hover.OnHoverExit(context);
+            _hover = null;
         }
     }
 
@@ -361,4 +397,54 @@ public class Player : MonoBehaviour, IHealth
     }
 
     #endregion
+
+
+    #region >>> Building <<<
+
+    [Header("Building")]
+    [SerializeField]
+    private float _maxBuildDistance = 2.5f;
+    public float MaxBuildDistance => _maxBuildDistance;
+
+    [SerializeField]
+    private float _buildingSellingReturn = 0.65f;
+    public float BuildingSellingReturn => _buildingSellingReturn;
+    public void OnQuickBuild(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            int value = (int)context.ReadValue<float>();
+
+            switch (value)
+            {
+                default:
+                case 0:
+                    GameManager.Instance.InterfaceManager.QuickBuild(0);
+                    break;
+
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    GameManager.Instance.InterfaceManager.QuickBuild(value);
+                    break;
+            }
+        }
+    }
+
+    #endregion
+
+
+    public void PauseGame(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameManager.Instance.InterfaceManager.PauseMenu();
+        }
+    } 
 }
