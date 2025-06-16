@@ -14,7 +14,7 @@ public class InterfaceManager : MonoBehaviour
     }
     private void Update()
     {
-        DebugUI();
+        //DebugUI();
         MoveTooltip();
         MoveBuildStatusTooltip();
     }
@@ -337,8 +337,8 @@ public class InterfaceManager : MonoBehaviour
     private void DebugUI()
     {
         sb.Clear();
-        sb.AppendLine($"Game State: {GameManager.Instance.CurrentGameState}");
-        sb.AppendLine($"Wave: {GameManager.Instance.EnemyManager.CurrentWave}");
+
+        //WriteDebugUiHere
 
         _debugUI.text = sb.ToString();
     }
