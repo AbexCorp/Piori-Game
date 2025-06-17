@@ -11,6 +11,8 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 
     [SerializeField]
     protected Rigidbody _rigidbody;
+    [SerializeField]
+    protected SpriteRenderer _spriteRenderer;
 
 
     protected virtual void Start()
@@ -32,6 +34,7 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 
     #region >>> Movement <<<
 
+    [Header("Movement")]
     [SerializeField]
     protected float _speed = 1;
     [SerializeField]

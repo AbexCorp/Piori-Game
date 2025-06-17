@@ -21,4 +21,8 @@ public class EnemyProfile : ScriptableObject
     [Header("Health")]
     [SerializeField]
     public int HealthMax = 50;
+
+    [Header("Visual")]
+    [SerializeField]
+    public Sprite Sprite = null;
 }

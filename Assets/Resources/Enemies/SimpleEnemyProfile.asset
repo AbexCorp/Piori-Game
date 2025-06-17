@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: SimpleEnemyProfile
   m_EditorClassIdentifier: 
   UniqueID: SimpleEnemy
+  Tier: 1
+  Cost: 50
   Speed: 1
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
   PathfindingType: 0
   HealthMax: 50
+  Sprite: {fileID: 0}
   StopsMovementAfterAttack: 1
   AttacksBuildings: 1
   PrioritizesPlayer: 1

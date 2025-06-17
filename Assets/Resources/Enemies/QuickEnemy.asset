@@ -21,6 +21,7 @@ MonoBehaviour:
     m_Bits: 1024
   PathfindingType: 0
   HealthMax: 15
+  Sprite: {fileID: 0}
   StopsMovementAfterAttack: 0
   AttacksBuildings: 0
   PrioritizesPlayer: 1

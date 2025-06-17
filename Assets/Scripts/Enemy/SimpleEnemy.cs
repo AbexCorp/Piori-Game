@@ -48,6 +48,11 @@ public class SimpleEnemy : Enemy
         _rangedRange = sp.RangedRange;
 
 
+        if(sp.Sprite != null)
+        {
+            _spriteRenderer.sprite = sp.Sprite;
+        }
+
         InitializeEnemy();
     }
     
