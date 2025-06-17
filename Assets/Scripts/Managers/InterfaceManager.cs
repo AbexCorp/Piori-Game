@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -324,6 +325,11 @@ public class InterfaceManager : MonoBehaviour
             Time.timeScale = 1f;
             _pauseMenu.SetActive(false);
         }
+    }
+    public void BackToMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 
     #endregion

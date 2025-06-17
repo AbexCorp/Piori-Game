@@ -185,7 +185,7 @@ MonoBehaviour:
   _healthBarInterface: {fileID: 5441835889329201315}
   _healthBar: {fileID: 242620835186089125}
   _productionType: 0
-  _productionAmount: 1
+  _productionAmount: 5
   _productionCooldown: 2.5
 --- !u!1001 &1026648931692152921
 PrefabInstance:

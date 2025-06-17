@@ -19,7 +19,7 @@ MonoBehaviour:
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
-  PathfindingType: 1
+  PathfindingType: 0
   HealthMax: 50
   Sprite: {fileID: 0}
   StopsMovementAfterAttack: 1
@@ -27,8 +27,8 @@ MonoBehaviour:
   PrioritizesPlayer: 1
   UsesMelee: 1
   MeleeAttackCooldown: 1
-  MeleeDamage: 10
-  MeleeRange: 0.5
+  MeleeDamage: 6
+  MeleeRange: 1
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
   UsesRanged: 0
   RangedAttackCooldown: 2

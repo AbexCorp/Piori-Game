@@ -20,5 +20,5 @@ MonoBehaviour:
   ProjectileProfile: {fileID: 11400000, guid: 9440b9983ddaf2e41b127a888d8fa958, type: 2}
   Range: 4
   HasCooldown: 1
-  AttackCooldown: 0.1
-  Damage: 10
+  AttackCooldown: 0.2
+  Damage: 5

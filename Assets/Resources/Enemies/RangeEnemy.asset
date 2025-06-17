@@ -19,7 +19,7 @@ MonoBehaviour:
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
-  PathfindingType: 1
+  PathfindingType: 0
   HealthMax: 30
   Sprite: {fileID: 0}
   StopsMovementAfterAttack: 1

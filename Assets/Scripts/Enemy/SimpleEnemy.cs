@@ -83,9 +83,9 @@ public class SimpleEnemy : Enemy
             return;
 
         UpdateDistanceToTarget();
-        if (_distanceToTarget <= _meleeRange)
+        if (_distanceToTarget <= _meleeRange && _usesMelee)
             MeleeAttack();
-        else if (_distanceToTarget <= _rangedRange)
+        else if (_distanceToTarget <= _rangedRange && _usesRanged)
             RangedAttack();
     }
     protected IEnumerator AttackCooldown(float time)
@@ -121,6 +121,8 @@ public class SimpleEnemy : Enemy
         if (_targets[_target] < 0)
             _target = null;
     }
+    //There are some issues here
+    //Need to test this a lot
     protected int GetTargetValue(IHealth target)
     {
         int value = -10000;
@@ -141,7 +143,7 @@ public class SimpleEnemy : Enemy
         if (isPlayer && _prioritizesPlayer)
             value += 1000;
         else if(isPlayer && !_prioritizesPlayer)
-            value = 0;
+            value = 10;
 
         //Is building
         bool isBuilding = target is Building;

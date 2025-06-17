@@ -28,7 +28,7 @@ MonoBehaviour:
   UsesMelee: 1
   MeleeAttackCooldown: 3
   MeleeDamage: 50
-  MeleeRange: 0.5
+  MeleeRange: 1.25
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
   UsesRanged: 0
   RangedAttackCooldown: 2
