@@ -507,16 +507,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 2321856555584936692}
-  _speed: 1
+  _speed: 1.2
   _groundMask:
     serializedVersion: 2
     m_Bits: 1024
-  _healthMax: 100
+  _healthMax: 120
   _mouseHitMask:
     serializedVersion: 2
     m_Bits: 1056
   _playerProjectile: {fileID: 11400000, guid: 234897d5a03d8624cbc46fb55b1e7832, type: 2}
-  _damage: 20
+  _damage: 25
   _attackCooldown: 1.5
   _attackIsOnCooldown: 0
   _remainingAttackCooldown: 0

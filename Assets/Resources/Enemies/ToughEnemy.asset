@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UniqueID: ToughEnemy
   Tier: 1
-  Cost: 90
-  Speed: 0.6
+  Cost: 100
+  Speed: 0.5
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
   PathfindingType: 1
-  HealthMax: 110
+  HealthMax: 200
   Sprite: {fileID: 0}
   StopsMovementAfterAttack: 1
   AttacksBuildings: 1
-  PrioritizesPlayer: 1
+  PrioritizesPlayer: 0
   UsesMelee: 1
   MeleeAttackCooldown: 3
-  MeleeDamage: 40
-  MeleeRange: 0.4
+  MeleeDamage: 50
+  MeleeRange: 0.5
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
   UsesRanged: 0
   RangedAttackCooldown: 2

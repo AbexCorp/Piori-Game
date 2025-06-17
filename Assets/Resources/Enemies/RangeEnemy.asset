@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5458ce23df70d94aa8d6e6637d38e09, type: 3}
-  m_Name: QuickEnemy
+  m_Name: RangeEnemy
   m_EditorClassIdentifier: 
   UniqueID: QuickEnemy
   Tier: 1
-  Cost: 10
-  Speed: 2
+  Cost: 40
+  Speed: 0.7
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
-  PathfindingType: 0
-  HealthMax: 15
+  PathfindingType: 1
+  HealthMax: 30
   Sprite: {fileID: 0}
-  StopsMovementAfterAttack: 0
+  StopsMovementAfterAttack: 1
   AttacksBuildings: 0
   PrioritizesPlayer: 1
-  UsesMelee: 1
+  UsesMelee: 0
   MeleeAttackCooldown: 2
   MeleeDamage: 3
   MeleeRange: 0.2
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
-  UsesRanged: 0
-  RangedAttackCooldown: 2
-  RangedDamage: 10
-  RangedRange: 3
+  UsesRanged: 1
+  RangedAttackCooldown: 3.5
+  RangedDamage: 20
+  RangedRange: 4

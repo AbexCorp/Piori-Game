@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyProjectile
   m_EditorClassIdentifier: 
   UniqueID: SimpleEnemyProjectile
-  Speed: 2
+  Speed: 4
   CollisionMask:
     serializedVersion: 2
     m_Bits: 6144

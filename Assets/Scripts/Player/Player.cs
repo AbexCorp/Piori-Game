@@ -278,7 +278,6 @@ public class Player : MonoBehaviour, IHealth
     [SerializeField]
     private bool _attackIsOnCooldown = false;
     public bool AttackIsOnCooldown => _attackIsOnCooldown;
-    [SerializeField]
     private float _remainingAttackCooldown = 0f;
     public float RemainingAttackCooldown => _remainingAttackCooldown;
 
