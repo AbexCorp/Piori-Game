@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -134,6 +133,11 @@ public class InterfaceManager : MonoBehaviour
     {
         _gameTimerText.text = text;
         _gameTimer.fillAmount = Mathf.Clamp(fill, 0, 1);
+    }
+    public void StopGameTimer()
+    {
+        ChangeGameTimerColor(Color.gray);
+        ChangeGameTimerValue("", 1);
     }
 
     #endregion
@@ -283,8 +287,8 @@ public class InterfaceManager : MonoBehaviour
 
     #region Wave Counter
 
-    [SerializeField]
     [Space]
+    [SerializeField]
     private TMP_Text _waveCounter;
 
     public void WaveCounterUpdate()

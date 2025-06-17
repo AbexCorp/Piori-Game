@@ -40,11 +40,7 @@ public class Player : MonoBehaviour, IHealth
     [SerializeField]
     private LayerMask _groundMask;
 
-
     private Vector3 _movement;
-    private Vector2 _mousePosition;
-
-    public Vector2 MousePosition => _mousePosition;
 
 
     private void Move()
@@ -110,13 +106,16 @@ public class Player : MonoBehaviour, IHealth
     [SerializeField]
     private LayerMask _mouseHitMask;
 
+    private Vector2 _mousePosition;
+    public Vector2 MousePosition => _mousePosition;
+
     private IMouseInteractable _hover = null;
 
     public void OnMousePosition(InputAction.CallbackContext context)
     {
         if(Camera.main == null)
         {
-            Debug.LogError("No camera in the scene");
+            //Debug.LogError("No camera in the scene");
             _mousePosition = Vector2.zero;
             return;
         }
@@ -124,8 +123,16 @@ public class Player : MonoBehaviour, IHealth
         _mousePosition = context.ReadValue<Vector2>();
         MouseHover(context);
     }
+
+    /*
+     * Seriously rethink this function and mouse click. Does this need to have context at all? 
+     * Test to make sure that the hover is written properly.
+     * Create a mouse controller so that no new class is needed with the same code in each scene.
+     * Also create some "Menu" class that will hold basic functions like, change scene
+     */
     private void MouseHover(InputAction.CallbackContext context)
     {
+        if (context.performed == false) return; //DEBUG, Test this
         ////
         //Ui Raycast
         ////
@@ -213,6 +220,7 @@ public class Player : MonoBehaviour, IHealth
 
     public void OnMouseClick(InputAction.CallbackContext context)
     {
+        if (context.performed == false) return; //DEBUG, Test this
         ////
         //Ui Raycast
         ////
