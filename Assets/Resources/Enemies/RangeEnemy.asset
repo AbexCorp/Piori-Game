@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5458ce23df70d94aa8d6e6637d38e09, type: 3}
   m_Name: RangeEnemy
   m_EditorClassIdentifier: 
-  UniqueID: QuickEnemy
+  UniqueID: Ranger
   Tier: 1
   Cost: 40
   Speed: 0.7
