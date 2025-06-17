@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -90,8 +91,10 @@ public class GameManager : Singleton<GameManager>
                 break;
 
             case GameState.Win:
+                SceneManager.LoadScene("WinGame");
                 break;
             case GameState.Lose:
+                SceneManager.LoadScene("LoseGame");
                 break;
         }
 
@@ -149,7 +152,10 @@ public class GameManager : Singleton<GameManager>
             UpdateTimerValue(i, WaveTime);
             yield return yield;
         }
-        if(!GameIsOver)
+
+        if (Level.Waves.Count <= EnemyManager.CurrentWave)
+            InterfaceManager.StopGameTimer();
+        if (!GameIsOver && Level.Waves.Count > EnemyManager.CurrentWave)
             ChangeGameState(GameState.WaveBreak);
     }
     private IEnumerator WaveBreakTimer(int time)

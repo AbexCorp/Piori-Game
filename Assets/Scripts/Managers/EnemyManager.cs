@@ -108,7 +108,7 @@ public class EnemyManager : MonoBehaviour
         _currentWave++;
         if(GameManager.Instance.Level.Waves.Count < CurrentWave)
         {
-            GameManager.Instance.ChangeGameState(GameState.Win);
+            //GameManager.Instance.ChangeGameState(GameState.Win);
             return;
         }
         GameManager.Instance.InterfaceManager.WaveCounterUpdate();
