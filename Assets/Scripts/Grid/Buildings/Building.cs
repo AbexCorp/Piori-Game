@@ -8,6 +8,8 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
     [Header("Internal")]
     [SerializeField]
     protected Rigidbody _rigidbody;
+    [SerializeField]
+    protected SpriteRenderer _spriteRenderer;
 
     [Header("Resources")]
     [SerializeField]

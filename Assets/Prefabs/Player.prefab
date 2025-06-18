@@ -519,7 +519,6 @@ MonoBehaviour:
   _damage: 25
   _attackCooldown: 1.5
   _attackIsOnCooldown: 0
-  _remainingAttackCooldown: 0
   _attackCooldownUI: {fileID: 7713920873330096590}
   _attackCooldownUIFill: {fileID: 2582221337034474952}
   _repairCost: 0.25

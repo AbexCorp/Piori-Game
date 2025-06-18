@@ -41,6 +41,11 @@ public class ResourceBuilding : Building
         _productionAmount = rbp.ProductionAmount;
         _productionCooldown = rbp.ProductionCooldown;
 
+        if (rbp.Sprite != null)
+        {
+            _spriteRenderer.sprite = rbp.Sprite;
+        }
+
         InitializeBuilding();
     }
 

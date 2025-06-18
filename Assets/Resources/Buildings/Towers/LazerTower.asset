@@ -15,6 +15,7 @@ MonoBehaviour:
   UniqueID: LaserTower
   HealthMax: 50
   Cost: 50
+  Sprite: {fileID: 21300000, guid: 8434ed60852920f48bb14c20d699c803, type: 3}
   Shoots: 1
   AttackType: 1
   ProjectileProfile: {fileID: 11400000, guid: 9440b9983ddaf2e41b127a888d8fa958, type: 2}

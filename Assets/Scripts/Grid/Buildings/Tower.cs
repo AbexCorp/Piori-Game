@@ -61,6 +61,11 @@ public class Tower : Building
         _attackCooldown = tp.AttackCooldown;
         _damage = tp.Damage;
 
+        if(tp.Sprite != null)
+        {
+            _spriteRenderer.sprite = tp.Sprite;
+        }
+
         InitializeBuilding();
         AdjustDetectionRange(_range);
     }

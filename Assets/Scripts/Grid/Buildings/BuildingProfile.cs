@@ -11,6 +11,9 @@ public class BuildingProfile : ScriptableObject
     [Header("Resources")]
     public int Cost = 50;
 
+    [Header("Visual")]
+    public Sprite Sprite = null;
+
     public virtual bool CheckIfCanBuild(GridTile tile, out string reason)
     {
         if(tile.IsOccupiedByBuilding) //Enpty from buildings
