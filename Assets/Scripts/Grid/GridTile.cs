@@ -152,9 +152,9 @@ public class GridTile : MonoBehaviour, IMouseInteractable
                     GameManager.Instance.InterfaceManager.DisplayTextMessage(reason);
                     return;
                 }
-                Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
+                Building b = Instantiate(GameManager.Instance.BuildingManager.BuildingPrefab, gameObject.transform.position, Quaternion.identity);
                 b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
-                Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
+                Build(b);
             }
             else if (GameManager.Instance.BuildingManager.IsSelling == true)
             {
