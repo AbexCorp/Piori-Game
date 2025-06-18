@@ -9,7 +9,7 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
     [SerializeField]
     protected Rigidbody _rigidbody;
     [SerializeField]
-    protected SpriteRenderer _spriteRenderer;
+    protected Renderer _renderer;
 
     [Header("Resources")]
     [SerializeField]

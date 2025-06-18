@@ -61,9 +61,9 @@ public class Tower : Building
         _attackCooldown = tp.AttackCooldown;
         _damage = tp.Damage;
 
-        if(tp.Sprite != null)
+        if(tp.Texture != null)
         {
-            _spriteRenderer.sprite = tp.Sprite;
+            _renderer.material.SetTexture("_Texture", tp.Texture);
         }
 
         InitializeBuilding();

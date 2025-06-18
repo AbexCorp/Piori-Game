@@ -41,9 +41,9 @@ public class ResourceBuilding : Building
         _productionAmount = rbp.ProductionAmount;
         _productionCooldown = rbp.ProductionCooldown;
 
-        if (rbp.Sprite != null)
+        if (rbp.Texture != null)
         {
-            _spriteRenderer.sprite = rbp.Sprite;
+            _renderer.material.SetTexture("_Texture", rbp.Texture);
         }
 
         InitializeBuilding();

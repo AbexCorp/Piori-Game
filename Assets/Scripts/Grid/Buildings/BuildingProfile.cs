@@ -12,7 +12,7 @@ public class BuildingProfile : ScriptableObject
     public int Cost = 50;
 
     [Header("Visual")]
-    public Sprite Sprite = null;
+    public Texture Texture = null;
 
     public virtual bool CheckIfCanBuild(GridTile tile, out string reason)
     {

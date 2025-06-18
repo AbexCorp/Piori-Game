@@ -12,7 +12,7 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     [SerializeField]
     protected Rigidbody _rigidbody;
     [SerializeField]
-    protected SpriteRenderer _spriteRenderer;
+    protected Renderer _renderer;
 
 
     protected virtual void Start()

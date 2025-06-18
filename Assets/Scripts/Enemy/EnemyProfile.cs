@@ -24,5 +24,5 @@ public class EnemyProfile : ScriptableObject
 
     [Header("Visual")]
     [SerializeField]
-    public Sprite Sprite = null;
+    public Texture Texture = null;
 }

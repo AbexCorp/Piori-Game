@@ -48,9 +48,9 @@ public class SimpleEnemy : Enemy
         _rangedRange = sp.RangedRange;
 
 
-        if(sp.Sprite != null)
+        if(sp.Texture != null)
         {
-            _spriteRenderer.sprite = sp.Sprite;
+            _renderer.material.SetTexture("_Texture", sp.Texture);
         }
 
         InitializeEnemy();
