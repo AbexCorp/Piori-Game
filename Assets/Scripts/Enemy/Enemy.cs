@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -75,10 +76,17 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
         _movementTarget = _path.Last().Tile.WorldPosition3D;
         _path.Remove(_path.Last());
     }
+
+    private int _playerMovedCount = 0; //Debug ####################################################
+
     protected virtual void OnPlayerMoved()
     {
-        FindPath();
-        FindNextMovePoint();
+        _playerMovedCount += 1; //Debug ####################################################
+        if (_path == null || _path.Count <= 2 || _playerMovedCount <= 3) //Debug ####################################################
+        {
+            FindPath();
+            FindNextMovePoint();
+        }
     }
     protected void UpdateGridPosition()
     {
@@ -103,6 +111,8 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     protected void FindPathToPlayer()
     {
         _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode, _pathfindingType);
+        if(_path == null && _pathfindingType == Pathfinding.PathfindingType.Walkable)
+            _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode, Pathfinding.PathfindingType.Direct);
     }
 
     #endregion
