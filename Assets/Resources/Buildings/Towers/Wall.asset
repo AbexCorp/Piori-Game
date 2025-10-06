@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c497c57859fd4f41a9505134c1107e1, type: 3}
-  m_Name: MinigunTower
+  m_Name: Wall
   m_EditorClassIdentifier: 
-  UniqueID: MinigunTower
-  HealthMax: 50
-  Cost: 50
-  Texture: {fileID: 2800000, guid: 9ee46fc2e714af24591fff112697c216, type: 3}
-  Shoots: 1
+  UniqueID: Wall
+  HealthMax: 10
+  Cost: 5
+  Texture: {fileID: 2800000, guid: fedafda436a9aa34a8a40b51b031bf70, type: 3}
+  Shoots: 0
   AttackType: 2
   ProjectileProfile: {fileID: 11400000, guid: 9440b9983ddaf2e41b127a888d8fa958, type: 2}
   Range: 4

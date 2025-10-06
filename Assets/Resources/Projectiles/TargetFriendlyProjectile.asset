@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TargetFriendlyProjectile
   m_EditorClassIdentifier: 
   UniqueID: BulletFriendlyProjectile
-  Speed: 2
+  Speed: 8
   CollisionMask:
     serializedVersion: 2
     m_Bits: 8192

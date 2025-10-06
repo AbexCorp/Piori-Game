@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyProjectile
   m_EditorClassIdentifier: 
   UniqueID: SimpleEnemyProjectile
-  Speed: 4
+  Speed: 7
   CollisionMask:
     serializedVersion: 2
     m_Bits: 6144
@@ -21,5 +21,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 6144
   LifetimeType: 1
-  LifetimeDistance: 4
+  LifetimeDistance: 6
   LifetimeTime: 2

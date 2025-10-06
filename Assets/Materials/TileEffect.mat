@@ -58,8 +58,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ShowEffect: 0
-    - _Transparency: 1
-    - _TransparencyBorder: 1
+    - _Transparency: 0
+    - _TransparencyBorder: 0.4
     m_Colors:
     - _BorderColor: {r: 0.47058815, g: 0.47058815, b: 0.47058815, a: 1}
     - _Color: {r: 0.6117647, g: 0.6117647, b: 0.6117647, a: 1}

@@ -11,6 +11,9 @@ public class PoissonDiskSpawner : MonoBehaviour
     public float width = 20f;
     public float height = 20f;
 
+    [Tooltip("Position offset for where the grid is centered in world space.")]
+    public Vector3 pivot = Vector3.zero;
+
     [Header("Poisson Settings")]
     public float radius = 2f;
     public int rejectionSamples = 30;
@@ -46,6 +49,7 @@ public class PoissonDiskSpawner : MonoBehaviour
         foreach (Vector2 point in points)
         {
             Vector3 position = new Vector3(point.x - width / 2f, 0f, point.y - height / 2f);
+            position += pivot;
             Quaternion rotation = Quaternion.Euler(90f, 0f, 0f); // Lay flat on XZ plane
             GameObject instance = Instantiate(prefab, position, rotation, transform);
             instance.transform.localScale = new Vector3(spriteScale.x, spriteScale.y, 1f);

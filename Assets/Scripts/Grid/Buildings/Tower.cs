@@ -39,6 +39,8 @@ public class Tower : Building
 
     void Update()
     {
+        if (_shoots == false)
+            return;
         AttackEnemy();
     }
 
