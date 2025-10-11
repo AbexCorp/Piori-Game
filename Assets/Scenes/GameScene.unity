@@ -20595,7 +20595,7 @@ PrefabInstance:
       objectReference: {fileID: 92600639}
     - target: {fileID: 1973048612551550688, guid: a1aede94c7f01fd45b9198e4e9448c86, type: 3}
       propertyPath: _startingResources
-      value: 160
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4046723014162269743, guid: a1aede94c7f01fd45b9198e4e9448c86, type: 3}
       propertyPath: _level

@@ -37,7 +37,7 @@ public class CustomButton : MonoBehaviour, IMouseInteractable
     }
 
 
-    public void OnHoverEnter(InputAction.CallbackContext context)
+    public virtual void OnHoverEnter(InputAction.CallbackContext context)
     {
         _image.color = _colorHover;
         if (_showTooltip)
@@ -47,7 +47,7 @@ public class CustomButton : MonoBehaviour, IMouseInteractable
         }
     }
 
-    public void OnHoverExit(InputAction.CallbackContext context)
+    public virtual void OnHoverExit(InputAction.CallbackContext context)
     {
         _image.color = _colorDefault;
         if (_showTooltip)

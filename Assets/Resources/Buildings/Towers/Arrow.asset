@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UniqueID: Arrow Tower
   HealthMax: 65
-  Cost: 50
+  BaseCost: 50
+  CostAdjustmentPercentage: 0.1
   Texture: {fileID: 2800000, guid: 8434ed60852920f48bb14c20d699c803, type: 3}
   Shoots: 1
   AttackType: 3

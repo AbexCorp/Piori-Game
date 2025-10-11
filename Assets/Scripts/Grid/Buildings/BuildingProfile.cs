@@ -9,7 +9,9 @@ public class BuildingProfile : ScriptableObject
     [Header("Health")]
     public int HealthMax = 50;
     [Header("Resources")]
-    public int Cost = 50;
+    public int BaseCost = 50;
+    [Range(0.0f, 1.0f)]
+    public float CostAdjustmentPercentage = 0;
 
     [Header("Visual")]
     public Texture Texture = null;
@@ -56,4 +58,16 @@ public class BuildingProfile : ScriptableObject
         reason = "";
         return true;
     }
+
+
+    #region Cost Adjustment
+
+    protected int CostAdjustment = 0;
+    public int Cost => BaseCost + CostAdjustment;
+    public void AdjustCost()
+    {
+        CostAdjustment = (int)((((CostAdjustmentPercentage + 1f) * Cost)) - BaseCost);
+    }
+
+    #endregion
 }

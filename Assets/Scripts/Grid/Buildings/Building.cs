@@ -41,7 +41,7 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
     {
         _occupiedTile = tile;
         _rigidbody.position = tile.gameObject.transform.position;
-        GameManager.Instance.ResourceManager.UseResources(_cost);
+        GameManager.Instance.ResourceManager.UseResources(Cost);
     }
 
     public virtual void GetDestroyed()

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UniqueID: Gun Tower
   HealthMax: 50
-  Cost: 50
+  BaseCost: 50
+  CostAdjustmentPercentage: 0.1
   Texture: {fileID: 2800000, guid: 9ee46fc2e714af24591fff112697c216, type: 3}
   Shoots: 1
   AttackType: 2

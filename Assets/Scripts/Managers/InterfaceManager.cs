@@ -44,6 +44,11 @@ public class InterfaceManager : MonoBehaviour
         TowerProfile[] towers = Resources.LoadAll<TowerProfile>("Buildings/Towers");
         for(int i = 0; i < towers.Length; i++)
         {
+            towers[i] = Instantiate(towers[i]);
+        }
+
+        for(int i = 0; i < towers.Length; i++)
+        {
             BuildingButton b = Instantiate(_buildingButtonPrefab, _buildingButtonsFrame.transform);
             b.SetProfile(towers[i]);
             b.RectTransform.anchoredPosition = new Vector2(position, 0);
@@ -52,8 +57,14 @@ public class InterfaceManager : MonoBehaviour
                 _buildingButtons.Add(_buildingButtons.Count + 1, b);
         }
 
+
         ResourceBuildingProfile[] resourceBuildings = Resources.LoadAll<ResourceBuildingProfile>("Buildings/ResourceBuildings");
-        for(int i = 0; i < resourceBuildings.Length; i++)
+        for (int i = 0; i < resourceBuildings.Length; i++)
+        {
+            resourceBuildings[i] = Instantiate(resourceBuildings[i]);
+        }
+
+        for (int i = 0; i < resourceBuildings.Length; i++)
         {
             BuildingButton b = Instantiate(_buildingButtonPrefab, _buildingButtonsFrame.transform);
             b.SetProfile(resourceBuildings[i]);

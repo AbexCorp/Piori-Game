@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UniqueID: Wall
   HealthMax: 10
-  Cost: 5
+  BaseCost: 5
+  CostAdjustmentPercentage: 0.2
   Texture: {fileID: 2800000, guid: fedafda436a9aa34a8a40b51b031bf70, type: 3}
   Shoots: 0
   AttackType: 2
