@@ -26,5 +26,5 @@ MonoBehaviour:
     Budget: 1200
     SpawnStyle: 0
   - Template: {fileID: 11400000, guid: defbc45335751cf4db496af8e9cc7347, type: 2}
-    Budget: 1500
+    Budget: 4000
     SpawnStyle: 0
