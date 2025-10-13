@@ -6,10 +6,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InterfaceManager : MonoBehaviour
+public class InterfaceManager : Menu
 {
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         GenerateBuildingButtons();
     }
     private void Update()
@@ -340,7 +341,7 @@ public class InterfaceManager : MonoBehaviour
     public void BackToMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        LoadScene("MainMenu");
     }
 
     #endregion

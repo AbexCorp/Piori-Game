@@ -552,6 +552,7 @@ GameObject:
   - component: {fileID: 3504947461512836090}
   - component: {fileID: 2321856555584936692}
   - component: {fileID: 7517467350771387804}
+  - component: {fileID: 5266358808311910715}
   m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
@@ -591,14 +592,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 2321856555584936692}
-  _speed: 1.2
+  _speed: 1.5
   _groundMask:
     serializedVersion: 2
     m_Bits: 1024
   _healthMax: 120
-  _mouseHitMask:
-    serializedVersion: 2
-    m_Bits: 1056
+  _mouseRaycaster: {fileID: 5266358808311910715}
   _playerProjectile: {fileID: 11400000, guid: 234897d5a03d8624cbc46fb55b1e7832, type: 2}
   _damage: 25
   _attackCooldown: 1.5
@@ -666,8 +665,8 @@ MonoBehaviour:
     m_ActionName: InputMap/DirectMovement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7879182317600551522}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5266358808311910715}
+        m_TargetAssemblyTypeName: MouseRaycaster, Assembly-CSharp
         m_MethodName: OnMouseClick
         m_Mode: 0
         m_Arguments:
@@ -682,8 +681,8 @@ MonoBehaviour:
     m_ActionName: InputMap/PointMovement[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7879182317600551522}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5266358808311910715}
+        m_TargetAssemblyTypeName: MouseRaycaster, Assembly-CSharp
         m_MethodName: OnMousePosition
         m_Mode: 0
         m_Arguments:
@@ -831,6 +830,21 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &5266358808311910715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9114605352694199642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3b30ef5ac0bce8449bca424de66a253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mouseHitMask:
+    serializedVersion: 2
+    m_Bits: 1056
 --- !u!1001 &7916881132993626493
 PrefabInstance:
   m_ObjectHideFlags: 0
