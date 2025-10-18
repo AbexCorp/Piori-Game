@@ -53,17 +53,18 @@ public class Menu : MonoBehaviour
         Vector2 start;
         Vector2 end;
         float time = 0;
-        float duration = 1.2f;
+        float duration = 1.3f;
+        float distanceModifier = 1.15f;
 
         if (LoadIn)
         {
             _loadingScreen.anchoredPosition = new Vector2(0, 0);
             start = _loadingScreen.anchoredPosition;
-            end = new Vector2(-_loadingScreen.sizeDelta.x, 0);
+            end = new Vector2(-_loadingScreen.sizeDelta.x * distanceModifier, 0);
         }
         else
         {
-            _loadingScreen.anchoredPosition = new Vector2(_loadingScreen.sizeDelta.x, 0);
+            _loadingScreen.anchoredPosition = new Vector2(_loadingScreen.sizeDelta.x * distanceModifier, 0);
 
             start = _loadingScreen.anchoredPosition;
             end = Vector2.zero;
