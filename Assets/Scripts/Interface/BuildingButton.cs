@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class BuildingButton : CustomButton
 {
     private BuildingProfile _assignedProfile;
+    public Sprite Icon => _assignedProfile.UIIcon;
+
     public void SetProfile(BuildingProfile p)
     {
         _assignedProfile = p;

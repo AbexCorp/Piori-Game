@@ -20,6 +20,7 @@ public class BuildingProfile : ScriptableObject
 
     [Header("Visual")]
     public Texture Texture = null;
+    public Sprite UIIcon = null;
 
 
     #region >>> Building Rquirements <<<
