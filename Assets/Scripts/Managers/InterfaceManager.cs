@@ -28,6 +28,8 @@ public class InterfaceManager : Menu
     [SerializeField]
     private GameObject _buildingButtonsFrame;
     [SerializeField]
+    private Animator _buildingButtonsFrameAnimator;
+    [SerializeField]
     private GameObject _buildingIconsFrame;
     [SerializeField]
     private BuildingButton _buildingButtonPrefab;
@@ -48,6 +50,7 @@ public class InterfaceManager : Menu
         float buttonHeight = _buildingButtonPrefab.RectTransform.rect.height;
         float iconHeight = _buildingIconPrefab.RectTransform.rect.height;
         float margin = 20;
+        float buttonFrameHeightAdjustment = 10; //Should reat button fram top margin
 
         //Regular build buttons
         TowerProfile[] towers = Resources.LoadAll<TowerProfile>("Buildings/Towers");
@@ -64,7 +67,7 @@ public class InterfaceManager : Menu
             b.SetProfile(towers[i]);
 
             ic.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
-            buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2);
+            buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
             iconPosition -= iconHeight;
             b.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
 
@@ -91,7 +94,7 @@ public class InterfaceManager : Menu
             b.SetProfile(resourceBuildings[i]);
 
             ic.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
-            buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2);
+            buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
             iconPosition -= iconHeight;
             b.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
 
@@ -110,7 +113,7 @@ public class InterfaceManager : Menu
         BuildingIcon ico = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
         ico.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
         ico.Set("`", null);
-        buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2);
+        buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
 
         _sellButton.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
         iconPosition -= iconHeight;
@@ -121,7 +124,7 @@ public class InterfaceManager : Menu
         ico = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
         ico.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
         ico.Set("`", null);
-        buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2);
+        buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
 
         _cancelBuildingButton.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
         BuildingCancelButtonSetActive(false);
@@ -173,12 +176,20 @@ public class InterfaceManager : Menu
     public void SetBuildButtons()
     {
         _buildButtonsVisible = !_buildButtonsVisible;
-        _buildingButtonsFrame.SetActive(_buildButtonsVisible);
+        SetBuildButtonsTo(_buildButtonsVisible);
     }
     public void SetBuildButtonsTo(bool value)
     {
-        _buildingButtonsFrame.SetActive(value);
-        _buildButtonsVisible = value;
+        switch (value)
+        {
+            case true:
+                _buildingButtonsFrameAnimator.Play("BuildMenuShow");
+                return;
+
+            case false:
+                _buildingButtonsFrameAnimator.Play("BuildMenuHide");
+                return;
+        }
     }
 
     #endregion
