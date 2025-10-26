@@ -23,3 +23,5 @@ MonoBehaviour:
   LifetimeType: 1
   LifetimeDistance: 5
   LifetimeTime: 2
+  Sprite: {fileID: 21300000, guid: 50828f45777f8fb4e85f91510f29282d, type: 3}
+  UseOmniDirection: 0

@@ -27,6 +27,8 @@ public class Projectile : MonoBehaviour, ILoadable
     [Header("Projectile")]
     [SerializeField]
     protected float _speed = 2f;
+    [SerializeField]
+    protected SpriteRenderer _spriteRenderer;
 
 
     private void Awake()
@@ -50,6 +52,9 @@ public class Projectile : MonoBehaviour, ILoadable
         _lifetimeType = pp.LifetimeType;
         _lifetimeDistance = pp.LifetimeDistance;
         _lifetimeTime = pp.LifetimeTime;
+
+        _useOmniDirection = pp.UseOmniDirection;
+        _spriteRenderer.sprite = pp.Sprite;
     }
 
     public void InitializeProjectile(Vector3 target, Vector3 spawn, int? damage = null)
@@ -60,6 +65,7 @@ public class Projectile : MonoBehaviour, ILoadable
         SetDamage(damage);
         gameObject.SetActive(true);
         _rigidBody.velocity = _spawnPosition.DirectionTo2D(_target) * _speed;
+        SetOmniDirection();
 
         switch (_lifetimeType)
         {
@@ -176,6 +182,29 @@ public class Projectile : MonoBehaviour, ILoadable
             yield return new WaitForSeconds(0.2f);
         }
         BreakProjectile();
+    }
+
+    #endregion
+
+
+    #region >>> OmniDirectional <<<
+
+    [SerializeField]
+    protected bool _useOmniDirection = false;
+    [SerializeField]
+    protected GameObject _omniDirectionSprite;
+
+    protected void SetOmniDirection()
+    {
+        if( _useOmniDirection  == false)
+        {
+            _omniDirectionSprite.transform.rotation = Quaternion.Euler(0,0,0);
+            return;
+        }
+        Vector3 direction = Vector3Extensions.DirectionTo2D(_spawnPosition, _target);
+        float angle = Vector3.Angle(Vector3.forward, direction);
+        int sign = _spawnPosition.x > _target.x ? 1 : -1;
+        _omniDirectionSprite.transform.rotation = Quaternion.Euler(_omniDirectionSprite.transform.eulerAngles.x, _omniDirectionSprite.transform.eulerAngles.y, sign * angle);
     }
 
     #endregion

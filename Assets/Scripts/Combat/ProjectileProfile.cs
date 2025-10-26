@@ -24,4 +24,10 @@ public class ProjectileProfile : ScriptableObject
     public float LifetimeDistance = 4;
     [SerializeField]
     public float LifetimeTime = 2;
+
+    [Header("Visual")]
+    [SerializeField]
+    public Sprite Sprite;
+    [SerializeField]
+    public bool UseOmniDirection = false;
 }
