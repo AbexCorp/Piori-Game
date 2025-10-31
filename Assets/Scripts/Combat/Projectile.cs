@@ -198,7 +198,7 @@ public class Projectile : MonoBehaviour, ILoadable
     {
         if( _useOmniDirection  == false)
         {
-            _omniDirectionSprite.transform.rotation = Quaternion.Euler(0,0,0);
+            _omniDirectionSprite.transform.rotation = Quaternion.Euler(_omniDirectionSprite.transform.eulerAngles.x, _omniDirectionSprite.transform.eulerAngles.y, 0);
             return;
         }
         Vector3 direction = Vector3Extensions.DirectionTo2D(_spawnPosition, _target);
