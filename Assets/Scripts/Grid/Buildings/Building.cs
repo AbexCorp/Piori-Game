@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,7 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
 
     public virtual void GetBuilt(GridTile tile)
     {
+        GameManager.Instance.AnalyticsManager.OnBuildingBuilt(this, tile, Cost);
         _occupiedTile = tile;
         _rigidbody.position = tile.gameObject.transform.position;
         GameManager.Instance.ResourceManager.UseResources(Cost);
@@ -46,6 +48,7 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
 
     public virtual void GetDestroyed()
     {
+        GameManager.Instance.AnalyticsManager.OnBuildingDestroyed(this, _occupiedTile);
         if(_occupiedTile != null)
         {
             _occupiedTile.ClearAssignedBuilding();
@@ -86,6 +89,8 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
     {
         if (_healthCurrent > 0)
             return;
+
+        GameManager.Instance.AnalyticsManager.OnBuildingKilled(this, _occupiedTile);
         GetDestroyed();
     }
 

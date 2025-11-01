@@ -87,6 +87,7 @@ public class Player : MonoBehaviour, IHealth
             return;
         _healthCurrent -= damage;
         GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
+        GameManager.Instance.AnalyticsManager.OnPlayerLoseHealth(damage);
         if (_healthCurrent <= 0)
             Die();
     }
@@ -149,6 +150,7 @@ public class Player : MonoBehaviour, IHealth
             Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_playerProjectile);
             projectile.InitializeProjectile(hitpoint, transform.position, _damage);
             StartCoroutine(AttackCooldownTimer());
+            GameManager.Instance.AnalyticsManager.OnPlayerShoot();
         }
     }
     private IEnumerator AttackCooldownTimer()
@@ -243,6 +245,7 @@ public class Player : MonoBehaviour, IHealth
                 return;
             }
 
+            GameManager.Instance.AnalyticsManager.OnPlayerRepair(buildingToRepair);
             buildingToRepair.Repair((int)System.MathF.Floor(buildingToRepair.HealthMax * RepairAmount), RepairTime);
             GameManager.Instance.ResourceManager.UseResources((int)System.MathF.Ceiling(buildingToRepair.Cost * RepairCost));
         }

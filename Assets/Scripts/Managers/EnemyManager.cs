@@ -100,7 +100,7 @@ public class EnemyManager : MonoBehaviour
     #endregion
 
 
-    private void OnGameStateChanged(GameState state)
+    private void OnGameStateChanged(GameState state, GameState old)
     {
         if (state != GameState.NewWave)
             return;

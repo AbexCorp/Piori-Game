@@ -80,7 +80,9 @@ public class GridTile : MonoBehaviour, IMouseInteractable
         if (!IsOccupied)
             return false;
 
-        GameManager.Instance.ResourceManager.AddResource(Mathf.Clamp((int)System.MathF.Round(_building.Cost * GameManager.Instance.Player.BuildingSellingReturn), 0, int.MaxValue));
+        int cashback = Mathf.Clamp((int)System.MathF.Round(_building.Cost * GameManager.Instance.Player.BuildingSellingReturn), 0, int.MaxValue);
+        GameManager.Instance.AnalyticsManager.OnBuildingSold(_building, this, cashback);
+        GameManager.Instance.ResourceManager.AddResource(cashback);
         _building.GetDestroyed();
         _building = null;
         GameManager.Instance.BuildingManager.StopSelling();
