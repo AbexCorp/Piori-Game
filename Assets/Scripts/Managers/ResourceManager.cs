@@ -22,6 +22,7 @@ public class ResourceManager : MonoBehaviour
             return false;
         _resource -= amount;
         GameManager.Instance.InterfaceManager.UpdateResourceCounter(Resource);
+        GameManager.Instance.AnalyticsManager.OnUseResource(amount);
         return true;
     }
     public void AddResource(int amount)
@@ -30,5 +31,6 @@ public class ResourceManager : MonoBehaviour
             return;
         _resource += amount;
         GameManager.Instance.InterfaceManager.UpdateResourceCounter(Resource);
+        GameManager.Instance.AnalyticsManager.OnGainResource(amount);
     }
 }

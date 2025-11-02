@@ -14,6 +14,7 @@ public class AnalyticsManager : MonoBehaviour
         //    return;
 
         GameManager.Instance.OnGameStateChanged += PlayerMovement;
+        GameManager.Instance.OnGameStateChanged += TallyResources;
     }
 
 
@@ -46,6 +47,7 @@ public class AnalyticsManager : MonoBehaviour
     }
 
     #endregion
+
 
     #region >>> Player <<<
 
@@ -133,6 +135,41 @@ public class AnalyticsManager : MonoBehaviour
         //Debug.Log($"Repair: {building.name}, {CurrentGameState} {CurrentWave} {GameTime}"); /////////////////////////
     }
     #endregion
+
+    #endregion
+
+
+    #region >>> Resources <<<
+
+    private int _resourcesGained = 0;
+    private int _resourcesUsed = 0;
+    public void OnGainResource(int amount)
+    {
+        _resourcesGained += amount;
+    }
+    public void OnUseResource(int amount)
+    {
+        _resourcesUsed += amount;
+    }
+    private void TallyResources(GameState current, GameState old)
+    {
+        int waveAdjustment = 0;
+        switch (current)
+        {
+            case GameState.Win:
+            case GameState.Lose:
+                break;
+            case GameState.NewWave:
+                waveAdjustment -= 1;
+                break;
+            default:
+                return;
+        }
+
+        //Debug.Log($"Resources: {_resourcesGained}, {_resourcesUsed}, {CurrentWave + waveAdjustment}"); //////////////////////////
+        _resourcesGained = 0;
+        _resourcesUsed = 0;
+    }
 
     #endregion
 }
