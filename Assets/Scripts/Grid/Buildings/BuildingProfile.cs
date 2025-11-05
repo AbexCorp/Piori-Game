@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildingProfile : ScriptableObject
 {
-    public string UniqueID;
+    public string UniqueName;
 
     [Header("Health")]
     public int HealthMax = 50;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c497c57859fd4f41a9505134c1107e1, type: 3}
   m_Name: Arrow
   m_EditorClassIdentifier: 
-  UniqueID: Arrow Tower
+  UniqueName: Arrow Tower
   HealthMax: 65
   BaseCost: 50
   SpecialBuildingRequirement: 0

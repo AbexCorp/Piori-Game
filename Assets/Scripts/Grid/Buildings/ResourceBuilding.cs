@@ -32,7 +32,9 @@ public class ResourceBuilding : Building
             return;
         ResourceBuildingProfile rbp = so as ResourceBuildingProfile;
 
-        gameObject.name = rbp.UniqueID == null || rbp.UniqueID == "" ? "ResourceBuilding (NoName)" : $"ResourceBuilding ({rbp.UniqueID})";
+        _uniqueID = gameObject.GetInstanceID();
+        _uniqueName = rbp.UniqueName;
+        gameObject.name = $"ResourceBuilding ({UniqueName})";
         _cost = rbp.Cost;
 
         _healthMax = rbp.HealthMax;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyProfile : ScriptableObject
 {
-    public string UniqueID;
+    public string UniqueName;
 
     [Header("Spawning")]
     public int Tier = 1;

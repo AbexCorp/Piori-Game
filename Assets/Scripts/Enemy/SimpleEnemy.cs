@@ -22,8 +22,9 @@ public class SimpleEnemy : Enemy
         _cost = sp.Cost;
         _tier = sp.Tier;
 
-        _uniqueID = sp.UniqueID;
-        gameObject.name = _uniqueID == null || _uniqueID == "" ? "Enemy (NoName)" : $"Enemy ({_uniqueID})";
+        _uniqueID = gameObject.GetInstanceID();
+        _uniqueName = sp.UniqueName;
+        gameObject.name = UniqueName == null || UniqueName == "" ? "Enemy (NoName)" : $"Enemy ({UniqueName})";
 
 
         _speed = sp.Speed;

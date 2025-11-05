@@ -100,10 +100,10 @@ public class GameManager : Singleton<GameManager>
                 break;
 
             case GameState.Win:
-                SceneManager.LoadScene("WinGame");
+                SceneManager.LoadScene("WinGame"); //Warning, changing this to async will cause issues, events may not be fired before the scene changes
                 break;
             case GameState.Lose:
-                SceneManager.LoadScene("LoseGame");
+                SceneManager.LoadScene("LoseGame"); //Warning, changing this to async will cause issues, events may not be fired before the scene changes
                 break;
         }
 

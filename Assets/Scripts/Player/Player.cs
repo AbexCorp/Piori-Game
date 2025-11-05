@@ -16,6 +16,7 @@ public class Player : MonoBehaviour, IHealth
 
     void Awake()
     {
+        _uniqueID = gameObject.GetInstanceID();
         if (_rigidbody == null)
             _rigidbody.GetComponent<Rigidbody>();
         InitializePlayer();
@@ -73,6 +74,9 @@ public class Player : MonoBehaviour, IHealth
     #region >>> Health <<<
 
     [Header("Combat")]
+    private int _uniqueID;
+    public int UniqueID => _uniqueID;
+    public string UniqueName => "Player";
     [SerializeField]
     private int _healthMax = 100;
     public int HealthMax => _healthMax;
@@ -85,17 +89,19 @@ public class Player : MonoBehaviour, IHealth
     {
         if (damage <= 0)
             return;
+
         _healthCurrent -= damage;
         GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
         GameManager.Instance.AnalyticsManager.OnPlayerLoseHealth(damage);
-        if (_healthCurrent <= 0)
-            Die();
-    }
-    private void Die()
-    {
-        _healthCurrent = 0;
-        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
-        GameManager.Instance.ChangeGameState(GameState.Lose);
+
+        if (_healthCurrent > 0)
+            return;
+        else
+        {
+            _healthCurrent = 0;
+            GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
+            GameManager.Instance.ChangeGameState(GameState.Lose);
+        }
     }
 
     #endregion

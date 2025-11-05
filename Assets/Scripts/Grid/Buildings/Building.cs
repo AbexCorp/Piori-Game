@@ -63,6 +63,11 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
     #region >>> Health <<<
 
     [Header("Health")]
+    protected int _uniqueID;
+    public int UniqueID => _uniqueID;
+    protected string _uniqueName;
+    public string UniqueName => _uniqueName;
+
     [SerializeField]
     protected int _healthMax = 50;
     public int HealthMax => _healthMax;
@@ -77,21 +82,22 @@ public abstract class Building : MonoBehaviour, IHealth, ILoadable
 
     public void GetDamaged(int damage)
     {
-        if (damage < 0)
+        if (damage <= 0)
             return;
+
         _healthCurrent -= damage;
         if(!_healthBarInterface.activeInHierarchy)
             _healthBarInterface.SetActive(true);
         _healthBar.fillAmount = Mathf.Clamp((_healthCurrent / (float)_healthMax), 0, 1);
-        Die();
-    }
-    protected void Die()
-    {
+
         if (_healthCurrent > 0)
             return;
-
-        GameManager.Instance.AnalyticsManager.OnBuildingKilled(this, _occupiedTile);
-        GetDestroyed();
+        else
+        {
+            _healthCurrent = 0;
+            GameManager.Instance.AnalyticsManager.OnBuildingKilled(this, _occupiedTile);
+            GetDestroyed();
+        }
     }
 
     #region Repair

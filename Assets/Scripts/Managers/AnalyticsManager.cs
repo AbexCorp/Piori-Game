@@ -172,4 +172,22 @@ public class AnalyticsManager : MonoBehaviour
     }
 
     #endregion
+
+
+    #region >>> Enemies <<<
+
+    #region Lifetime
+    private Dictionary<string, List<int>> _enemyLifetime;
+    public void OnEnemyDeath(string enemy, int lifeStart) //wave, cause, usefullness, damage to player, damage to buildings
+        //damage to player and buildings need's to be calculated somwhere else as some enemies may just kill the player and never die before that
+    {
+
+    }
+    public void OnEnemyGameEnd(string enemy)
+    {
+
+    }
+    #endregion
+
+    #endregion
 }

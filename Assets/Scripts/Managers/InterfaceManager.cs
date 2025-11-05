@@ -322,7 +322,7 @@ public class InterfaceManager : Menu
         if (GameManager.Instance.BuildingManager.IsSelling)
             _buildingStatusText.text = $"Building: Selling";
         else
-            _buildingStatusText.text = ($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
+            _buildingStatusText.text = ($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueName)}");
     }
 
     #endregion

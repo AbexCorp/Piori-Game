@@ -7,8 +7,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 {
-    protected string _uniqueID;
-    public string UniqueID => _uniqueID;
 
     [SerializeField]
     protected Rigidbody _rigidbody;
@@ -121,6 +119,10 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     #region >>> Health <<<
 
     [Header("Health")]
+    protected int _uniqueID;
+    public int UniqueID => _uniqueID;
+    protected string _uniqueName;
+    public string UniqueName => _uniqueName;
     [SerializeField]
     protected int _healthMax = 50;
     public int HealthMax => _healthMax;
@@ -135,6 +137,9 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 
     public virtual void GetDamaged(int damage)
     {
+        if (damage <= 0)
+            return;
+
         _healthCurrent -= damage;
         if(_healthBarInterface != null && _healthBar != null)
         {
@@ -142,12 +147,12 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
                 _healthBarInterface.SetActive(true);
             _healthBar.fillAmount = Mathf.Clamp((_healthCurrent / (float)_healthMax), 0, 1);
         }
-        Die();
-    }
-    protected virtual void Die()
-    {
-        if (_healthCurrent <= 0)
+
+        if (_healthCurrent > 0)
+            return;
+        else
         {
+            _healthCurrent = 0;
             GameManager.Instance.EnemyManager.OnEnemyDeath(this);
             Destroy(gameObject);
         }

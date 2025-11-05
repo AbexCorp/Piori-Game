@@ -50,7 +50,9 @@ public class Tower : Building
             return;
         TowerProfile tp = so as TowerProfile;
 
-        gameObject.name = tp.UniqueID == null || tp.UniqueID == "" ? "Tower (NoName)" : $"Tower ({tp.UniqueID})";
+        _uniqueID = gameObject.GetInstanceID();
+        _uniqueName = tp.UniqueName;
+        gameObject.name = $"Tower ({UniqueName})";
         _cost = tp.Cost;
 
         _healthMax = tp.HealthMax;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae67191ab3aded49acd0d34ee77d8e2, type: 3}
   m_Name: GunTowerProjectile
   m_EditorClassIdentifier: 
-  UniqueID: 
+  UniqueID: GunTowerProjectile
   Speed: 6
   CollisionMask:
     serializedVersion: 2
