@@ -32,7 +32,9 @@ public class ResourceBuilding : Building
             return;
         ResourceBuildingProfile rbp = so as ResourceBuildingProfile;
 
-        gameObject.name = rbp.UniqueID == null || rbp.UniqueID == "" ? "ResourceBuilding (NoName)" : $"ResourceBuilding ({rbp.UniqueID})";
+        _uniqueID = GameManager.Instance.GetUniqueID();
+        _uniqueName = rbp.UniqueName;
+        gameObject.name = $"ResourceBuilding ({UniqueName})";
         _cost = rbp.Cost;
 
         _healthMax = rbp.HealthMax;
@@ -40,6 +42,11 @@ public class ResourceBuilding : Building
         _productionType = rbp.ProductionType;
         _productionAmount = rbp.ProductionAmount;
         _productionCooldown = rbp.ProductionCooldown;
+
+        if (rbp.Texture != null)
+        {
+            _renderer.material.SetTexture("_Texture", rbp.Texture);
+        }
 
         InitializeBuilding();
     }

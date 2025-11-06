@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 {
-    protected string _uniqueID;
-    public string UniqueID => _uniqueID;
 
     [SerializeField]
     protected Rigidbody _rigidbody;
+    [SerializeField]
+    protected Renderer _renderer;
 
 
     protected virtual void Start()
@@ -32,6 +33,7 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
 
     #region >>> Movement <<<
 
+    [Header("Movement")]
     [SerializeField]
     protected float _speed = 1;
     [SerializeField]
@@ -72,10 +74,17 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
         _movementTarget = _path.Last().Tile.WorldPosition3D;
         _path.Remove(_path.Last());
     }
+
+    private int _playerMovedCount = 0; //Debug ####################################################
+
     protected virtual void OnPlayerMoved()
     {
-        FindPath();
-        FindNextMovePoint();
+        _playerMovedCount += 1; //Debug ####################################################
+        if (_path == null || _path.Count <= 2 || _playerMovedCount <= 3) //Debug ####################################################
+        {
+            FindPath();
+            FindNextMovePoint();
+        }
     }
     protected void UpdateGridPosition()
     {
@@ -100,6 +109,8 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     protected void FindPathToPlayer()
     {
         _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode, _pathfindingType);
+        if(_path == null && _pathfindingType == Pathfinding.PathfindingType.Walkable)
+            _path = Pathfinding.FindPath(_gridPosition?.NavigationNode, GridManager.Instance.PlayerPosition?.NavigationNode, Pathfinding.PathfindingType.Direct);
     }
 
     #endregion
@@ -108,6 +119,10 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     #region >>> Health <<<
 
     [Header("Health")]
+    protected int _uniqueID;
+    public int UniqueID => _uniqueID;
+    protected string _uniqueName;
+    public string UniqueName => _uniqueName;
     [SerializeField]
     protected int _healthMax = 50;
     public int HealthMax => _healthMax;
@@ -120,8 +135,11 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     [SerializeField]
     private UnityEngine.UI.Image _healthBar;
 
-    public virtual void GetDamaged(int damage)
+    public virtual void GetDamaged(int damage, int attackerID, string attackerName)
     {
+        if (damage <= 0)
+            return;
+
         _healthCurrent -= damage;
         if(_healthBarInterface != null && _healthBar != null)
         {
@@ -129,12 +147,16 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
                 _healthBarInterface.SetActive(true);
             _healthBar.fillAmount = Mathf.Clamp((_healthCurrent / (float)_healthMax), 0, 1);
         }
-        Die();
-    }
-    protected virtual void Die()
-    {
-        if (_healthCurrent <= 0)
+
+        if (_healthCurrent > 0)
         {
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, false);
+            return;
+        }
+        else
+        {
+            _healthCurrent = 0;
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, true);
             GameManager.Instance.EnemyManager.OnEnemyDeath(this);
             Destroy(gameObject);
         }
@@ -146,9 +168,10 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     #region >>> Spawning <<<
 
     [Header("Spawning")]
-    public int _tier = 1;
+    protected int _tier = 1;
     public int Tier => _tier;
-    public int _cost = 50;
+
+    protected int _cost = 50;
     public int Cost => _cost;
 
     #endregion

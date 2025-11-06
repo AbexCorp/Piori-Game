@@ -34,6 +34,10 @@ public class GameManager : Singleton<GameManager>
     private BuildingManager _buildingManager;
     public BuildingManager BuildingManager => _buildingManager;
 
+    [SerializeField]
+    private AnalyticsManager _analyticsManager;
+    public AnalyticsManager AnalyticsManager => _analyticsManager;
+
 
 
     protected override void OnAwake()
@@ -60,14 +64,35 @@ public class GameManager : Singleton<GameManager>
     }
 
 
+    #region >>> ID <<<
+
+    private HashSet<int> _usedID = new();
+
+    public int GetUniqueID()
+    {
+        int id;
+        do
+        {
+            id = UnityEngine.Random.Range(1000, 100000);
+        }while (_usedID.Contains(id));
+        return id;
+    }
+
+    #endregion
+
+
     #region >>> Game State <<<
 
-    public event Action<GameState> OnGameStateChanged;
+    /// <summary>
+    /// New, Old
+    /// </summary>
+    public event Action<GameState, GameState> OnGameStateChanged;
     private GameState _currentGameState = GameState.None;
     public GameState CurrentGameState => _currentGameState;
 
     public void ChangeGameState(GameState newState)
     {
+        GameState old = _currentGameState;
         _currentGameState = newState;
         switch (newState)
         {
@@ -79,6 +104,7 @@ public class GameManager : Singleton<GameManager>
             case GameState.BeforeFirstWave:
                 BuildingManager.AllowBuilding();
                 StartCoroutine(BeforeFirstWaveTimer(FirstWaveDelay));
+                StartCoroutine(GameTimer());
                 break;
 
             case GameState.NewWave:
@@ -91,14 +117,32 @@ public class GameManager : Singleton<GameManager>
                 break;
 
             case GameState.Win:
-                SceneManager.LoadScene("WinGame");
+                SceneManager.LoadScene("WinGame"); //Warning, changing this to async will cause issues, events may not be fired before the scene changes
                 break;
             case GameState.Lose:
-                SceneManager.LoadScene("LoseGame");
+                SceneManager.LoadScene("LoseGame"); //Warning, changing this to async will cause issues, events may not be fired before the scene changes
                 break;
         }
 
-        OnGameStateChanged?.Invoke(newState);
+        OnGameStateChanged?.Invoke(newState, old);
+    }
+
+    #endregion
+
+
+    #region >>> Game Timer <<<
+
+    private int _gameTime = 0;
+    public int GameTime => _gameTime;
+    public event Action OnGameTimerAdvance;
+    private IEnumerator GameTimer()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            _gameTime += 1;
+            OnGameTimerAdvance?.Invoke();
+        }
     }
 
     #endregion

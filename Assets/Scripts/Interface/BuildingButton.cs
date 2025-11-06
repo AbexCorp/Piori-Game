@@ -6,12 +6,14 @@ using UnityEngine.InputSystem;
 public class BuildingButton : CustomButton
 {
     private BuildingProfile _assignedProfile;
+    public Sprite Icon => _assignedProfile.UIIcon;
+
     public void SetProfile(BuildingProfile p)
     {
         _assignedProfile = p;
-        SetText(_assignedProfile.UniqueID);
+        SetText(_assignedProfile.UniqueName);
         _showTooltip = true;
-        _tooltipText = $"{_assignedProfile.UniqueID}\n Cost: {_assignedProfile.Cost}\n Health: {_assignedProfile.HealthMax}";
+        _tooltipText = $"{_assignedProfile.UniqueName}\n Cost: {_assignedProfile.Cost} +{_assignedProfile.CostAdjustmentPercentage * 100}%\n Health: {_assignedProfile.HealthMax}";
     }
 
     public override void Activate()
@@ -19,5 +21,11 @@ public class BuildingButton : CustomButton
         OnClickEvent?.Invoke();
         GameManager.Instance.BuildingManager.SelectProfile(_assignedProfile);
         GameManager.Instance.BuildingManager.Build();
+    }
+
+    public override void OnHoverEnter(InputAction.CallbackContext context)
+    {
+        _tooltipText = $"{_assignedProfile.UniqueName}\n Cost: {_assignedProfile.Cost} +{_assignedProfile.CostAdjustmentPercentage * 100}%\n Health: {_assignedProfile.HealthMax}";
+        base.OnHoverEnter(context);
     }
 }

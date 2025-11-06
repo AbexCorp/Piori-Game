@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99e47bfe0ec0124db3c3b7f7ae04eda, type: 3}
   m_Name: ResourceBuildingProfile
   m_EditorClassIdentifier: 
-  UniqueID: ResourceBuilding
-  HealthMax: 50
-  Cost: 20
+  UniqueName: Lumberyard
+  HealthMax: 30
+  BaseCost: 30
+  SpecialBuildingRequirement: 999
+  CostAdjustmentPercentage: 0.33
+  Texture: {fileID: 2800000, guid: 479763877985dd849b24bd9de593501a, type: 3}
+  UIIcon: {fileID: 21300000, guid: 7dd1e0bcc512c484cb56cae9827be878, type: 3}
   ProductionType: 0
-  ProductionAmount: 1
-  ProductionCooldown: 2.5
+  ProductionAmount: 5
+  ProductionCooldown: 3.5

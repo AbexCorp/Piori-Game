@@ -22,8 +22,9 @@ public class SimpleEnemy : Enemy
         _cost = sp.Cost;
         _tier = sp.Tier;
 
-        _uniqueID = sp.UniqueID;
-        gameObject.name = _uniqueID == null || _uniqueID == "" ? "Enemy (NoName)" : $"Enemy ({_uniqueID})";
+        _uniqueID = GameManager.Instance.GetUniqueID();
+        _uniqueName = sp.UniqueName;
+        gameObject.name = UniqueName == null || UniqueName == "" ? "Enemy (NoName)" : $"Enemy ({UniqueName})";
 
 
         _speed = sp.Speed;
@@ -47,6 +48,11 @@ public class SimpleEnemy : Enemy
         _rangedDamage = sp.RangedDamage;
         _rangedRange = sp.RangedRange;
 
+
+        if(sp.Texture != null)
+        {
+            _renderer.material.SetTexture("_Texture", sp.Texture);
+        }
 
         InitializeEnemy();
     }
@@ -78,9 +84,9 @@ public class SimpleEnemy : Enemy
             return;
 
         UpdateDistanceToTarget();
-        if (_distanceToTarget <= _meleeRange)
+        if (_distanceToTarget <= _meleeRange && _usesMelee)
             MeleeAttack();
-        else if (_distanceToTarget <= _rangedRange)
+        else if (_distanceToTarget <= _rangedRange && _usesRanged)
             RangedAttack();
     }
     protected IEnumerator AttackCooldown(float time)
@@ -116,6 +122,8 @@ public class SimpleEnemy : Enemy
         if (_targets[_target] < 0)
             _target = null;
     }
+    //There are some issues here
+    //Need to test this a lot
     protected int GetTargetValue(IHealth target)
     {
         int value = -10000;
@@ -136,7 +144,7 @@ public class SimpleEnemy : Enemy
         if (isPlayer && _prioritizesPlayer)
             value += 1000;
         else if(isPlayer && !_prioritizesPlayer)
-            value = 0;
+            value = 10;
 
         //Is building
         bool isBuilding = target is Building;
@@ -174,7 +182,7 @@ public class SimpleEnemy : Enemy
     {
         if (_target == null)
             return;
-        _target.GetDamaged(_meleeDamage);
+        _target.GetDamaged(_meleeDamage, UniqueID, UniqueName);
         StartCoroutine(AttackCooldown(_meleeAttackCooldown));
     }
 
@@ -207,7 +215,7 @@ public class SimpleEnemy : Enemy
         if (_target == null || _projectileProfile == null)
             return;
         Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
-        projectile.InitializeProjectile(_target.ParentGameObject.transform.position, transform.position, _rangedDamage);
+        projectile.InitializeProjectile(_target.ParentGameObject.transform.position, transform.position, UniqueID, UniqueName, _rangedDamage);
         StartCoroutine(AttackCooldown(_rangedAttackCooldown));
     }
 

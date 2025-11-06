@@ -1,5 +1,88 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &22245193872542716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2858281902269649404}
+  - component: {fileID: 8376052779378747023}
+  - component: {fileID: 1500403710739253358}
+  m_Layer: 12
+  m_Name: Renderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2858281902269649404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22245193872542716}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: 0, y: 0.63, z: 0}
+  m_LocalScale: {x: 0.19999999, y: 0.20000002, z: 0.20000002}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 3456920728982422079}
+  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
+--- !u!33 &8376052779378747023
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22245193872542716}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1500403710739253358
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22245193872542716}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -876546973899608171, guid: decc6455110549541b2ff082fa7098e2, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &310162507804477345
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1919018707435233367
 Transform:
   m_ObjectHideFlags: 0
@@ -366,6 +449,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2858281902269649404}
   - {fileID: 3797957557390456945}
   - {fileID: 1919018707435233367}
   m_Father: {fileID: 7030940309821908828}
@@ -468,6 +552,7 @@ GameObject:
   - component: {fileID: 3504947461512836090}
   - component: {fileID: 2321856555584936692}
   - component: {fileID: 7517467350771387804}
+  - component: {fileID: 5266358808311910715}
   m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
@@ -507,19 +592,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 2321856555584936692}
-  _speed: 1
+  _speed: 1.5
   _groundMask:
     serializedVersion: 2
     m_Bits: 1024
-  _healthMax: 100
-  _mouseHitMask:
-    serializedVersion: 2
-    m_Bits: 1056
+  _healthMax: 120
+  _mouseRaycaster: {fileID: 5266358808311910715}
   _playerProjectile: {fileID: 11400000, guid: 234897d5a03d8624cbc46fb55b1e7832, type: 2}
-  _damage: 20
+  _damage: 25
   _attackCooldown: 1.5
   _attackIsOnCooldown: 0
-  _remainingAttackCooldown: 0
   _attackCooldownUI: {fileID: 7713920873330096590}
   _attackCooldownUIFill: {fileID: 2582221337034474952}
   _repairCost: 0.25
@@ -583,8 +665,8 @@ MonoBehaviour:
     m_ActionName: InputMap/DirectMovement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7879182317600551522}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5266358808311910715}
+        m_TargetAssemblyTypeName: MouseRaycaster, Assembly-CSharp
         m_MethodName: OnMouseClick
         m_Mode: 0
         m_Arguments:
@@ -599,8 +681,8 @@ MonoBehaviour:
     m_ActionName: InputMap/PointMovement[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7879182317600551522}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5266358808311910715}
+        m_TargetAssemblyTypeName: MouseRaycaster, Assembly-CSharp
         m_MethodName: OnMousePosition
         m_Mode: 0
         m_Arguments:
@@ -748,6 +830,21 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &5266358808311910715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9114605352694199642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3b30ef5ac0bce8449bca424de66a253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mouseHitMask:
+    serializedVersion: 2
+    m_Bits: 1056
 --- !u!1001 &7916881132993626493
 PrefabInstance:
   m_ObjectHideFlags: 0

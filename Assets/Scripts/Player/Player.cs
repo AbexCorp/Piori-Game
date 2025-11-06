@@ -16,6 +16,7 @@ public class Player : MonoBehaviour, IHealth
 
     void Awake()
     {
+        _uniqueID = GameManager.Instance.GetUniqueID();
         if (_rigidbody == null)
             _rigidbody.GetComponent<Rigidbody>();
         InitializePlayer();
@@ -73,6 +74,9 @@ public class Player : MonoBehaviour, IHealth
     #region >>> Health <<<
 
     [Header("Combat")]
+    private int _uniqueID;
+    public int UniqueID => _uniqueID;
+    public string UniqueName => "Player";
     [SerializeField]
     private int _healthMax = 100;
     public int HealthMax => _healthMax;
@@ -81,20 +85,27 @@ public class Player : MonoBehaviour, IHealth
     public GameObject ParentGameObject => gameObject;
 
 
-    public void GetDamaged(int damage)
+    public void GetDamaged(int damage, int attackerID, string attackerName)
     {
         if (damage <= 0)
             return;
+
         _healthCurrent -= damage;
         GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
-        if (_healthCurrent <= 0)
-            Die();
-    }
-    private void Die()
-    {
-        _healthCurrent = 0;
-        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
-        GameManager.Instance.ChangeGameState(GameState.Lose);
+        GameManager.Instance.AnalyticsManager.OnPlayerLoseHealth(damage);
+
+        if (_healthCurrent > 0)
+        {
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, false);
+            return;
+        }
+        else
+        {
+            _healthCurrent = 0;
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, true);
+            GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
+            GameManager.Instance.ChangeGameState(GameState.Lose);
+        }
     }
 
     #endregion
@@ -104,163 +115,8 @@ public class Player : MonoBehaviour, IHealth
 
     [Header("Mouse Interaction")]
     [SerializeField]
-    private LayerMask _mouseHitMask;
-
-    private Vector2 _mousePosition;
-    public Vector2 MousePosition => _mousePosition;
-
-    private IMouseInteractable _hover = null;
-
-    public void OnMousePosition(InputAction.CallbackContext context)
-    {
-        if(Camera.main == null)
-        {
-            //Debug.LogError("No camera in the scene");
-            _mousePosition = Vector2.zero;
-            return;
-        }
-
-        _mousePosition = context.ReadValue<Vector2>();
-        MouseHover(context);
-    }
-
-    /*
-     * Seriously rethink this function and mouse click. Does this need to have context at all? 
-     * Test to make sure that the hover is written properly.
-     * Create a mouse controller so that no new class is needed with the same code in each scene.
-     * Also create some "Menu" class that will hold basic functions like, change scene
-     */
-    private void MouseHover(InputAction.CallbackContext context)
-    {
-        if (context.performed == false) return; //DEBUG, Test this
-        ////
-        //Ui Raycast
-        ////
-        PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, results);
-        if (results.Count > 0)
-        {
-            if (results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
-            {
-                if (_hover != null)
-                {
-                    if (interracted != _hover)
-                    {
-                        _hover.OnHoverExit(context);
-                        _hover = interracted;
-                        _hover.OnHoverEnter(context);
-                        return;
-                    }
-                    return;
-                }
-                else
-                {
-                    _hover = interracted;
-                    _hover.OnHoverEnter(context);
-                    return;
-                }
-            }
-            else
-            {
-                if (_hover != null)
-                    _hover.OnHoverExit(context);
-                _hover = null;
-                return;
-            }
-        }
-        else
-        {
-            if (_hover != null)
-                _hover.OnHoverExit(context);
-            _hover = null;
-        }
-
-
-
-
-        ////
-        //Gameobject Raycast
-        ////
-        Ray ray = Camera.main.ScreenPointToRay(MousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask: _mouseHitMask))
-        {
-            if (hit.collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
-            {
-                if (_hover != null)
-                {
-                    if (interacted != _hover)
-                    {
-                        _hover.OnHoverExit(context);
-                        _hover = interacted;
-                        _hover.OnHoverEnter(context);
-                    }
-                }
-                else
-                {
-                    _hover = interacted;
-                    _hover.OnHoverEnter(context);
-                }
-            }
-            else
-            {
-                if (_hover != null)
-                    _hover.OnHoverExit(context);
-                _hover = null;
-            }
-        }
-        else
-        {
-            if (_hover != null)
-                _hover.OnHoverExit(context);
-            _hover = null;
-        }
-    }
-
-    public void OnMouseClick(InputAction.CallbackContext context)
-    {
-        if (context.performed == false) return; //DEBUG, Test this
-        ////
-        //Ui Raycast
-        ////
-        PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, results);
-        if(results.Count > 0)
-        {
-            if(results.FirstOrDefault().gameObject.TryGetComponent<IMouseInteractable>(out var interracted))
-            {
-                interracted.OnClick(context);
-                return;
-            }
-        }
-
-
-
-
-        ////
-        //Gameobject Raycast
-        ////
-        Ray ray = Camera.main.ScreenPointToRay(MousePosition);
-        RaycastHit[] hits;
-        hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask: _mouseHitMask).OrderBy(x => x.distance).ToArray();
-
-        //Single clicks
-        if (hits.Length <= 0)
-            return;
-        if(hits[0].collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
-            interacted.OnClick(context);
-
-        //Multiple clicks
-        //for(int i = 0; i < hits.Length; i++)
-        //{
-        //    if (hits[i].collider.gameObject.TryGetComponent<IMouseInteractable>(out var interacted))
-        //    {
-        //        interacted.OnClick(context);
-        //    }
-        //}
-    }
+    private MouseRaycaster _mouseRaycaster;
+    public Vector2 MousePosition => _mouseRaycaster.MousePosition;
 
     #endregion
 
@@ -278,7 +134,6 @@ public class Player : MonoBehaviour, IHealth
     [SerializeField]
     private bool _attackIsOnCooldown = false;
     public bool AttackIsOnCooldown => _attackIsOnCooldown;
-    [SerializeField]
     private float _remainingAttackCooldown = 0f;
     public float RemainingAttackCooldown => _remainingAttackCooldown;
 
@@ -295,7 +150,7 @@ public class Player : MonoBehaviour, IHealth
 
         if (context.performed)
         {
-            Ray ray = Camera.main.ScreenPointToRay(_mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(MousePosition);
             if (Mathf.Abs(ray.direction.y) < 0.0001f) //paraller to world plane
                 return;
             
@@ -303,8 +158,9 @@ public class Player : MonoBehaviour, IHealth
             Vector3 hitpoint = ray.origin + t * ray.direction;
 
             Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_playerProjectile);
-            projectile.InitializeProjectile(hitpoint, transform.position, _damage);
+            projectile.InitializeProjectile(hitpoint, transform.position, UniqueID, UniqueName, _damage);
             StartCoroutine(AttackCooldownTimer());
+            GameManager.Instance.AnalyticsManager.OnPlayerShoot();
         }
     }
     private IEnumerator AttackCooldownTimer()
@@ -399,6 +255,7 @@ public class Player : MonoBehaviour, IHealth
                 return;
             }
 
+            GameManager.Instance.AnalyticsManager.OnPlayerRepair(buildingToRepair);
             buildingToRepair.Repair((int)System.MathF.Floor(buildingToRepair.HealthMax * RepairAmount), RepairTime);
             GameManager.Instance.ResourceManager.UseResources((int)System.MathF.Ceiling(buildingToRepair.Cost * RepairCost));
         }

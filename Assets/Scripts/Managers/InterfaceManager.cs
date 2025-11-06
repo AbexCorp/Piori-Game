@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
-public class InterfaceManager : MonoBehaviour
+public class InterfaceManager : Menu
 {
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         GenerateBuildingButtons();
     }
     private void Update()
@@ -25,52 +28,108 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField]
     private GameObject _buildingButtonsFrame;
     [SerializeField]
+    private Animator _buildingButtonsFrameAnimator;
+    [SerializeField]
+    private GameObject _buildingIconsFrame;
+    [SerializeField]
     private BuildingButton _buildingButtonPrefab;
+    [SerializeField]
+    private BuildingIcon _buildingIconPrefab;
     [SerializeField]
     private CustomButton _sellButton;
     [SerializeField]
     private CustomButton _cancelBuildingButton;
 
     private Dictionary<int, BuildingButton> _buildingButtons = new();
+    private bool _buildButtonsVisible = false;
 
     private void GenerateBuildingButtons()
     {
-        float position = 0;
-        float buttonWidth = _buildingButtonPrefab.RectTransform.rect.width;
+        float iconPosition = -10;
+        float buttonPosition = 0;
+        float buttonHeight = _buildingButtonPrefab.RectTransform.rect.height;
+        float iconHeight = _buildingIconPrefab.RectTransform.rect.height;
         float margin = 20;
+        float buttonFrameHeightAdjustment = 10; //Should reat button fram top margin
 
         //Regular build buttons
         TowerProfile[] towers = Resources.LoadAll<TowerProfile>("Buildings/Towers");
+        towers = towers.OrderBy(x => x.BaseCost).ToArray();
+        for(int i = 0; i < towers.Length; i++)
+        {
+            towers[i] = Instantiate(towers[i]);
+        }
+
         for(int i = 0; i < towers.Length; i++)
         {
             BuildingButton b = Instantiate(_buildingButtonPrefab, _buildingButtonsFrame.transform);
+            BuildingIcon ic = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
             b.SetProfile(towers[i]);
-            b.RectTransform.anchoredPosition = new Vector2(position, 0);
-            position += (buttonWidth + margin);
+
+            ic.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
+            buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
+            iconPosition -= iconHeight;
+            b.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
+
             if(_buildingButtons.Count < 9)
+            {
                 _buildingButtons.Add(_buildingButtons.Count + 1, b);
+                ic.Set(_buildingButtons.Count.ToString(), b.Icon);
+            }
+            else
+                ic.Set("", b.Icon);
         }
 
+        iconPosition -= margin;
         ResourceBuildingProfile[] resourceBuildings = Resources.LoadAll<ResourceBuildingProfile>("Buildings/ResourceBuildings");
-        for(int i = 0; i < resourceBuildings.Length; i++)
+        for (int i = 0; i < resourceBuildings.Length; i++)
+        {
+            resourceBuildings[i] = Instantiate(resourceBuildings[i]);
+        }
+
+        for (int i = 0; i < resourceBuildings.Length; i++)
         {
             BuildingButton b = Instantiate(_buildingButtonPrefab, _buildingButtonsFrame.transform);
+            BuildingIcon ic = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
             b.SetProfile(resourceBuildings[i]);
-            b.RectTransform.anchoredPosition = new Vector2(position, 0);
-            position += (buttonWidth + margin);
+
+            ic.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
+            buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
+            iconPosition -= iconHeight;
+            b.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
+
             if (_buildingButtons.Count < 9)
+            {
                 _buildingButtons.Add(_buildingButtons.Count + 1, b);
+                ic.Set(_buildingButtons.Count.ToString(), b.Icon);
+            }
+            else
+                ic.Set("", b.Icon);
         }
 
+
         //Sell button
-        position += margin;
-        _sellButton.RectTransform.anchoredPosition = new Vector2 (position, 0);
-        position += _sellButton.RectTransform.rect.width + margin;
+        iconPosition -= margin;
+        BuildingIcon ico = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
+        ico.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
+        ico.Set("`", null);
+        buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
+
+        _sellButton.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
+        iconPosition -= iconHeight;
+
 
         //Cancel button
-        _cancelBuildingButton.RectTransform.anchoredPosition = new Vector2 (position, 0);
-        position += _cancelBuildingButton.RectTransform.rect.width + margin;
+        iconPosition -= margin;
+        ico = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
+        ico.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
+        ico.Set("`", null);
+        buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
+
+        _cancelBuildingButton.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
         BuildingCancelButtonSetActive(false);
+
+        SetBuildButtonsTo(false);
     }
 
     public void OnSellButton()
@@ -111,6 +170,25 @@ public class InterfaceManager : MonoBehaviour
         {
             _sellButton.Activate();
             return;
+        }
+    }
+
+    public void SetBuildButtons()
+    {
+        _buildButtonsVisible = !_buildButtonsVisible;
+        SetBuildButtonsTo(_buildButtonsVisible);
+    }
+    public void SetBuildButtonsTo(bool value)
+    {
+        switch (value)
+        {
+            case true:
+                _buildingButtonsFrameAnimator.Play("BuildMenuShow");
+                return;
+
+            case false:
+                _buildingButtonsFrameAnimator.Play("BuildMenuHide");
+                return;
         }
     }
 
@@ -244,7 +322,7 @@ public class InterfaceManager : MonoBehaviour
         if (GameManager.Instance.BuildingManager.IsSelling)
             _buildingStatusText.text = $"Building: Selling";
         else
-            _buildingStatusText.text = ($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueID)}");
+            _buildingStatusText.text = ($"Building: {(GameManager.Instance.BuildingManager.SelectedProfile == null ? "Nothing" : GameManager.Instance.BuildingManager.SelectedProfile.UniqueName)}");
     }
 
     #endregion
@@ -324,6 +402,11 @@ public class InterfaceManager : MonoBehaviour
             Time.timeScale = 1f;
             _pauseMenu.SetActive(false);
         }
+    }
+    public void BackToMenu()
+    {
+        Time.timeScale = 1f;
+        LoadScene("MainMenu");
     }
 
     #endregion

@@ -55,6 +55,7 @@ public class GridTile : MonoBehaviour, IMouseInteractable
 
         _building = building;
         _building.GetBuilt(this);
+        GameManager.Instance.BuildingManager.SelectedProfile.AdjustCost();
         GameManager.Instance.BuildingManager.StopBuilding();
         return true;
     }
@@ -79,7 +80,9 @@ public class GridTile : MonoBehaviour, IMouseInteractable
         if (!IsOccupied)
             return false;
 
-        GameManager.Instance.ResourceManager.AddResource(Mathf.Clamp((int)System.MathF.Round(_building.Cost * GameManager.Instance.Player.BuildingSellingReturn), 0, int.MaxValue));
+        int cashback = Mathf.Clamp((int)System.MathF.Round(_building.Cost * GameManager.Instance.Player.BuildingSellingReturn), 0, int.MaxValue);
+        GameManager.Instance.AnalyticsManager.OnBuildingSold(_building, this, cashback);
+        GameManager.Instance.ResourceManager.AddResource(cashback);
         _building.GetDestroyed();
         _building = null;
         GameManager.Instance.BuildingManager.StopSelling();
@@ -152,9 +155,9 @@ public class GridTile : MonoBehaviour, IMouseInteractable
                     GameManager.Instance.InterfaceManager.DisplayTextMessage(reason);
                     return;
                 }
-                Building b = GameManager.Instance.BuildingManager.BuildingPrefab;
+                Building b = Instantiate(GameManager.Instance.BuildingManager.BuildingPrefab, gameObject.transform.position, Quaternion.identity);
                 b.Load(GameManager.Instance.BuildingManager.SelectedProfile);
-                Build(Instantiate(b, gameObject.transform.position, Quaternion.identity));
+                Build(b);
             }
             else if (GameManager.Instance.BuildingManager.IsSelling == true)
             {

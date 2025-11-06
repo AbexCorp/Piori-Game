@@ -125,6 +125,11 @@ public class GridManager : Singleton<GridManager>
         if (tile == '1')
             return true;
 
+        if (tile == '2') //temp resource tile
+        {
+            return false;
+        }
+
         return true;
     }
 

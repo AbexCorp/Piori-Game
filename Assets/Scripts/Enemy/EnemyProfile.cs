@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyProfile : ScriptableObject
 {
-    public string UniqueID;
+    public string UniqueName;
 
     [Header("Spawning")]
     public int Tier = 1;
@@ -21,4 +21,8 @@ public class EnemyProfile : ScriptableObject
     [Header("Health")]
     [SerializeField]
     public int HealthMax = 50;
+
+    [Header("Visual")]
+    [SerializeField]
+    public Texture Texture = null;
 }

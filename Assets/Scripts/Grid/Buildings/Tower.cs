@@ -39,6 +39,8 @@ public class Tower : Building
 
     void Update()
     {
+        if (_shoots == false)
+            return;
         AttackEnemy();
     }
 
@@ -48,7 +50,9 @@ public class Tower : Building
             return;
         TowerProfile tp = so as TowerProfile;
 
-        gameObject.name = tp.UniqueID == null || tp.UniqueID == "" ? "Tower (NoName)" : $"Tower ({tp.UniqueID})";
+        _uniqueID = GameManager.Instance.GetUniqueID();
+        _uniqueName = tp.UniqueName;
+        gameObject.name = $"Tower ({UniqueName})";
         _cost = tp.Cost;
 
         _healthMax = tp.HealthMax;
@@ -60,6 +64,11 @@ public class Tower : Building
         _hasCooldown = tp.HasCooldown;
         _attackCooldown = tp.AttackCooldown;
         _damage = tp.Damage;
+
+        if(tp.Texture != null)
+        {
+            _renderer.material.SetTexture("_Texture", tp.Texture);
+        }
 
         InitializeBuilding();
         AdjustDetectionRange(_range);
@@ -101,18 +110,18 @@ public class Tower : Building
     }
     private void AttackHitscan()
     {
-        _target.GetDamaged(_damage);
+        _target.GetDamaged(_damage, UniqueID, UniqueName);
     }
     private void AttackProjectile()
     {
         Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
-        p.InitializeProjectile(_target.transform.position, transform.position, _damage);
+        p.InitializeProjectile(_target.transform.position, transform.position, UniqueID, UniqueName, _damage);
     }
     private void AttackFakeProjectile()
     {
         Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
-        p.InitializeProjectile(_target.transform.position, transform.position, 0);
-        _target.GetDamaged(_damage);
+        p.InitializeProjectile(_target.transform.position, transform.position, UniqueID, UniqueName, 0);
+        _target.GetDamaged(_damage, UniqueID, UniqueName);
     }
     private IEnumerator AttackCooldown()
     {

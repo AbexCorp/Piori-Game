@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyProjectile
   m_EditorClassIdentifier: 
   UniqueID: SimpleEnemyProjectile
-  Speed: 2
+  Speed: 7
   CollisionMask:
     serializedVersion: 2
     m_Bits: 6144
@@ -21,5 +21,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 6144
   LifetimeType: 1
-  LifetimeDistance: 4
+  LifetimeDistance: 6
   LifetimeTime: 2
+  Sprite: {fileID: 21300000, guid: 50828f45777f8fb4e85f91510f29282d, type: 3}
+  UseOmniDirection: 1

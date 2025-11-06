@@ -93,7 +93,7 @@ public class Grid
     }
     public GridTile GetRandomBorderTileWalkable()
     {
-        return _borderTiles.Where(x => x.IsWalkable).OrderBy( x => UnityEngine.Random.value).FirstOrDefault();
+        return _borderTiles.Where(x => x.IsOccupied == false).OrderBy( x => UnityEngine.Random.value).FirstOrDefault();
     }
 
 

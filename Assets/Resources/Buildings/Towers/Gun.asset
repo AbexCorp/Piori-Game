@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c497c57859fd4f41a9505134c1107e1, type: 3}
+  m_Name: Gun
+  m_EditorClassIdentifier: 
+  UniqueName: Gun Tower
+  HealthMax: 50
+  BaseCost: 50
+  SpecialBuildingRequirement: 0
+  CostAdjustmentPercentage: 0.1
+  Texture: {fileID: 2800000, guid: 9ee46fc2e714af24591fff112697c216, type: 3}
+  UIIcon: {fileID: 21300000, guid: 23fcf3e8506010140bba94296ecbe6af, type: 3}
+  Shoots: 1
+  AttackType: 2
+  ProjectileProfile: {fileID: 11400000, guid: fc36b32fc7ddfa44c97867e9fabeeaaa, type: 2}
+  Range: 4
+  HasCooldown: 1
+  AttackCooldown: 0.1
+  Damage: 2

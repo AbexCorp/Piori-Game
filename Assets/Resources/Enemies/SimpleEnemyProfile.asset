@@ -12,22 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5458ce23df70d94aa8d6e6637d38e09, type: 3}
   m_Name: SimpleEnemyProfile
   m_EditorClassIdentifier: 
-  UniqueID: SimpleEnemy
-  Speed: 1
+  UniqueName: Grunt
+  Tier: 1
+  Cost: 25
+  Speed: 0.9
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
   PathfindingType: 0
   HealthMax: 50
+  Texture: {fileID: 2800000, guid: 3011a5066c30265468a9c280368491bc, type: 3}
   StopsMovementAfterAttack: 1
   AttacksBuildings: 1
   PrioritizesPlayer: 1
   UsesMelee: 1
-  MeleeAttackCooldown: 2
-  MeleeDamage: 10
-  MeleeRange: 0.5
+  MeleeAttackCooldown: 1
+  MeleeDamage: 6
+  MeleeRange: 1.1
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
-  UsesRanged: 1
+  UsesRanged: 0
   RangedAttackCooldown: 2
   RangedDamage: 10
   RangedRange: 3

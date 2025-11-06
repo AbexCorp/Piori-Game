@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
+    private Camera _camera;
+
+    private void Start()
+    {
+        _camera = Camera.main;
+    }
     void Update()
     {
-        if (Camera.main == null) return;
-        transform.forward = Camera.main.transform.forward;
+        if (_camera == null) return;
+        transform.forward = _camera.transform.forward;
     }
 }

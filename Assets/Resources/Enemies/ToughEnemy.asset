@@ -12,22 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5458ce23df70d94aa8d6e6637d38e09, type: 3}
   m_Name: ToughEnemy
   m_EditorClassIdentifier: 
-  UniqueID: ToughEnemy
+  UniqueName: Tank
   Tier: 1
-  Cost: 90
-  Speed: 0.6
+  Cost: 100
+  Speed: 0.5
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
   PathfindingType: 1
-  HealthMax: 110
+  HealthMax: 200
+  Texture: {fileID: 2800000, guid: c3934e4b7a4a14a47927ccb33a8692d0, type: 3}
   StopsMovementAfterAttack: 1
   AttacksBuildings: 1
-  PrioritizesPlayer: 1
+  PrioritizesPlayer: 0
   UsesMelee: 1
   MeleeAttackCooldown: 3
-  MeleeDamage: 40
-  MeleeRange: 0.4
+  MeleeDamage: 50
+  MeleeRange: 1.4
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
   UsesRanged: 0
   RangedAttackCooldown: 2
