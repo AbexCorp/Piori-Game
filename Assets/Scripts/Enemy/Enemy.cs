@@ -135,7 +135,7 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     [SerializeField]
     private UnityEngine.UI.Image _healthBar;
 
-    public virtual void GetDamaged(int damage)
+    public virtual void GetDamaged(int damage, int attackerID, string attackerName)
     {
         if (damage <= 0)
             return;
@@ -149,10 +149,14 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
         }
 
         if (_healthCurrent > 0)
+        {
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, false);
             return;
+        }
         else
         {
             _healthCurrent = 0;
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, true);
             GameManager.Instance.EnemyManager.OnEnemyDeath(this);
             Destroy(gameObject);
         }
@@ -164,9 +168,10 @@ public abstract class Enemy : MonoBehaviour, IHealth, ILoadable
     #region >>> Spawning <<<
 
     [Header("Spawning")]
-    public int _tier = 1;
+    protected int _tier = 1;
     public int Tier => _tier;
-    public int _cost = 50;
+
+    protected int _cost = 50;
     public int Cost => _cost;
 
     #endregion

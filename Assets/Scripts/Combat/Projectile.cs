@@ -30,6 +30,8 @@ public class Projectile : MonoBehaviour, ILoadable
     [SerializeField]
     protected SpriteRenderer _spriteRenderer;
 
+    protected int _attackerID;
+    protected string _attackerName;
 
     private void Awake()
     {
@@ -57,9 +59,11 @@ public class Projectile : MonoBehaviour, ILoadable
         _spriteRenderer.sprite = pp.Sprite;
     }
 
-    public void InitializeProjectile(Vector3 target, Vector3 spawn, int? damage = null)
+    public void InitializeProjectile(Vector3 target, Vector3 spawn, int attackerID, string attackerName, int? damage = null)
     {
         IsUsed = true;
+        _attackerID = attackerID;
+        _attackerName = attackerName;
         SetSpawn(spawn);
         SetTarget(target);
         SetDamage(damage);
@@ -123,7 +127,7 @@ public class Projectile : MonoBehaviour, ILoadable
     {
         if (other.gameObject.TryGetComponent<IHealth>(out IHealth target))
         {
-            target.GetDamaged(_damage);
+            target.GetDamaged(_damage, _attackerID, _attackerName);
         }
     }
 

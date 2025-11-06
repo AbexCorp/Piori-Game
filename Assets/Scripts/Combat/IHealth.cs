@@ -10,5 +10,5 @@ public interface IHealth
     public string UniqueName { get; }
     public int HealthMax { get; }
     public int HealthCurrent { get; }
-    public void GetDamaged(int damage);
+    public void GetDamaged(int damage, int attackerID, string attackerName);
 }

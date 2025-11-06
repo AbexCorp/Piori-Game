@@ -15,6 +15,7 @@ public class AnalyticsManager : MonoBehaviour
 
         GameManager.Instance.OnGameStateChanged += PlayerMovement;
         GameManager.Instance.OnGameStateChanged += TallyResources;
+        GameManager.Instance.OnGameStateChanged += OnGameEnd;
     }
 
 
@@ -176,18 +177,95 @@ public class AnalyticsManager : MonoBehaviour
 
     #region >>> Enemies <<<
 
-    #region Lifetime
-    private Dictionary<string, List<int>> _enemyLifetime;
-    public void OnEnemyDeath(string enemy, int lifeStart) //wave, cause, usefullness, damage to player, damage to buildings
-        //damage to player and buildings need's to be calculated somwhere else as some enemies may just kill the player and never die before that
+    private class EnemyData
     {
-
+        public EnemyData(int id, string name, int wave, int lifeStart)
+        {
+            ID = id;
+            Name = name;
+            Wave = wave;
+            LifeStart = lifeStart;
+        }
+        public int ID;
+        public string Name;
+        public int Wave;
+        public int LifeStart;
+        public int LifeEnd = -1;
     }
-    public void OnEnemyGameEnd(string enemy)
+
+    private Dictionary<int, EnemyData> _enemies = new();
+    Dictionary<int, int> _waveCounter = new();
+    public void OnEnemyCreate(int id, string name)
     {
+        _enemies.Add(id ,new EnemyData(id, name, CurrentWave, GameTime));
 
+        if(_waveCounter.ContainsKey(CurrentWave) == false)
+            _waveCounter.Add(CurrentWave, 1);
+        else
+            _waveCounter[CurrentWave]++;
     }
+    public void OnEnemyDeath(int id)
+    {
+        if (_enemies.ContainsKey(id))
+        {
+            _enemies[id].LifeEnd = GameTime;
+        }
+
+        int wave = _enemies[id].Wave;
+        _waveCounter[wave]--;
+        if (_waveCounter[wave] <= 0)
+        {
+            //Debug.Log($"Beat Wave {wave}");
+        }
+    }
+
     #endregion
+
+
+    #region >>> CombatLog <<<
+
+    private List<DamageEvent> _damageEvents = new();
+    public struct DamageEvent
+    {
+        public DamageEvent(int attackerID, string attackerName, int targetID, string targetName, int damage, bool gotKilled)
+        {
+            AttackerID = attackerID;
+            AttackerName = attackerName;
+            TargetID = targetID;
+            TargetName = targetName;
+            Damage = damage;
+            GotKilled = gotKilled;
+        }
+        public int AttackerID;
+        public string AttackerName;
+        public int TargetID;
+        public string TargetName;
+        public int Damage;
+        public bool GotKilled;
+    }
+    public void NewCombatEvent(int attackerID, string attackerName, int targetID, string targetName, int damage, bool gotKilled)
+    {
+        //if (Analytics.enabled == false)
+        //    return;
+        _damageEvents.Add(new DamageEvent(attackerID, attackerName, targetID, targetName, damage, gotKilled));
+    }
+
+    #endregion
+
+
+    #region >>> Game <<<
+
+    public void OnGameEnd(GameState current, GameState old)
+    {
+        if(current == GameState.Win)
+        {
+
+        }
+        if (current == GameState.Lose)
+        {
+
+        }
+    }
 
     #endregion
 }

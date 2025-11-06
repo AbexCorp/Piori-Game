@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, IHealth
 
     void Awake()
     {
-        _uniqueID = gameObject.GetInstanceID();
+        _uniqueID = GameManager.Instance.GetUniqueID();
         if (_rigidbody == null)
             _rigidbody.GetComponent<Rigidbody>();
         InitializePlayer();
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour, IHealth
     public GameObject ParentGameObject => gameObject;
 
 
-    public void GetDamaged(int damage)
+    public void GetDamaged(int damage, int attackerID, string attackerName)
     {
         if (damage <= 0)
             return;
@@ -95,10 +95,14 @@ public class Player : MonoBehaviour, IHealth
         GameManager.Instance.AnalyticsManager.OnPlayerLoseHealth(damage);
 
         if (_healthCurrent > 0)
+        {
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, false);
             return;
+        }
         else
         {
             _healthCurrent = 0;
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, true);
             GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
             GameManager.Instance.ChangeGameState(GameState.Lose);
         }
@@ -154,7 +158,7 @@ public class Player : MonoBehaviour, IHealth
             Vector3 hitpoint = ray.origin + t * ray.direction;
 
             Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_playerProjectile);
-            projectile.InitializeProjectile(hitpoint, transform.position, _damage);
+            projectile.InitializeProjectile(hitpoint, transform.position, UniqueID, UniqueName, _damage);
             StartCoroutine(AttackCooldownTimer());
             GameManager.Instance.AnalyticsManager.OnPlayerShoot();
         }

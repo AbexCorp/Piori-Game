@@ -34,10 +34,12 @@ public class EnemyManager : MonoBehaviour
     public void OnEnemySpawn(Enemy spawnedEnemy)
     {
         _spawnedEnemies.Add(spawnedEnemy);
+        GameManager.Instance.AnalyticsManager.OnEnemyCreate(spawnedEnemy.UniqueID, spawnedEnemy.UniqueName);
     }
     public void OnEnemyDeath(Enemy deadEnemy)
     {
         _spawnedEnemies.Remove(deadEnemy);
+        GameManager.Instance.AnalyticsManager.OnEnemyDeath(deadEnemy.UniqueID);
         if (_spawnedEnemies.Count <= 0)
         {
             if(GameManager.Instance.Level.Waves.Count == _currentWave)

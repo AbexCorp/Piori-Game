@@ -64,6 +64,23 @@ public class GameManager : Singleton<GameManager>
     }
 
 
+    #region >>> ID <<<
+
+    private HashSet<int> _usedID = new();
+
+    public int GetUniqueID()
+    {
+        int id;
+        do
+        {
+            id = UnityEngine.Random.Range(1000, 100000);
+        }while (_usedID.Contains(id));
+        return id;
+    }
+
+    #endregion
+
+
     #region >>> Game State <<<
 
     /// <summary>

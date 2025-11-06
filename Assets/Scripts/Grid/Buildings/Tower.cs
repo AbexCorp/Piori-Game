@@ -50,7 +50,7 @@ public class Tower : Building
             return;
         TowerProfile tp = so as TowerProfile;
 
-        _uniqueID = gameObject.GetInstanceID();
+        _uniqueID = GameManager.Instance.GetUniqueID();
         _uniqueName = tp.UniqueName;
         gameObject.name = $"Tower ({UniqueName})";
         _cost = tp.Cost;
@@ -110,18 +110,18 @@ public class Tower : Building
     }
     private void AttackHitscan()
     {
-        _target.GetDamaged(_damage);
+        _target.GetDamaged(_damage, UniqueID, UniqueName);
     }
     private void AttackProjectile()
     {
         Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
-        p.InitializeProjectile(_target.transform.position, transform.position, _damage);
+        p.InitializeProjectile(_target.transform.position, transform.position, UniqueID, UniqueName, _damage);
     }
     private void AttackFakeProjectile()
     {
         Projectile p = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
-        p.InitializeProjectile(_target.transform.position, transform.position, 0);
-        _target.GetDamaged(_damage);
+        p.InitializeProjectile(_target.transform.position, transform.position, UniqueID, UniqueName, 0);
+        _target.GetDamaged(_damage, UniqueID, UniqueName);
     }
     private IEnumerator AttackCooldown()
     {

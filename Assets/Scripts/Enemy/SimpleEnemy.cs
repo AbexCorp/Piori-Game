@@ -22,7 +22,7 @@ public class SimpleEnemy : Enemy
         _cost = sp.Cost;
         _tier = sp.Tier;
 
-        _uniqueID = gameObject.GetInstanceID();
+        _uniqueID = GameManager.Instance.GetUniqueID();
         _uniqueName = sp.UniqueName;
         gameObject.name = UniqueName == null || UniqueName == "" ? "Enemy (NoName)" : $"Enemy ({UniqueName})";
 
@@ -182,7 +182,7 @@ public class SimpleEnemy : Enemy
     {
         if (_target == null)
             return;
-        _target.GetDamaged(_meleeDamage);
+        _target.GetDamaged(_meleeDamage, UniqueID, UniqueName);
         StartCoroutine(AttackCooldown(_meleeAttackCooldown));
     }
 
@@ -215,7 +215,7 @@ public class SimpleEnemy : Enemy
         if (_target == null || _projectileProfile == null)
             return;
         Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_projectileProfile);
-        projectile.InitializeProjectile(_target.ParentGameObject.transform.position, transform.position, _rangedDamage);
+        projectile.InitializeProjectile(_target.ParentGameObject.transform.position, transform.position, UniqueID, UniqueName, _rangedDamage);
         StartCoroutine(AttackCooldown(_rangedAttackCooldown));
     }
 
