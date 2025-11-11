@@ -30,4 +30,11 @@ public class MainMenu : Menu
         _isShowingInstructions = !_isShowingInstructions;
         _howToPlay.SetActive(_isShowingInstructions);
     }
+    [SerializeField]
+    private GameObject _analyticsMenu;
+    public void SetConsent(bool consent)
+    {
+        _analyticsMenu.SetActive(false);
+        Services.Instance.SetConsent(consent);
+    }
 }

@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
+using Unity.Services.Analytics;
 
 public class AnalyticsManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        //if (Analytics.enabled == false)
-        //    return;
-
         GameManager.Instance.OnGameStateChanged += PlayerMovement;
         GameManager.Instance.OnGameStateChanged += TallyResources;
         GameManager.Instance.OnGameStateChanged += OnGameEnd;
@@ -245,8 +242,6 @@ public class AnalyticsManager : MonoBehaviour
     }
     public void NewCombatEvent(int attackerID, string attackerName, int targetID, string targetName, int damage, bool gotKilled)
     {
-        //if (Analytics.enabled == false)
-        //    return;
         _damageEvents.Add(new DamageEvent(attackerID, attackerName, targetID, targetName, damage, gotKilled));
     }
 
