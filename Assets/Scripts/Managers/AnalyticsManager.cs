@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Services.Analytics;
+using Event = Unity.Services.Analytics.Event;
 
 public class AnalyticsManager : MonoBehaviour
 {
@@ -252,6 +253,9 @@ public class AnalyticsManager : MonoBehaviour
 
     public void OnGameEnd(GameState current, GameState old)
     {
+        if (current != GameState.Win && current != GameState.Lose)
+            return;
+
         if(current == GameState.Win)
         {
 
@@ -263,4 +267,154 @@ public class AnalyticsManager : MonoBehaviour
     }
 
     #endregion
+}
+
+internal class GameInfoEvent : Event
+{
+    public GameInfoEvent() : base("GameInfoEvent") { }
+
+
+    //==GAME==
+    public void SetVictory(bool victory)
+    {
+        SetParameter("Victory", victory);
+    }
+
+    public void SetWaveTime(int wave, int time)
+    {
+        SetParameter($"Wave{wave}Time", time);
+    }
+
+    public void SetWaveResourceGained(int wave, int amount)
+    {
+        SetParameter($"Wave{wave}ResourceGained", amount);
+    }
+
+    public void SetWaveResourceLost(int wave, int amount)
+    {
+        SetParameter($"Wave{wave}ResourceLost", amount);
+    }
+
+    public void SetPlayerMovement(float movement)
+    {
+        SetParameter("PlayerMovement", movement);
+    }
+
+    public void SetWaveLost(int waveLost)
+    {
+        SetParameter("WaveLost", waveLost);
+    }
+
+
+    //==BUILDINGS==
+    public void SetBuildingCount(int wave, int buildings)
+    {
+        SetParameter($"Wave{wave}Buildings", buildings);
+    }
+
+    public void SetTowerCount(int wave, int towers)
+    {
+        SetParameter($"Wave{wave}Towers", towers);
+    }
+
+    public void SetBuildingsBuilt(int walls, int cannons, int guns, int arrows, int lumberyards)
+    {
+        SetParameter("WallsBuilt", walls);
+        SetParameter("CannonsBuilt", cannons);
+        SetParameter("GunsBuilt", guns);
+        SetParameter("ArrowBuilt", arrows);
+        SetParameter("LumberyardsBuilt", lumberyards);
+    }
+
+
+    //==DAMAGE==
+    public void SetDamageStats(int cannonDamage, int gunDamage, int arrowDamage)
+    {
+        SetParameter("CannonDamage", cannonDamage);
+        SetParameter("GunDamage", gunDamage);
+        SetParameter("ArrowDamage", arrowDamage);
+    }
+
+    public void SetKillsStats(int cannonKills, int gunKills, int arrowKills)
+    {
+        SetParameter("CannonKills", cannonKills);
+        SetParameter("GunKills", gunKills);
+        SetParameter("ArrowKills", arrowKills);
+    }
+
+    public void SetEnemyDamage(int gruntDamage, int archerDamage, int toughDamage)
+    {
+        SetParameter("GruntDamage", gruntDamage);
+        SetParameter("ArcherDamage", archerDamage);
+        SetParameter("ToughDamage", toughDamage);
+    }
+
+    public void SetEnemyKills(int gruntKills, int archerKills, int toughKills)
+    {
+        SetParameter("GruntKills", gruntKills);
+        SetParameter("ArcherKills", archerKills);
+        SetParameter("ToughKills", toughKills);
+    }
+
+
+    //==GAME==
+    //Victory - bool
+
+    //Wave1Time - int
+    //Wave2Time - int
+    //Wave3Time - int
+    //Wave4Time - int
+    //Wave5Time - int
+
+    //Wave1ResourceGained - int
+    //Wave2ResourceGained - int
+    //Wave3ResourceGained - int
+    //Wave4ResourceGained - int
+    //Wave5ResourceGained - int
+    //Wave1ResourceLost - int
+    //Wave2ResourceLost - int
+    //Wave3ResourceLost - int
+    //Wave4ResourceLost - int
+    //Wave5ResourceLost - int
+
+    //PlayerMovement - float
+    //WaveLost - int
+
+
+    //==BUILDINGS==
+    //Wave1Buildings - int
+    //Wave2Buildings - int
+    //Wave3Buildings - int
+    //Wave4Buildings - int
+    //Wave5Buildings - int
+
+    //Wave1Towers - int
+    //Wave2Towers - int
+    //Wave3Towers - int
+    //Wave4Towers - int
+    //Wave5Towers - int
+
+    //WallsBuilt - int
+    //CannonsBuilt - int
+    //GunsBuilt - int
+    //ArrowBuilt - int
+    //LumberyardsBuilt - int
+
+
+    //==DAMAGE==
+    //CannonDamage - int
+    //GunDamage - int
+    //ArrowDamage - int
+
+    //CannonKills - int
+    //GunKills - int
+    //ArrowKills - int
+
+    //GruntDamage - int
+    //ArcherDamage - int
+    //ToughDamage - int
+
+    //GruntKills - int
+    //ArcherKills - int
+    //ToughKills - int
 }
