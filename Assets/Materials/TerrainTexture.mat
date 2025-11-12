@@ -57,6 +57,6 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Base: {r: 0.7058823, g: 0.62745106, b: 0.45098037, a: 0}
-    - _tiling: {r: 2, g: 2, b: 0, a: 0}
+    - _Base: {r: 0.74509805, g: 0.654902, b: 0.5254902, a: 0}
+    - _tiling: {r: 3, g: 3, b: 0, a: 0}
   m_BuildTextureStacks: []
