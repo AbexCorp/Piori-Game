@@ -56,6 +56,8 @@ public class GameManager : Singleton<GameManager>
             Debug.LogWarning("Interface Manager refference is not assigned");
         if(_buildingManager == null)
             Debug.LogWarning("Building Manager refference is not assigned");
+        if (_analyticsManager == null)
+            Debug.LogWarning("Analytics Manager refference is not assigned");
     }
     private void Start()
     {
