@@ -16,7 +16,7 @@ MonoBehaviour:
   HealthMax: 30
   BaseCost: 30
   SpecialBuildingRequirement: 0
-  CostAdjustmentPercentage: 0.1
+  CostAdjustmentPercentage: 0.05
   Texture: {fileID: 2800000, guid: 467eb821946fcd6478432afa4422e019, type: 3}
   UIIcon: {fileID: 0}
   Shoots: 1

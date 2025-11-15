@@ -20,5 +20,5 @@ MonoBehaviour:
   Texture: {fileID: 2800000, guid: 479763877985dd849b24bd9de593501a, type: 3}
   UIIcon: {fileID: 21300000, guid: 7dd1e0bcc512c484cb56cae9827be878, type: 3}
   ProductionType: 0
-  ProductionAmount: 5
+  ProductionAmount: 6
   ProductionCooldown: 3.5

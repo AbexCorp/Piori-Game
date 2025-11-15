@@ -447,7 +447,6 @@ public class AnalyticsManager : MonoBehaviour
     {
         _playerMovementTotal += _playerMovement;
         _playerMovement = _moveDistance - _playerMovementTotal;
-        Debug.Log($"{_playerMovementTotal} {_playerMovement} {_moveDistance}");
         _playerDamage = CheckDamageFor("Player");
         _playerKills = CheckKillsFor("Player");
     }

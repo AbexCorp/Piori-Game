@@ -36,6 +36,8 @@ public class CustomButton : MonoBehaviour, IMouseInteractable
     protected Image _pointer;
     [SerializeField]
     protected Sprite _pointerImage;
+    [SerializeField]
+    protected bool _positionPointerByCode = true;
 
 
     void Start()
@@ -47,7 +49,8 @@ public class CustomButton : MonoBehaviour, IMouseInteractable
             {
                 _pointer.sprite = _pointerImage;
             }
-            _pointer.rectTransform.anchoredPosition = _pointerPosition;
+            if(_positionPointerByCode)
+                _pointer.rectTransform.anchoredPosition = _pointerPosition;
         }
     }
     public void SetText(string text)
