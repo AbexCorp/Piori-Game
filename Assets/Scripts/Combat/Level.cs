@@ -15,6 +15,8 @@ public class Level : ScriptableObject
         public int Budget;
         [SerializeField]
         public EnemyManager.SpawnStyle SpawnStyle;
+        [SerializeField]
+        public List<EnemyProfile> GuaranteedSpawns;
     }
 
     [SerializeField]

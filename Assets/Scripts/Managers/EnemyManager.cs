@@ -67,7 +67,7 @@ public class EnemyManager : MonoBehaviour
             OnEnemySpawn(enemy);
         }
     }
-    public List<EnemyProfile> BuyEnemies(Level.Wave wave, int checkAmount = 10)
+    private List<EnemyProfile> BuyEnemies(Level.Wave wave, int checkAmount = 10)
     {
         List<KeyValuePair<int, List<EnemyProfile>>> spawnList = new();
 
@@ -96,7 +96,17 @@ public class EnemyManager : MonoBehaviour
             spawnList.Add(new KeyValuePair<int, List<EnemyProfile>>(cost, spawns));
         }
 
-        return spawnList.OrderByDescending(x => x.Key).FirstOrDefault().Value;
+        List<EnemyProfile> enemiesToSpawn = spawnList.OrderByDescending(x => x.Key).FirstOrDefault().Value;
+        enemiesToSpawn = AddGuaranteedEnemies(wave, enemiesToSpawn);
+        return enemiesToSpawn;
+    }
+    private List<EnemyProfile> AddGuaranteedEnemies(Level.Wave wave, List<EnemyProfile> _enemies)
+    {
+        foreach(EnemyProfile enemy in wave.GuaranteedSpawns)
+        {
+            _enemies.Add(enemy);
+        }
+        return _enemies;
     }
 
     #endregion

@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5458ce23df70d94aa8d6e6637d38e09, type: 3}
-  m_Name: RangeEnemy
+  m_Name: Boss
   m_EditorClassIdentifier: 
-  UniqueName: Ranger
+  UniqueName: Boss
   Tier: 1
-  Cost: 40
-  Speed: 0.7
+  Cost: 100
+  Speed: 0.8
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
-  PathfindingType: 0
-  HealthMax: 30
-  Texture: {fileID: 2800000, guid: 816d873ce3709fe45ba3dd851c5fc185, type: 3}
+  PathfindingType: 1
+  HealthMax: 2000
+  Texture: {fileID: 2800000, guid: c3934e4b7a4a14a47927ccb33a8692d0, type: 3}
   StopsMovementAfterAttack: 1
-  AttacksBuildings: 0
+  AttacksBuildings: 1
   PrioritizesPlayer: 1
-  UsesMelee: 0
-  MeleeAttackCooldown: 2
-  MeleeDamage: 3
-  MeleeRange: 0.2
+  UsesMelee: 1
+  MeleeAttackCooldown: 1.8
+  MeleeDamage: 61
+  MeleeRange: 1.6
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
-  UsesRanged: 1
-  RangedAttackCooldown: 3.5
-  RangedDamage: 15
-  RangedRange: 5
+  UsesRanged: 0
+  RangedAttackCooldown: 2
+  RangedDamage: 10
+  RangedRange: 3
