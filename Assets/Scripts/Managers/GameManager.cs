@@ -77,6 +77,7 @@ public class GameManager : Singleton<GameManager>
         {
             id = UnityEngine.Random.Range(1000, 100000);
         }while (_usedID.Contains(id));
+        _usedID.Add(id);
         return id;
     }
 
@@ -95,7 +96,10 @@ public class GameManager : Singleton<GameManager>
     public void ChangeGameState(GameState newState)
     {
         GameState old = _currentGameState;
+        if(old == newState)
+            return;
         _currentGameState = newState;
+
         switch (newState)
         {
             case GameState.None:
