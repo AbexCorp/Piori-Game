@@ -18,7 +18,7 @@ MonoBehaviour:
   SpecialBuildingRequirement: 0
   CostAdjustmentPercentage: 0.05
   Texture: {fileID: 2800000, guid: 8434ed60852920f48bb14c20d699c803, type: 3}
-  UIIcon: {fileID: 21300000, guid: 809ea1d481f2a264f8a82d465fc1bff4, type: 3}
+  UIIcon: {fileID: 21300000, guid: 01103aab4cb0fe9428f54035ede38c6e, type: 3}
   Shoots: 1
   AttackType: 3
   ProjectileProfile: {fileID: 11400000, guid: 7d634cbefd0f5ee4cb91018f3400020e, type: 2}
