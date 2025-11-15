@@ -364,7 +364,9 @@ MonoBehaviour:
   m_Waypoints:
   - position: {x: 0, y: 2.45, z: -2.5}
     roll: 0
-  - position: {x: 0, y: 10, z: -1.5}
+  - position: {x: 0, y: 6, z: -2.5}
+    roll: 0
+  - position: {x: 0, y: 12, z: -1}
     roll: 0
 --- !u!1 &5147667960465135575
 GameObject:
@@ -624,6 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 2321856555584936692}
+  _cameraController: {fileID: 2917171131487977440}
   _speed: 1.5
   _groundMask:
     serializedVersion: 2
@@ -807,6 +810,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 78103255-def9-4df3-8488-a6888a0cd28d
     m_ActionName: InputMap/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7879182317600551522}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnWatchtower
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 484f49bc-a4f1-4b6c-a822-e0aeaa441c54
+    m_ActionName: InputMap/Watchtower[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: InputMap
