@@ -950,8 +950,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 2
   rejectionSamples: 30
@@ -2750,8 +2750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 4
   rejectionSamples: 29
@@ -7211,8 +7211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 6
   rejectionSamples: 28
@@ -8467,8 +8467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 4
   rejectionSamples: 35
@@ -11480,8 +11480,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042950061}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40455365, y: 0.000000027254654, z: -0.000000012056639, w: 0.9145143}
-  m_LocalPosition: {x: 10, y: 5.5, z: 5}
+  m_LocalRotation: {x: 0.30063933, y: 0.000000028423605, z: -0.000000008959751, w: 0.9537379}
+  m_LocalPosition: {x: 10, y: 2.45, z: 7.5}
   m_LocalScale: {x: 1, y: 0, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12314,8 +12314,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 2
   rejectionSamples: 30
@@ -12442,8 +12442,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 2
   rejectionSamples: 30
@@ -15110,8 +15110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 3.5
   rejectionSamples: 32
@@ -17161,8 +17161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 4
   rejectionSamples: 31
@@ -21074,8 +21074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 1.8
   rejectionSamples: 30
@@ -22734,8 +22734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 6
   rejectionSamples: 36
@@ -23845,8 +23845,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 3.5
   rejectionSamples: 30
@@ -23879,18 +23879,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2205449655504602325, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
-      propertyPath: m_Waypoints.Array.data[0].position.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205449655504602325, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
-      propertyPath: m_Waypoints.Array.data[0].position.y
-      value: 5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205449655504602325, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
-      propertyPath: m_Waypoints.Array.data[0].position.z
-      value: -5
-      objectReference: {fileID: 0}
     - target: {fileID: 4642191136175184067, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_PathPosition
       value: 0
@@ -23909,19 +23897,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9145143
+      value: 0.9537379
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.4045536
+      value: 0.3006394
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000027254652
+      value: -5.529075e-15
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000120566375
+      value: 2.5027124e-15
       objectReference: {fileID: 0}
     - target: {fileID: 6877008770337920669, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23965,14 +23953,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7030940309821908828, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7567069393369427985, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
-      propertyPath: m_VerticalDamping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7567069393369427985, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
-      propertyPath: m_HorizontalDamping
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9114605352694199642, guid: 1d848e47fd21c394cb552fa108c96762, type: 3}
@@ -24021,8 +24001,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be142744371fc4c8d0d931201272ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 40
-  height: 40
+  width: 50
+  height: 50
   pivot: {x: 10, y: 0, z: 18}
   radius: 4
   rejectionSamples: 33
