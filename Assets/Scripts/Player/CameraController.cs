@@ -27,6 +27,8 @@ public class CameraController : MonoBehaviour
 
     public void OnCameraZoom(InputAction.CallbackContext context)
     {
+        if (_isWatchtower)
+            return;
         if (_dolly == null)
             return;
 
@@ -36,5 +38,21 @@ public class CameraController : MonoBehaviour
             value = _zoomSpeed * Mathf.Sign(value);
             _dolly.m_PathPosition = Mathf.Clamp01(_dolly.m_PathPosition + value);
         }
+    }
+
+    private bool _isWatchtower = false;
+    private float _previous = 0;
+    public void ToggleWatchtower()
+    {
+        if(_isWatchtower)
+        {
+            _isWatchtower = false;
+            _dolly.m_PathPosition = _previous;
+            return;
+        }
+
+        _isWatchtower = true;
+        _previous = _dolly.m_PathPosition;
+        _dolly.m_PathPosition = 2;
     }
 }

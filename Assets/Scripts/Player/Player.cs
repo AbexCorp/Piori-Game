@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ public class Player : MonoBehaviour, IHealth
     [Header("Internal")]
     [SerializeField]
     private Rigidbody _rigidbody;
+    [SerializeField]
+    private CameraController _cameraController;
 
 
     void Awake()
@@ -42,11 +45,12 @@ public class Player : MonoBehaviour, IHealth
     private LayerMask _groundMask;
 
     private Vector3 _movement;
+    private bool _movementDisabled = false;
 
 
     private void Move()
     {
-        _rigidbody.velocity = _movement * _speed;
+        _rigidbody.velocity = _movement * _speed * (_movementDisabled ? 0 : 1);
         UpdateGridPosition();
     }
     private void UpdateGridPosition()
@@ -65,6 +69,10 @@ public class Player : MonoBehaviour, IHealth
     public void OnDirectMovement(InputAction.CallbackContext context)
     {
         _movement = context.ReadValue<Vector3>();
+    }
+    public void EnableMovement(bool value)
+    {
+        _movementDisabled = !value;
     }
 
 
@@ -304,6 +312,25 @@ public class Player : MonoBehaviour, IHealth
 
     #endregion
 
+
+    #region >>> Watchtower <<<
+
+    private bool _watchtowerEnabled = false;
+    public void OnWatchtower(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _cameraController.ToggleWatchtower();
+            if(_watchtowerEnabled)
+                EnableMovement(true);
+            else
+                EnableMovement(false);
+            _watchtowerEnabled = !_watchtowerEnabled;
+        }
+
+    }
+
+    #endregion
 
     public void PauseGame(InputAction.CallbackContext context)
     {

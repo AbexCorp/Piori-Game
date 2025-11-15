@@ -32,5 +32,5 @@ MonoBehaviour:
   ProjectileProfile: {fileID: 11400000, guid: 909ac5f7344f7584aa7a60c44efcae60, type: 2}
   UsesRanged: 1
   RangedAttackCooldown: 3.5
-  RangedDamage: 19
+  RangedDamage: 15
   RangedRange: 5

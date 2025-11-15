@@ -16,15 +16,21 @@ MonoBehaviour:
   - Template: {fileID: 11400000, guid: e56af09b7edfb794dad910777eedcd4f, type: 2}
     Budget: 250
     SpawnStyle: 0
+    GuaranteedSpawns: []
   - Template: {fileID: 11400000, guid: a7a5474997da4a447bad86742b282179, type: 2}
     Budget: 500
     SpawnStyle: 0
+    GuaranteedSpawns: []
   - Template: {fileID: 11400000, guid: a7a5474997da4a447bad86742b282179, type: 2}
     Budget: 950
     SpawnStyle: 0
+    GuaranteedSpawns: []
   - Template: {fileID: 11400000, guid: a7a5474997da4a447bad86742b282179, type: 2}
-    Budget: 1200
+    Budget: 1250
     SpawnStyle: 0
-  - Template: {fileID: 11400000, guid: defbc45335751cf4db496af8e9cc7347, type: 2}
-    Budget: 3000
+    GuaranteedSpawns: []
+  - Template: {fileID: 11400000, guid: ff4d5e338a224bf4e95dfdb0fdfe0f0a, type: 2}
+    Budget: 1900
     SpawnStyle: 0
+    GuaranteedSpawns:
+    - {fileID: 11400000, guid: 711d60541145cb143b82804008a0dbd2, type: 2}

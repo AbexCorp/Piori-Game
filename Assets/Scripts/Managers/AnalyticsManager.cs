@@ -5,15 +5,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Services.Analytics;
 using Event = Unity.Services.Analytics.Event;
+using System.Text;
+using System.Linq;
 
 public class AnalyticsManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private GameInfoEvent _gameInfoEvent;
+
     void Start()
     {
         GameManager.Instance.OnGameStateChanged += PlayerMovement;
-        GameManager.Instance.OnGameStateChanged += TallyResources;
+        GameManager.Instance.OnGameStateChanged += OnWaveEnd;
         GameManager.Instance.OnGameStateChanged += OnGameEnd;
+
+        _gameInfoEvent = new GameInfoEvent();
     }
 
 
@@ -28,17 +33,27 @@ public class AnalyticsManager : MonoBehaviour
 
     #region >>> Building <<<
 
+    private List<GridTile> _builtTiles = new();
+
     public void OnBuildingBuilt(Building building, GridTile tile, int cost)
     {
         //Debug.Log($"Built {building.name}, {tile.GridPosition}, {cost}, {CurrentGameState}, {CurrentWave}, {GameTime}"); ////////////////////////
+        if(_builtTiles.Contains(tile) == false)
+        {
+            _builtTiles.Add(tile);
+        }
+        CountBuilding(building);
+        _buildingsBuilt++;
     }
     public void OnBuildingKilled(Building building, GridTile tile)
     {
         //Debug.Log($"Killed {building.name}, {tile.GridPosition}, {CurrentGameState}, {CurrentWave}, {GameTime}"); ////////////////////////////
+        _buildingsLost++;
     }
     public void OnBuildingSold(Building building, GridTile tile, int cashback)
     {
         //Debug.Log($"Sold {building.name}, {tile.GridPosition}, {cashback}, {CurrentGameState}, {CurrentWave}, {GameTime}"); ////////////////////////////
+        _buildingsSold++;
     }
     public void OnBuildingDestroyed(Building building, GridTile tile) //Also probably some reason here
     {
@@ -121,6 +136,7 @@ public class AnalyticsManager : MonoBehaviour
     public void OnPlayerLoseHealth(int damage)
     {
         //Debug.Log($"Player loose health {damage}, {CurrentGameState} {CurrentWave} {GameTime}"); ////////////////////
+        _playerHPLost += damage;
     }
     #endregion
 
@@ -165,7 +181,7 @@ public class AnalyticsManager : MonoBehaviour
                 return;
         }
 
-        //Debug.Log($"Resources: {_resourcesGained}, {_resourcesUsed}, {CurrentWave + waveAdjustment}"); //////////////////////////
+        //Debug.Log($"Resources: {_resourcesGained}, {_resourcesUsed}, {CurrentWave + waveAdjustment} {current}"); //////////////////////////
         _resourcesGained = 0;
         _resourcesUsed = 0;
     }
@@ -213,7 +229,8 @@ public class AnalyticsManager : MonoBehaviour
         _waveCounter[wave]--;
         if (_waveCounter[wave] <= 0)
         {
-            //Debug.Log($"Beat Wave {wave}");
+            //Debug.Log($"Beat Wave {wave}"); ////////////////////////////
+            _waveTimes[wave - 1] = GameTime;
         }
     }
 
@@ -245,12 +262,97 @@ public class AnalyticsManager : MonoBehaviour
     {
         _damageEvents.Add(new DamageEvent(attackerID, attackerName, targetID, targetName, damage, gotKilled));
     }
+    public void ClearCombatLog()
+    {
+        _damageEvents.Clear();
+    }
+
+    public int CheckDamageFor(string name)
+    {
+        var damageEvents = _damageEvents.Where(x => x.AttackerName == name).ToList();
+        int damage = 0;
+        foreach (var damageEvent in damageEvents)
+            damage += damageEvent.Damage;
+
+        return damage;
+    }
+    public int CheckKillsFor(string name)
+    {
+        var damageEvents = _damageEvents.Where(x => x.AttackerName == name && x.GotKilled == true).ToList();
+        int kills = 0;
+        foreach (var damageEvent in damageEvents)
+            kills++;
+
+        return kills;
+    }
 
     #endregion
 
 
     #region >>> Game <<<
 
+    private int[] _waveTimes = new int[] {-1, -1, -1, -1, -1};
+    private bool _victory = false;
+
+    private int _buildingsBuilt = 0;
+    private int _buildingsLost = 0;
+    private int _buildingsSold = 0;
+
+    private int _towersBuilt = 0;
+    private int _resourcesBuilt = 0;
+    private int _wallsBuilt = 0;
+    private int _cannonsBuilt = 0;
+    private int _gunsBuilt = 0;
+    private int _arrowsBuilt = 0;
+    private int _lumberyardsBuilt = 0;
+
+    private int _playerHPLost = 0;
+    private float _playerMovement = 0; //this is broken
+    private float _playerMovementTotal = 0;
+    private int _playerDamage = 0;
+    private int _playerKills = 0;
+
+    int _cannonDamage = 0;
+    int _gunDamage = 0;
+    int _arrowDamage = 0;
+    int _cannonKills = 0;
+    int _gunKills = 0;
+    int _arrowKills = 0;
+
+    int _gruntDamage = 0;
+    int _archerDamage = 0;
+    int _toughDamage = 0;
+    int _bossDamage = 0;
+    int _gruntKills = 0;
+    int _archerKills = 0;
+    int _toughKills = 0;
+    int _bossKills = 0;
+
+    public void OnWaveEnd(GameState current, GameState old)
+    {
+        int waveAdjustment = 0;
+        switch (current)
+        {
+            case GameState.Win:
+            case GameState.Lose:
+                break;
+            case GameState.NewWave:
+                waveAdjustment -= 1;
+                break;
+            default:
+                return;
+        }
+
+        WaveEndEvent waveEnd = new(CurrentWave + waveAdjustment);
+        WaveEndCount();
+        waveEnd.SetResources(_resourcesGained, _resourcesUsed);
+        waveEnd.SetBuildings(_buildingsBuilt, _buildingsLost, _buildingsSold, _towersBuilt, _resourcesBuilt, _wallsBuilt, _cannonsBuilt, _gunsBuilt, _arrowsBuilt, _lumberyardsBuilt);
+        waveEnd.SetPlayer(_playerHPLost, _playerMovement, _playerDamage, _playerKills);
+        waveEnd.SetTowerCombat(_cannonDamage, _gunDamage, _arrowDamage, _cannonKills, _gunKills, _arrowKills);
+        waveEnd.SetEnemyCombat(_gruntDamage, _archerDamage, _toughDamage, _bossDamage, _gruntKills, _archerKills, _toughKills, _bossKills);
+        AnalyticsService.Instance.RecordEvent(waveEnd);
+        WaveEndTally(current, old);
+    }
     public void OnGameEnd(GameState current, GameState old)
     {
         if (current != GameState.Win && current != GameState.Lose)
@@ -258,12 +360,145 @@ public class AnalyticsManager : MonoBehaviour
 
         if(current == GameState.Win)
         {
-
+            _victory = true;
+            _gameInfoEvent.SetVictory(_victory);
         }
         if (current == GameState.Lose)
         {
-
+            _victory = false;
+            _gameInfoEvent.SetVictory(_victory, CurrentWave);
         }
+
+        GridBuildingTally();
+        _gameInfoEvent.SetWaveTime(_waveTimes[0], _waveTimes[1], _waveTimes[2], _waveTimes[3], _waveTimes[4]);
+        AnalyticsService.Instance.RecordEvent(_gameInfoEvent);
+    }
+    private void GridBuildingTally()
+    {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < _builtTiles.Count; i++)
+        {
+            sb.Append($"{_builtTiles[i].X}-{_builtTiles[i].Y}");
+            if(i < _builtTiles.Count - 1)
+                sb.Append(',');
+        }
+        //Debug.Log(sb.ToString());///////////////////
+        GridBuildingEvent g = new GridBuildingEvent(sb.ToString(), _victory);
+        AnalyticsService.Instance.RecordEvent(g);
+    }
+    private void WaveEndCount()
+    {
+        CountPlayer();
+        CountTowerCombat();
+        CountEnemiesCombat();
+    }
+    private void WaveEndTally(GameState current, GameState old)
+    {
+        TallyResources(current, old);
+        TallyBuildings();
+        TallyPlayer();
+        TallyTowerCombat();
+        TallyEnemiesCombat();
+        ClearCombatLog();
+    }
+    private void CountBuilding(Building building)
+    {
+        switch (building.UniqueName)
+        {
+            case "Wall":
+                _wallsBuilt++;
+                break;
+
+            case "Cannon Tower":
+                _towersBuilt++;
+                _cannonsBuilt++;
+                break;
+
+            case "Gun Tower":
+                _towersBuilt++;
+                _gunsBuilt++;
+                break;
+
+            case "Arrow Tower":
+                _towersBuilt++;
+                _arrowsBuilt++;
+                break;
+
+            case "Lumberyard":
+                _resourcesBuilt++;
+                _lumberyardsBuilt++;
+                break;
+        }
+    }
+    private void TallyBuildings()
+    {
+        _buildingsBuilt = 0;
+        _buildingsLost = 0;
+        _buildingsSold = 0;
+        _towersBuilt = 0;
+        _resourcesBuilt = 0;
+        _wallsBuilt = 0;
+        _cannonsBuilt = 0;
+        _gunsBuilt = 0;
+        _arrowsBuilt = 0;
+        _lumberyardsBuilt = 0;
+    }
+    private void CountPlayer()
+    {
+        _playerMovementTotal += _playerMovement;
+        _playerMovement = _moveDistance - _playerMovementTotal;
+        _playerDamage = CheckDamageFor("Player");
+        _playerKills = CheckKillsFor("Player");
+    }
+    private void TallyPlayer()
+    {
+        _playerHPLost = 0;
+        _playerDamage = 0;
+        _playerKills = 0;
+    }
+    private void CountTowerCombat()
+    {
+        _cannonDamage = CheckDamageFor("Cannon Tower");
+        _gunDamage = CheckDamageFor("Gun Tower");
+        _arrowDamage = CheckDamageFor("Arrow Tower");
+
+        _cannonKills = CheckKillsFor("Cannon Tower");
+        _gunKills = CheckKillsFor("Gun Tower");
+        _arrowKills = CheckKillsFor("Arrow Tower");
+    }
+    private void TallyTowerCombat()
+    {
+        _cannonDamage = 0;
+        _gunDamage = 0;
+        _arrowDamage = 0;
+
+        _cannonKills = 0;
+        _gunKills = 0;
+        _arrowKills = 0;
+    }
+    private void CountEnemiesCombat()
+    {
+        _gruntDamage = CheckDamageFor("Grunt");
+        _archerDamage = CheckDamageFor("Archer");
+        _toughDamage = CheckDamageFor("Tough");
+        _bossDamage = CheckDamageFor("Boss");
+
+        _gruntKills = CheckKillsFor("Grunt");
+        _archerKills = CheckKillsFor("Archer");
+        _toughKills = CheckKillsFor("Tough");
+        _bossKills = CheckKillsFor("Boss");
+    }
+    private void TallyEnemiesCombat()
+    {
+        _gruntDamage = 0;
+        _archerDamage = 0;
+        _toughDamage = 0;
+        _bossDamage = 0;
+
+        _gruntKills = 0;
+        _archerKills = 0;
+        _toughKills = 0;
+        _bossKills = 0;
     }
 
     #endregion
@@ -273,135 +508,110 @@ internal class GameInfoEvent : Event
 {
     public GameInfoEvent() : base("GameInfoEvent") { }
 
-
-    //==GAME==
-    public void SetVictory(bool victory)
+    public void SetVictory(bool won, int waveLost = -1)
     {
-        SetParameter("Victory", victory);
-    }
-
-    public void SetWaveTime(int wave, int time)
-    {
-        SetParameter($"Wave{wave}Time", time);
-    }
-
-    public void SetWaveResourceGained(int wave, int amount)
-    {
-        SetParameter($"Wave{wave}ResourceGained", amount);
-    }
-
-    public void SetWaveResourceLost(int wave, int amount)
-    {
-        SetParameter($"Wave{wave}ResourceLost", amount);
-    }
-
-    public void SetPlayerMovement(float movement)
-    {
-        SetParameter("PlayerMovement", movement);
-    }
-
-    public void SetWaveLost(int waveLost)
-    {
+        SetParameter("Victory", won);
         SetParameter("WaveLost", waveLost);
     }
 
-
-    //==BUILDINGS==
-    public void SetBuildingCount(int wave, int buildings)
+    public void SetWaveTime(int one, int two, int three, int four, int five)
     {
-        SetParameter($"Wave{wave}Buildings", buildings);
+        SetParameter("Wave1Time", one);
+        SetParameter("Wave2Time", two);
+        SetParameter("Wave3Time", three);
+        SetParameter("Wave4Time", four);
+        SetParameter("Wave5Time", five);
     }
 
-    public void SetTowerCount(int wave, int towers)
-    {
-        SetParameter($"Wave{wave}Towers", towers);
-    }
-
-    public void SetBuildingsBuilt(int walls, int cannons, int guns, int arrows, int lumberyards)
-    {
-        SetParameter("WallsBuilt", walls);
-        SetParameter("CannonsBuilt", cannons);
-        SetParameter("GunsBuilt", guns);
-        SetParameter("ArrowBuilt", arrows);
-        SetParameter("LumberyardsBuilt", lumberyards);
-    }
-
-
-    //==DAMAGE==
-    public void SetDamageStats(int cannonDamage, int gunDamage, int arrowDamage)
-    {
-        SetParameter("CannonDamage", cannonDamage);
-        SetParameter("GunDamage", gunDamage);
-        SetParameter("ArrowDamage", arrowDamage);
-    }
-
-    public void SetKillsStats(int cannonKills, int gunKills, int arrowKills)
-    {
-        SetParameter("CannonKills", cannonKills);
-        SetParameter("GunKills", gunKills);
-        SetParameter("ArrowKills", arrowKills);
-    }
-
-    public void SetEnemyDamage(int gruntDamage, int archerDamage, int toughDamage)
-    {
-        SetParameter("GruntDamage", gruntDamage);
-        SetParameter("ArcherDamage", archerDamage);
-        SetParameter("ToughDamage", toughDamage);
-    }
-
-    public void SetEnemyKills(int gruntKills, int archerKills, int toughKills)
-    {
-        SetParameter("GruntKills", gruntKills);
-        SetParameter("ArcherKills", archerKills);
-        SetParameter("ToughKills", toughKills);
-    }
-
-
-    //==GAME==
     //Victory - bool
+    //WaveLost - int
 
     //Wave1Time - int
     //Wave2Time - int
     //Wave3Time - int
     //Wave4Time - int
     //Wave5Time - int
+}
 
-    //Wave1ResourceGained - int
-    //Wave2ResourceGained - int
-    //Wave3ResourceGained - int
-    //Wave4ResourceGained - int
-    //Wave5ResourceGained - int
-    //Wave1ResourceLost - int
-    //Wave2ResourceLost - int
-    //Wave3ResourceLost - int
-    //Wave4ResourceLost - int
-    //Wave5ResourceLost - int
+internal class WaveEndEvent : Event
+{
+    public WaveEndEvent(int wave) : base("WaveEndEvent")
+    {
+        SetParameter("Wave", wave);
+    }
 
-    //PlayerMovement - float
-    //WaveLost - int
+    public void SetResources(int gained, int lost)
+    {
+        SetParameter("ResourcesGained", gained);
+        SetParameter("ResourcesSpent", lost);
+    }
+    public void SetBuildings(int BuildingsBuilt, int BuildingsLost, int BuildingsSold, int TowersBuilt, int ResourcesBuilt, int WallsBuilt, int CannonsBuilt,
+        int GunsBuilt, int ArrowsBuilt, int LumberyardsBuilt)
+    {
+        SetParameter("BuildingsBuilt", BuildingsBuilt);
+        SetParameter("BuildingsLost", BuildingsLost);
+        SetParameter("BuildingsSold", BuildingsSold);
 
+        SetParameter("TowersBuilt", TowersBuilt);
+        SetParameter("ResourcesBuilt", ResourcesBuilt);
+        SetParameter("WallsBuilt", WallsBuilt);
+        SetParameter("CannonsBuilt", CannonsBuilt);
+        SetParameter("GunsBuilt", GunsBuilt);
+        SetParameter("ArrowsBuilt", ArrowsBuilt);
+        SetParameter("LumberyardsBuilt", LumberyardsBuilt);
+    }
+    public void SetPlayer(int PlayerHPLost, float PlayerMovement, int PlayerDamage, int PlayerKills)
+    {
+        SetParameter("PlayerHPLost", PlayerHPLost);
+        SetParameter("PlayerMovement", PlayerMovement);
+        SetParameter("PlayerDamage", PlayerDamage);
+        SetParameter("PlayerKills", PlayerKills);
+    }
+    public void SetTowerCombat(int CannonDamage, int GunDamage, int ArrowDamage, int CannonKills, int GunKills, int ArrowKills)
+    {
+        SetParameter("CannonDamage", CannonDamage);
+        SetParameter("GunDamage", GunDamage);
+        SetParameter("ArrowDamage", ArrowDamage);
 
-    //==BUILDINGS==
-    //Wave1Buildings - int
-    //Wave2Buildings - int
-    //Wave3Buildings - int
-    //Wave4Buildings - int
-    //Wave5Buildings - int
+        SetParameter("CannonKills", CannonKills);
+        SetParameter("GunKills", GunKills);
+        SetParameter("ArrowKills", ArrowKills);
+    }
+    public void SetEnemyCombat(int GruntDamage, int ArcherDamage, int ToughDamage, int BossDamage, int GruntKills, int ArcherKills, int ToughKills, int BossKills)
+    {
+        SetParameter("GruntDamage", GruntDamage);
+        SetParameter("ArcherDamage", ArcherDamage);
+        SetParameter("ToughDamage", ToughDamage);
+        SetParameter("BossDamage", BossDamage);
 
-    //Wave1Towers - int
-    //Wave2Towers - int
-    //Wave3Towers - int
-    //Wave4Towers - int
-    //Wave5Towers - int
+        SetParameter("GruntKills", GruntKills);
+        SetParameter("ArcherKills", ArcherKills);
+        SetParameter("ToughKills", ToughKills);
+        SetParameter("BossKills", BossKills);
+    }
 
+    //Wave - int
+
+    //ResourcesGained - int
+    //ResourcesSpent - int
+
+    //BuildingsBuilt - int
+    //BuildingsLost - int
+    //BuildingsSold - int
+
+    //TowersBuilt - int
+    //ResourcesBuilt - int
     //WallsBuilt - int
     //CannonsBuilt - int
     //GunsBuilt - int
-    //ArrowBuilt - int
+    //ArrowsBuilt - int
     //LumberyardsBuilt - int
 
+    //PlayerHPLost - int
+    //PlayerMovement - float
+    //PlayerDamage - int
+    //PlayerKills - int
 
-    //==DAMAGE==
     //CannonDamage - int
     //GunDamage - int
     //ArrowDamage - int
@@ -413,8 +623,22 @@ internal class GameInfoEvent : Event
     //GruntDamage - int
     //ArcherDamage - int
     //ToughDamage - int
+    //BossDamage - int
 
     //GruntKills - int
     //ArcherKills - int
     //ToughKills - int
+    //BossKills - int
+}
+
+internal class GridBuildingEvent : Event
+{
+    public GridBuildingEvent(string tiles, bool victory) : base("GridBuildingEvent")
+    {
+        SetParameter("TileList", tiles);
+        SetParameter("Victory", victory);
+    }
+
+    //Victory - bool
+    //TileList - string
 }

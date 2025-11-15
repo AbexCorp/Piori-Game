@@ -38,7 +38,11 @@ public class InterfaceManager : Menu
     [SerializeField]
     private CustomButton _sellButton;
     [SerializeField]
+    private Sprite _sellButtonIcon;
+    [SerializeField]
     private CustomButton _cancelBuildingButton;
+    [SerializeField]
+    private Sprite _cancelBuildingButtonIcon;
 
     private Dictionary<int, BuildingButton> _buildingButtons = new();
     private bool _buildButtonsVisible = false;
@@ -112,7 +116,7 @@ public class InterfaceManager : Menu
         iconPosition -= margin;
         BuildingIcon ico = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
         ico.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
-        ico.Set("`", null);
+        ico.Set("`", _sellButtonIcon);
         buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
 
         _sellButton.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
@@ -123,7 +127,7 @@ public class InterfaceManager : Menu
         iconPosition -= margin;
         ico = Instantiate(_buildingIconPrefab, _buildingIconsFrame.transform);
         ico.RectTransform.anchoredPosition = new Vector2(0, iconPosition);
-        ico.Set("`", null);
+        ico.Set("`", _cancelBuildingButtonIcon);
         buttonPosition = iconPosition - ((iconHeight - buttonHeight) / 2) + buttonFrameHeightAdjustment;
 
         _cancelBuildingButton.RectTransform.anchoredPosition = new Vector2(0, buttonPosition);
