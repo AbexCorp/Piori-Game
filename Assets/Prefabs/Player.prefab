@@ -912,6 +912,42 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2377172158470042943, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 809ea1d481f2a264f8a82d465fc1bff4, type: 3}
+    - target: {fileID: 2377172158470042943, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377172158470042943, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377172158470042943, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 3185943952580565084, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5623744613451564213, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 809ea1d481f2a264f8a82d465fc1bff4, type: 3}
+    - target: {fileID: 5623744613451564213, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5623744613451564213, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5623744613451564213, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6443357178967849228, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -974,11 +1010,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6443357178967849228, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.217
       objectReference: {fileID: 0}
     - target: {fileID: 6443357178967849228, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.892
+      value: 1.326
       objectReference: {fileID: 0}
     - target: {fileID: 6443357178967849228, guid: 60e3735c20c8c914c98e1ad4d782731c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
