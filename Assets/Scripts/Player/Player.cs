@@ -326,6 +326,7 @@ public class Player : MonoBehaviour, IHealth
             else
                 EnableMovement(false);
             _watchtowerEnabled = !_watchtowerEnabled;
+            GameManager.Instance.InterfaceManager.SetWatchtowerIconVisible(_watchtowerEnabled);
         }
 
     }

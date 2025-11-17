@@ -334,9 +334,9 @@ public class InterfaceManager : Menu
     #endregion
 
 
-    #region >>> Counters <<<
+    #region >>> Player <<<
 
-    [Header("Counters")]
+    [Header("Player")]
 
     #region Player Health
 
@@ -353,6 +353,25 @@ public class InterfaceManager : Menu
     }
 
     #endregion
+
+    #region Player Abilities
+
+    [Space]
+    [SerializeField]
+    private GameObject _watchtowerIcon;
+    public void SetWatchtowerIconVisible(bool value)
+    {
+        _watchtowerIcon.SetActive(value);
+    }
+
+    #endregion
+
+    #endregion
+
+
+    #region >>> Counters <<<
+
+    [Header("Counters")]
 
     #region Resource Counter
 
