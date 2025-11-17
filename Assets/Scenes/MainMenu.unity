@@ -490,6 +490,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 78103255-def9-4df3-8488-a6888a0cd28d
     m_ActionName: InputMap/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 484f49bc-a4f1-4b6c-a822-e0aeaa441c54
+    m_ActionName: InputMap/Watchtower[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: InputMap
@@ -513,6 +517,7 @@ MonoBehaviour:
   inputactions: {fileID: -944628639613478452, guid: 684242b26236f284fad1279e14a4fd5a, type: 3}
   _howToPlay: {fileID: 964094755}
   _analyticsMenu: {fileID: 176689978}
+  _consentNow: {fileID: 2936547501218597152}
 --- !u!114 &381220801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,6 +1112,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1191088113049335410, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.699997
+      objectReference: {fileID: 0}
     - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: _pointer
       value: 
@@ -1234,6 +1243,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 9095980677173369916, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
+    - {fileID: 6049859850950220077, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 141682354307203463, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       insertIndex: -1
@@ -1617,6 +1627,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1191088113049335410, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.699997
+      objectReference: {fileID: 0}
     - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: _usePointer
       value: 1
@@ -1754,7 +1768,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6049859850950220077, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2661471850511222032, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       insertIndex: -1
@@ -2091,6 +2106,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b20ff34ef328787479c31b5ce90b6054, type: 3}
+--- !u!114 &2936547501218597152 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6905044961479524431, guid: b20ff34ef328787479c31b5ce90b6054, type: 3}
+  m_PrefabInstance: {fileID: 2936547501218597151}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4413644219329644447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2178,6 +2204,14 @@ PrefabInstance:
     - target: {fileID: 141682354307203463, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191088113049335410, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5.180023
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191088113049335410, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.699997
       objectReference: {fileID: 0}
     - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: _pointer
@@ -2306,6 +2340,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 9095980677173369916, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
+    - {fileID: 6049859850950220077, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 141682354307203463, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       insertIndex: -1
