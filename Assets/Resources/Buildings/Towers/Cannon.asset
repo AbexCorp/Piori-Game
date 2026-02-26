@@ -17,7 +17,7 @@ MonoBehaviour:
   BaseCost: 30
   SpecialBuildingRequirement: 0
   CostAdjustmentPercentage: 0.05
-  Texture: {fileID: 2800000, guid: 467eb821946fcd6478432afa4422e019, type: 3}
+  Texture: {fileID: 2800000, guid: 66e73621d3a9ef24a95ba8c20a7ed815, type: 3}
   UIIcon: {fileID: 21300000, guid: 9ffcbaa280a3e684ca02cc9da6025df1, type: 3}
   Shoots: 1
   AttackType: 3

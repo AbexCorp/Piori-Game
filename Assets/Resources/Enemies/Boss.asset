@@ -21,7 +21,7 @@ MonoBehaviour:
     m_Bits: 1024
   PathfindingType: 1
   HealthMax: 2000
-  Texture: {fileID: 2800000, guid: c3934e4b7a4a14a47927ccb33a8692d0, type: 3}
+  Texture: {fileID: 2800000, guid: 9b60df4199e8c0448bc8bc200e06d748, type: 3}
   StopsMovementAfterAttack: 1
   AttacksBuildings: 1
   PrioritizesPlayer: 1

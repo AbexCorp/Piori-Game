@@ -227,8 +227,6 @@ MonoBehaviour:
   _healthMax: 50
   _healthBarInterface: {fileID: 7815148795968175035}
   _healthBar: {fileID: 2642560583677855677}
-  _tier: 1
-  _cost: 50
   _stopsMovementAfterAttack: 1
   _attacksBuildings: 1
   _prioritizesPlayer: 1
@@ -401,7 +399,7 @@ Transform:
   m_GameObject: {fileID: 6289555346139311809}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 0.565, z: 0}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0}
   m_LocalScale: {x: 0.19999999, y: 0.20000002, z: 0.20000002}
   m_ConstrainProportionsScale: 1
   m_Children: []

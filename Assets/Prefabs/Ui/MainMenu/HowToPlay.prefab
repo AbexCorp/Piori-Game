@@ -317,6 +317,8 @@ MonoBehaviour:
     build them only in certain spots. Defend them well.
   - Use the build menu to create your defences. You can use keybinds on the icons
     to quickly select them.
+  - Enemies will spawn on the edge of the map, be careful when being there. You can
+    place buildings on the edge to block enemy spawns.
   - If you have issues with building look at the notification in the bottom right,
     it will tell you the reason.
   - Press 'Space' or 'T' to use your crossbow. Just point where you want to shoot.
@@ -329,6 +331,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 21300000, guid: c8c16f55d1af8074683603add2852ad2, type: 3}
   - {fileID: 21300000, guid: d6ecb6536a1df45468cde165f0c56b03, type: 3}
+  - {fileID: 0}
   - {fileID: 21300000, guid: 09e5c290ab5d5ce488e7155eeeaa2d11, type: 3}
   - {fileID: 21300000, guid: 809ea1d481f2a264f8a82d465fc1bff4, type: 3}
   - {fileID: 21300000, guid: e7c1e53e1dcb1864c8f33a367690736c, type: 3}
@@ -614,26 +617,6 @@ PrefabInstance:
       propertyPath: m_text
       value: <
       objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 246b8a49b2a4d0d4e8893d74db463ddb, type: 3}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.a
-      value: 0.69803923
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.b
-      value: 0.18534178
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.g
-      value: 0.3450704
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.r
-      value: 0.46226418
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -772,26 +755,6 @@ PrefabInstance:
       propertyPath: m_text
       value: '>'
       objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 246b8a49b2a4d0d4e8893d74db463ddb, type: 3}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.a
-      value: 0.69803923
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.b
-      value: 0.18534178
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.g
-      value: 0.3450704
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.r
-      value: 0.46226418
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -836,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 141682354307203463, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 141.9
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 141682354307203463, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: m_SizeDelta.y
@@ -891,34 +854,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: _colorHover.a
-      value: 0.07058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: _colorHover.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: _colorHover.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: _colorHover.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: _colorDefault.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: _colorDefault.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: _colorDefault.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1233703457743310799, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: OnClickEvent.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -953,44 +888,12 @@ PrefabInstance:
 '
       objectReference: {fileID: 0}
     - target: {fileID: 2001115351402247419, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_fontColor.b
-      value: 0.11320752
-      objectReference: {fileID: 0}
-    - target: {fileID: 2001115351402247419, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_fontColor.g
-      value: 0.11320752
-      objectReference: {fileID: 0}
-    - target: {fileID: 2001115351402247419, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_fontColor.r
-      value: 0.11320752
-      objectReference: {fileID: 0}
-    - target: {fileID: 2001115351402247419, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4280098077
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -1360878589, guid: 35f5d77106fa86349a0047a524a996c1, type: 3}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133997814191279766, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
-      propertyPath: m_Color.r
-      value: 1
+      value: 4280365633
       objectReference: {fileID: 0}
     - target: {fileID: 7451401781675049253, guid: ebe1e7c524d5fcc478d560d629227024, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -6.1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
