@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99e47bfe0ec0124db3c3b7f7ae04eda, type: 3}
+  m_Name: ResourceBuildingProfile
+  m_EditorClassIdentifier: 
+  UniqueName: Lumberyard
+  HealthMax: 30
+  BaseCost: 30
+  SpecialBuildingRequirement: 999
+  CostAdjustmentPercentage: 0.33
+  Texture: {fileID: 2800000, guid: 479763877985dd849b24bd9de593501a, type: 3}
+  UIIcon: {fileID: 21300000, guid: 5d0c216612d8a3d41b84bc15f0c73377, type: 3}
+  ProductionType: 0
+  ProductionAmount: 6
+  ProductionCooldown: 3.5

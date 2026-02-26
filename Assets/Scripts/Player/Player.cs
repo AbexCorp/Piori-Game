@@ -1,0 +1,343 @@
+using Cinemachine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(Rigidbody))]
+public class Player : MonoBehaviour, IHealth
+{
+    [Header("Internal")]
+    [SerializeField]
+    private Rigidbody _rigidbody;
+    [SerializeField]
+    private CameraController _cameraController;
+
+
+    void Awake()
+    {
+        _uniqueID = GameManager.Instance.GetUniqueID();
+        if (_rigidbody == null)
+            _rigidbody.GetComponent<Rigidbody>();
+        InitializePlayer();
+    }
+    private void InitializePlayer()
+    {
+        _healthCurrent = HealthMax;
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
+    }
+
+    void Update()
+    {
+        Move();
+    }
+
+
+    #region >>> Movement <<<
+
+    [Header("Movement")]
+    [SerializeField]
+    private float _speed = 1;
+    [SerializeField]
+    private LayerMask _groundMask;
+
+    private Vector3 _movement;
+    private bool _movementDisabled = false;
+
+
+    private void Move()
+    {
+        _rigidbody.velocity = _movement * _speed * (_movementDisabled ? 0 : 1);
+        UpdateGridPosition();
+    }
+    private void UpdateGridPosition()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(origin:transform.position + Vector3.up * 0.1f, direction:Vector3.down, hitInfo:out hit, maxDistance:1f, layerMask: _groundMask.value))
+        {
+            hit.collider.gameObject.TryGetComponent<GridTile>(out GridTile tile);
+            GridManager.Instance.ChangePlayerPosition(tile);
+        }
+        else
+            GridManager.Instance.ChangePlayerPosition(null);
+    }
+
+
+    public void OnDirectMovement(InputAction.CallbackContext context)
+    {
+        _movement = context.ReadValue<Vector3>();
+    }
+    public void EnableMovement(bool value)
+    {
+        _movementDisabled = !value;
+    }
+
+
+    #endregion
+
+
+    #region >>> Health <<<
+
+    [Header("Combat")]
+    private int _uniqueID;
+    public int UniqueID => _uniqueID;
+    public string UniqueName => "Player";
+    [SerializeField]
+    private int _healthMax = 100;
+    public int HealthMax => _healthMax;
+    private int _healthCurrent = 0;
+    public int HealthCurrent => _healthCurrent;
+    public GameObject ParentGameObject => gameObject;
+
+
+    public void GetDamaged(int damage, int attackerID, string attackerName)
+    {
+        if (damage <= 0)
+            return;
+
+        _healthCurrent -= damage;
+        GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
+        GameManager.Instance.AnalyticsManager.OnPlayerLoseHealth(damage);
+
+        if (_healthCurrent > 0)
+        {
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, false);
+            return;
+        }
+        else
+        {
+            _healthCurrent = 0;
+            GameManager.Instance.AnalyticsManager.NewCombatEvent(attackerID, attackerName, UniqueID, UniqueName, damage, true);
+            GameManager.Instance.InterfaceManager.UpdatePlayerHealth();
+            GameManager.Instance.ChangeGameState(GameState.Lose);
+        }
+    }
+
+    #endregion
+
+
+    #region >>> Mouse <<<
+
+    [Header("Mouse Interaction")]
+    [SerializeField]
+    private MouseRaycaster _mouseRaycaster;
+    public Vector2 MousePosition => _mouseRaycaster.MousePosition;
+
+    #endregion
+
+
+    #region >>> Attack <<<
+
+    [Header("Attack")]
+    [SerializeField]
+    private ProjectileProfile _playerProjectile;
+    [SerializeField]
+    private int _damage = 20;
+    [SerializeField]
+    private float _attackCooldown = 1.5f;
+    public float AttackCooldown => _attackCooldown;
+    [SerializeField]
+    private bool _attackIsOnCooldown = false;
+    public bool AttackIsOnCooldown => _attackIsOnCooldown;
+    private float _remainingAttackCooldown = 0f;
+    public float RemainingAttackCooldown => _remainingAttackCooldown;
+
+    [SerializeField]
+    private GameObject _attackCooldownUI;
+    [SerializeField]
+    private UnityEngine.UI.Image _attackCooldownUIFill;
+
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (AttackIsOnCooldown)
+            return;
+
+        if (context.performed)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(MousePosition);
+            if (Mathf.Abs(ray.direction.y) < 0.0001f) //paraller to world plane
+                return;
+            
+            float t = -ray.origin.y / ray.direction.y;
+            Vector3 hitpoint = ray.origin + t * ray.direction;
+
+            Projectile projectile = GameManager.Instance.ProjectileManager.GetProjectile(_playerProjectile);
+            projectile.InitializeProjectile(hitpoint, transform.position, UniqueID, UniqueName, _damage);
+            StartCoroutine(AttackCooldownTimer());
+            GameManager.Instance.AnalyticsManager.OnPlayerShoot();
+        }
+    }
+    private IEnumerator AttackCooldownTimer()
+    {
+        int numberOfUpdates = 10;
+        YieldInstruction yield = new WaitForSeconds(AttackCooldown / numberOfUpdates);
+
+        _attackIsOnCooldown = true;
+        _remainingAttackCooldown = AttackCooldown;
+        _attackCooldownUI.SetActive(true);
+        _attackCooldownUIFill.fillAmount = 1;
+        for (int i = 0; i < numberOfUpdates; i++)
+        {
+            yield return yield;
+            _remainingAttackCooldown -= AttackCooldown / numberOfUpdates;
+            _remainingAttackCooldown = MathF.Round(_remainingAttackCooldown, 2);
+            _attackCooldownUIFill.fillAmount = _remainingAttackCooldown / AttackCooldown;
+        }
+        _attackIsOnCooldown = false;
+        _remainingAttackCooldown = 0f;
+        _attackCooldownUI.SetActive(false);
+        _attackCooldownUIFill.fillAmount = 0;
+    }
+
+    #endregion
+
+
+    #region >>> Repairing <<<
+
+    [Header("Repairing")]
+    [SerializeField]
+    [Range(0,1)]
+    private float _repairCost = 0.25f;
+    public float RepairCost => _repairCost;
+    [SerializeField]
+    [Range(0,1)]
+    private float _repairAmount = 0.70f;
+    public float RepairAmount => _repairAmount;
+    [Range(0.3f, 5)]
+    private float _repairTime = 3f;
+    public float RepairTime => _repairTime;
+
+
+    private List<Building> _buildingsInRange = new();
+
+    public void OnTargetDetectEnter(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<Building>(out Building building))
+        {
+            if (_buildingsInRange.Contains(building))
+                return;
+            _buildingsInRange.Add(building);
+        }
+    }
+    public void OnTargetDetectLeave(Collider other)
+    {
+        if(other.gameObject.TryGetComponent<Building>(out Building building))
+        {
+            if(_buildingsInRange.Contains(building))
+                _buildingsInRange.Remove(building);
+        }
+    }
+
+    public void OnRepair(InputAction.CallbackContext context)
+    {
+        if (_buildingsInRange.Count == 0)
+            return;
+        if (context.performed)
+        {
+            List<Building> _buildingsToRemove = new();
+            foreach(var target in _buildingsInRange.ToList())
+            {
+                if (target == null || target as UnityEngine.Object == null)
+                    _buildingsToRemove.Add(target);
+            }
+            foreach(var t in _buildingsToRemove)
+            {
+                _buildingsInRange.Remove(t);
+            }
+            if (_buildingsInRange.Count == 0)
+                return;
+
+            _buildingsInRange = _buildingsInRange.OrderBy(x => x.gameObject.transform.position.DistanceTo2D(gameObject.transform.position)).ToList();
+            Building buildingToRepair = _buildingsInRange.FirstOrDefault();
+
+            if(
+                GameManager.Instance.ResourceManager.Resource < (int)System.MathF.Ceiling(buildingToRepair.Cost * RepairCost) ||
+                buildingToRepair.IsBeeingRepaired ||
+                buildingToRepair.HealthCurrent >= buildingToRepair.HealthMax)
+            {
+                //Can't repair
+                return;
+            }
+
+            GameManager.Instance.AnalyticsManager.OnPlayerRepair(buildingToRepair);
+            buildingToRepair.Repair((int)System.MathF.Floor(buildingToRepair.HealthMax * RepairAmount), RepairTime);
+            GameManager.Instance.ResourceManager.UseResources((int)System.MathF.Ceiling(buildingToRepair.Cost * RepairCost));
+        }
+    }
+
+    #endregion
+
+
+    #region >>> Building <<<
+
+    [Header("Building")]
+    [SerializeField]
+    private float _maxBuildDistance = 2.5f;
+    public float MaxBuildDistance => _maxBuildDistance;
+
+    [SerializeField]
+    private float _buildingSellingReturn = 0.65f;
+    public float BuildingSellingReturn => _buildingSellingReturn;
+    public void OnQuickBuild(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            int value = (int)context.ReadValue<float>();
+
+            switch (value)
+            {
+                default:
+                case 0:
+                    GameManager.Instance.InterfaceManager.QuickBuild(0);
+                    break;
+
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    GameManager.Instance.InterfaceManager.QuickBuild(value);
+                    break;
+            }
+        }
+    }
+
+    #endregion
+
+
+    #region >>> Watchtower <<<
+
+    private bool _watchtowerEnabled = false;
+    public void OnWatchtower(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _cameraController.ToggleWatchtower();
+            if(_watchtowerEnabled)
+                EnableMovement(true);
+            else
+                EnableMovement(false);
+            _watchtowerEnabled = !_watchtowerEnabled;
+            GameManager.Instance.InterfaceManager.SetWatchtowerIconVisible(_watchtowerEnabled);
+        }
+
+    }
+
+    #endregion
+
+    public void PauseGame(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameManager.Instance.InterfaceManager.PauseMenu();
+        }
+    } 
+}

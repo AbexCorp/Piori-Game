@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c497c57859fd4f41a9505134c1107e1, type: 3}
+  m_Name: Cannon
+  m_EditorClassIdentifier: 
+  UniqueName: Cannon Tower
+  HealthMax: 30
+  BaseCost: 30
+  SpecialBuildingRequirement: 0
+  CostAdjustmentPercentage: 0.05
+  Texture: {fileID: 2800000, guid: 66e73621d3a9ef24a95ba8c20a7ed815, type: 3}
+  UIIcon: {fileID: 21300000, guid: 9ffcbaa280a3e684ca02cc9da6025df1, type: 3}
+  Shoots: 1
+  AttackType: 3
+  ProjectileProfile: {fileID: 11400000, guid: 49b9a9fd4082bad469b2809a25fb7295, type: 2}
+  Range: 5
+  HasCooldown: 1
+  AttackCooldown: 0.75
+  Damage: 18
